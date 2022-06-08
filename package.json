@@ -1,0 +1,20 @@
+{
+  "name": "zjt-mini-vue",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:iamzjt-front-end/zjt-mini-vue.git",
+  "author": "iamzjt-front-end <iamzjt@foxmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-typescript": "^7.17.12",
+    "@types/jest": "^28.1.1",
+    "babel-jest": "^28.1.1",
+    "jest": "^28.1.1",
+    "typescript": "^4.7.3"
+  }
+}
