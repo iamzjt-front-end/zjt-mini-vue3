@@ -1,8 +1,7 @@
-# IntelliJ project files
+# vs code project files
 .idea
-*.iml
-out
-gen
+.vscode
+.history
 
 # yarn
 yarn.lock
