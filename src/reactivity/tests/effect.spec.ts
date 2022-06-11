@@ -7,7 +7,7 @@ describe("effect", () => {
       age: 10,
     });
 
-    // trigger
+    // track trigger
     let nextAge;
     effect(() => {
       nextAge = user.age + 1;
@@ -16,7 +16,7 @@ describe("effect", () => {
     expect(nextAge).toBe(11);
 
     // update
-    // user.age++;
-    // expect(nextAge).toBe(12);
+    user.age++;
+    expect(nextAge).toBe(12);
   });
 });
