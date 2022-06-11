@@ -1,7 +1,6 @@
 # vs code project files
-.idea
-.vscode
 .history
+.vscode
 
 # yarn
 yarn.lock
