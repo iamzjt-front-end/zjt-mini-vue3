@@ -1,5 +1,5 @@
 describe("effect", () => {
-  it("happy path", () => {
+  it.skip("happy path", () => {
     const user = reactive({
       age: 10,
     });
