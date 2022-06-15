@@ -2,6 +2,7 @@
 .history
 .idea
 .vscode
+mini-vue源码
 
 # yarn
 yarn.lock
