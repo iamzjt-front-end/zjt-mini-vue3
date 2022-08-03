@@ -57,7 +57,7 @@ describe("effect", () => {
 
     expect(scheduler).not.toHaveBeenCalled();
     expect(dummy).toBe(1);
-    // should be called on first trigger
+    // * should be called on first trigger
     obj.foo++;
     expect(scheduler).toHaveBeenCalledTimes(1);
     // * should not run yet
