@@ -1,9 +1,0 @@
-# vs code project files
-.history
-.idea
-.vscode
-mini-vue源码
-
-# yarn
-yarn.lock
-node_modules
