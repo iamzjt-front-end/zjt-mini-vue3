@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div>
     IamZJT
   </div>
 </template>
@@ -13,7 +13,5 @@ export default {
 </script>
 
 <style scoped>
-.app {
-  color: black;
-}
+
 </style>

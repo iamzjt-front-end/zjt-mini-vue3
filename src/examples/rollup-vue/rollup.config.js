@@ -2,7 +2,7 @@ import vue from 'rollup-plugin-vue';
 
 export default {
   input: './App.vue',
-  plugin: [vue()],
+  plugins: [vue()],
   output: {
     name: 'vue',
     format: 'es',
