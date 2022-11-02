@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@vue/compiler-sfc": "^3.2.41"
+    "@vue/compiler-sfc": "^3.2.41",
+    "vue": "^3.2.41"
   },
   "devDependencies": {
     "rollup": "^3.2.3",
