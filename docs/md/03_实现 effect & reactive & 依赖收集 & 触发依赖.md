@@ -74,3 +74,10 @@ export function reactive(raw) {
 ```shell
 yarn test reactive
 ```
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050559517.png" width="666" alt="03_reactive核心逻辑单测"/>
+
+好，那么至此，`reactive`的`happy path`测试通过，那么接下来，我们继续完善`reactive`的逻辑代码。
+
+---------------------------------------------------------------------------------------
+
