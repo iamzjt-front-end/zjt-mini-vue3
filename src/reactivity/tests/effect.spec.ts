@@ -1,5 +1,8 @@
+import { reactive } from '../reactive';
+import { effect } from '../effect';
+
 describe('effect', function () {
-  it.skip('happy path', function () {
+  it('happy path', function () {
     // * 首先定义一个响应式对象
     const user = reactive({
       age: 10,
