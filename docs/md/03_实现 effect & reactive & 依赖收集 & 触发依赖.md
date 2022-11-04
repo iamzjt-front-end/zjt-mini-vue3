@@ -27,7 +27,9 @@ describe('effect', function () {
 ```
 
 那么`reactivity`的`happy path`的单测书写完毕，因为核心逻辑的单测需要依赖于`reactive`和`effect`
-两个api，所以此处it.skip，先跳过这个测试用例，我们先来实现`reactive`。
+两个api，所以此处 it.skip，先跳过这个测试用例，我们先来实现`reactive`。
+
+---------------------------------------------------------------------------------------
 
 那在实现`reactive`之前，依旧先来写`reactive`核心逻辑的单测。
 
@@ -45,8 +47,30 @@ describe('reactive', function () {
 });
 ```
 
-接着建立reactive.ts，实现核心逻辑。
+接着建立`reactive.ts`，实现核心逻辑。
 
 ```js
+export function reactive(raw) {
+  return new Proxy(raw, {
+    get(target, key) {
+      const res = Reflect.get(target, key);
 
+      // todo 依赖收集
+      return res;
+    },
+
+    set(target, key, value) {
+      const res = Reflect.set(target, key, value);
+
+      // todo 触发依赖
+      return res;
+    }
+  })
+}
+```
+
+至此，`reactive`的`happy path`实现完毕，至于如何进行依赖收集和触发依赖，我们放到后面再去慢慢考虑。那现在，先来看一下单测有没有通过。
+
+```shell
+yarn test reactive
 ```
