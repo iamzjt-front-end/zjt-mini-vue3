@@ -21,4 +21,21 @@ describe('effect', function () {
     user.age++;
     expect(nextAge).toBe(12);
   });
+
+  it('runner', function () {
+    // effect(fn) -> return runner -> runner() == fn() -> return
+    // effect(fn)执行会返回一个runner, 执行runner, 相当于重新执行一遍effect里面传入的fn, 同时也会将fn的返回值返回。
+    let foo = 10;
+
+    const runner = effect(() => {
+      foo++;
+      return 'foo';
+    });
+
+    expect(foo).toBe(11);
+
+    const r = runner();
+    expect(foo).toBe(12);
+    expect(r).toBe('foo');
+  });
 });
