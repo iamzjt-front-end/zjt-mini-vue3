@@ -78,7 +78,7 @@ export function reactive(raw) {
 yarn test reactive
 ```
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050559517.png" width="666" alt="03_reactive核心逻辑单测"/>
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050559517.png" width="666" alt="03_01_reactive核心逻辑单测"/>
 
 测试通过，那么接下来，我们继续完善`reactive`的逻辑代码。  
 接着，再去`reactive.spec.ts`和`effect.spec.ts`中引入`reactive`。
@@ -124,7 +124,7 @@ export function effect(fn) {
 yarn test
 ```
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050708340.png" width="666" alt="03_effect部分逻辑单测"/>
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050708340.png" width="666" alt="03_02_effect部分逻辑单测"/>
 
 ---------------------------------------------------------------------------------------
 
@@ -132,3 +132,83 @@ yarn test
 
 那现在的难点就来了，如何让 **`user.age++`** 的时候，`nextAge`也自动更新。  
 这其实就已经到了响应式系统的核心逻辑了，也就是 **`依赖收集`** 和 **`触发依赖`**，也就是`track`和`trigger`的实现。
+
+#### 1. 依赖收集 track
+
+回到`reactive.ts`，`Proxy`的`get`方法中增加`track`，当某个属性被读取时，进行依赖的收集。
+
+```js
+const res = Reflect.get(target, key);
+
+track(target, key);
+return res;
+```
+
+由于依赖是被effect包裹的，所以就在`effect.ts`中来写`track`的逻辑。
+
+```js
+export function track(target, key) {
+  // * target -> key -> dep
+}
+```
+
+从上可以看出，依赖对应的结构应该如下：
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051239948.png" width="388" alt="03_03_依赖树形关系"/>
+
+- target：被操作（读取）的代理对象（ **user** ）；
+- key：被操作（读取）的字段名（ **age** ）；
+- dep：用effect函数注册的副作用函数（ **() => { nextAge = user.age + 1; }** ），也就是我们要收集的依赖。
+
+那这里分别使用`WeakMap`、`Map`、`Set`来存储。
+
+- `WeakMap`由 **target -> Map** 构成；
+- `Map`由 **key -> Set** 构成。
+
+其中`WeakMap`的键是原始对象`target`，值是一个`Map`实例；  
+而`Map`的键是原始对象`target`的`key`，值是一个由副作用函数组成的`Set`。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051251337.png" width="666" alt="03_04_WeakMap、Map和Set之间的关系"/>
+
+搞清楚他们的关系之后，有必要解释一下这里为什么用`WeakMap`，这就涉及到了`WeakMap`和`Map`的区别。
+
+> 简单地说，`WeakMap`对`key`是弱引用，不影响垃圾回收器的工作。但如果使用`Map`来代替`WeakMap`，那么即使用户侧的代码对`target`
+> 没有任何引用，这个`target`也不会被回收，最终可能导致内存溢出。
+
+理论完毕，接下来开始完善`track`的逻辑。
+
+```js
+// * target -> key -> dep
+export function track(target, key) {
+  // * depsMap: key -> dep
+  let depsMap = targetMap.get(target);
+  if (!depsMap) {
+    targetMap.set(target, (depsMap = new Map()));
+  }
+
+  // * dep
+  let dep = depsMap.get(key);
+  if (!dep) {
+    depsMap.set(key, (dep = new Set()));
+  }
+
+  dep.add(activeEffect); // activeEffect是当前依赖，完整代码最后挂出
+}
+```
+
+#### 2. 触发依赖 trigger
+
+再次回到`reactive.ts`，`Proxy`的`set`方法中增加`trigger`，当某个属性被读取时，进行依赖的收集。
+
+```js
+const res = Reflect.get(target, key);
+
+track(target, key);
+return res;
+```
+
+再接着完善`trigger`的逻辑。
+
+```js
+
+```
