@@ -116,7 +116,8 @@ export function effect(fn) {
 }
 ```
 
-[//]: # (todo 此处为何封装ReactiveEffect？)
+此处封装了`ReactiveEffect`类，是因为`effect`方法接收一个函数作为参数，需要将其保存，并执行一次；  
+以后还会扩展出更多的功能，所以将其封装为一个`ReactiveEffect`类进行维护。
 
 此时，去掉`effect` `happy path`中`it`的`skip`，然后注释掉`set -> 触发依赖`后的两行，先不看`update`的过程，运行一下测试。
 
@@ -207,8 +208,25 @@ track(target, key);
 return res;
 ```
 
-再接着完善`trigger`的逻辑。
+再接着完善`trigger`的逻辑，取出所有的依赖，依次执行。
 
 ```js
+export function trigger(target, key) {
+  let depsMap = targetMap.get(target);
+  let dep = depsMap.get(key);
 
+  for (const effect of dep) {
+    effect.run();
+  }
+}
 ```
+
+感觉好像就这样，没啥问题了，那继续跑一下单测吧，看看是不是真的没问题了。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051504999.png" width="666" alt="03_05_effect、reactive全流程单测"/>
+
+可以，全部通过，美滋滋啊~
+
+那么至此，我们就实现了 effect & reactive & 依赖收集 & 触发依赖 的happy path。
+
+**ps**: 当然这只是最简形态的reactive，就比如：分支切换（三元表达式）、嵌套effect，我们都完全还没有考虑进去。
