@@ -132,3 +132,7 @@ yarn test
 
 那现在的难点就来了，如何让 **`user.age++`** 的时候，`nextAge`也自动更新。  
 这其实就已经到了响应式系统的核心逻辑了，也就是 **`依赖收集`** 和 **`触发依赖`**，也就是`track`和`trigger`的实现。
+```
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTAxNTIzNjE3M119
+-->
