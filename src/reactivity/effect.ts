@@ -32,6 +32,16 @@ export function track(target, key) {
   dep.add(activeEffect);
 }
 
+// * ============================== ↓ 触发依赖 trigger ↓ ============================== * //
+export function trigger(target, key) {
+  let depsMap = targetMap.get(target);
+  let dep = depsMap.get(key);
+
+  for (const effect of dep) {
+    effect.run();
+  }
+}
+
 let activeEffect;
 
 export function effect(fn) {
