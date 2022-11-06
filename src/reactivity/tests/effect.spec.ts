@@ -1,8 +1,8 @@
 import { reactive } from '../reactive';
 import { effect } from '../effect';
 
-describe('effect', function () {
-  it('happy path', function () {
+describe('effect', () => {
+  it('happy path', () => {
     // * 首先定义一个响应式对象
     const user = reactive({
       age: 10,
@@ -22,7 +22,7 @@ describe('effect', function () {
     expect(nextAge).toBe(12);
   });
 
-  it('runner', function () {
+  it('runner', () => {
     // effect(fn) -> return runner -> runner() == fn() -> return
     // effect(fn)执行会返回一个runner, 执行runner, 相当于重新执行一遍effect里面传入的fn, 同时也会将fn的返回值返回。
     let foo = 10;
@@ -37,5 +37,35 @@ describe('effect', function () {
     const r = runner();
     expect(foo).toBe(12);
     expect(r).toBe('foo');
+  });
+
+  it('scheduler', () => {
+    // + 1. 通过 effect 的第二个参数给定的一个 scheduler 的 fn
+    // + 2. effect 第一次执行的时候, 还会执行 fn
+    // + 3. 当响应式对象 set update, 不会执行 fn, 而是执行 scheduler
+    // + 4. 当再次执行 runner 的时候, 会再次的执行 fn
+    let dummy;
+    let run: any;
+    const scheduler = jest.fn(() => {
+      run = runner;
+    });
+    const obj = reactive({ foo: 1 });
+    const runner = effect(
+      () => {
+        dummy = obj.foo;
+      },
+      { scheduler },
+    );
+    expect(scheduler).not.toHaveBeenCalled();
+    expect(dummy).toBe(1);
+    // should be called on first trigger
+    obj.foo++;
+    expect(scheduler).toHaveBeenCalledTimes(1);
+    // should not run yet
+    expect(dummy).toBe(1);
+    // manually run
+    run();
+    // should have run
+    expect(dummy).toBe(2);
   });
 });
