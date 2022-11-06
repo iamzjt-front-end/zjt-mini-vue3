@@ -13,7 +13,7 @@
 
 单测用例如下：
 
-```js
+```ts
 it('runner', function () {
   // effect(fn) -> return runner -> runner() == fn() -> return
   let foo = 10;
@@ -37,7 +37,7 @@ it('runner', function () {
 
 **// +** 为新增加的代码。
 
-```js
+```ts
 class ReactiveEffect {
   private _fn: any;
 

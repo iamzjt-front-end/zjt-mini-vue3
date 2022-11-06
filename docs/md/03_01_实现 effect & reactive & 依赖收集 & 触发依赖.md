@@ -4,7 +4,7 @@
 
 那我们先来编写第一个测试案例，删掉之前的`index.spec.ts`，建立`effect.spec.ts`，实现`reactivity`的`happy path`(核心逻辑)。
 
-```js
+```ts
 describe('effect', function () {
   it.skip('happy path', function () {
     // * 首先定义一个响应式对象
@@ -37,7 +37,7 @@ describe('effect', function () {
 
 那在实现`reactive`之前，依旧先来写`reactive`核心逻辑的单测。
 
-```js
+```ts
 describe('reactive', function () {
   it('happy path', function () {
     const original = { foo: 1 };
@@ -51,7 +51,7 @@ describe('reactive', function () {
 
 接着建立`reactive.ts`，实现核心逻辑。
 
-```js
+```ts
 export function reactive(raw) {
   return new Proxy(raw, {
     // 此处使用proxy报错的话，需要进tsconfig.json中，配置"lib": ["DOM", "ES6"]。
@@ -83,7 +83,7 @@ yarn test reactive
 测试通过，那么接下来，我们继续完善`reactive`的逻辑代码。  
 接着，再去`reactive.spec.ts`和`effect.spec.ts`中引入`reactive`。
 
-```js
+```ts
 import { reactive } from '../reactive';
 ```
 
@@ -96,7 +96,7 @@ import { reactive } from '../reactive';
 那只要再把`effect`完善，那`reactivity`的`happy path`的单测就不会报错了，那么，现在，咱就去完善`effect`。  
 建立`effect.ts`文件，并完善基础逻辑。
 
-```js
+```ts
 class ReactiveEffect {
   private _fn: any;
 
@@ -140,7 +140,7 @@ yarn test
 
 > 我们这里所说的依赖，也叫副作用函数，即产生副作用的函数。也就是说，effect函数的执行，会直接或间接影响其它函数的执行，这时我们说effect函数产生了副作用。
 
-```js
+```ts
 const res = Reflect.get(target, key);
 
 track(target, key);
@@ -149,7 +149,7 @@ return res;
 
 由于依赖是被effect包裹的，所以就在`effect.ts`中来写`track`的逻辑。
 
-```js
+```ts
 export function track(target, key) {
   // * target -> key -> dep
 }
@@ -180,7 +180,7 @@ export function track(target, key) {
 
 理论完毕，接下来开始完善`track`的逻辑。
 
-```js
+```ts
 // * target -> key -> dep
 export function track(target, key) {
   // * depsMap: key -> dep
@@ -203,7 +203,7 @@ export function track(target, key) {
 
 再次回到`reactive.ts`，`Proxy`的`set`方法中增加`trigger`，当某个属性被读取时，进行依赖的收集。
 
-```js
+```ts
 const res = Reflect.get(target, key);
 
 track(target, key);
@@ -212,7 +212,7 @@ return res;
 
 再接着完善`trigger`的逻辑，取出所有的依赖，依次执行。
 
-```js
+```ts
 export function trigger(target, key) {
   let depsMap = targetMap.get(target);
   let dep = depsMap.get(key);
