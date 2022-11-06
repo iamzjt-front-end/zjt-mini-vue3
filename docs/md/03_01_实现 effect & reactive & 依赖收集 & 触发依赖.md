@@ -138,6 +138,8 @@ yarn test
 
 回到`reactive.ts`，`Proxy`的`get`方法中增加`track`，当某个属性被读取时，进行依赖的收集。
 
+> 我们这里所说的依赖，也叫副作用函数，即产生副作用的函数。也就是说，effect函数的执行，会直接或间接影响其它函数的执行，这时我们说effect函数产生了副作用。
+
 ```js
 const res = Reflect.get(target, key);
 
