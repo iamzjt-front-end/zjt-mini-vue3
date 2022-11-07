@@ -87,7 +87,7 @@ yarn test reactive
 import { reactive } from '../reactive';
 ```
 
-**ps**: 至于上述代码中采用`Reflect.get`而不是`target[key]`返回属性值，将在下一篇文章中详细做出阐述。
+**ps:** 至于上述代码中采用`Reflect.get`而不是`target[key]`返回属性值，将在下一篇文章中详细做出阐述。
 
 ---------------------------------------------------------------------------------------
 
@@ -231,4 +231,4 @@ export function trigger(target, key) {
 
 那么至此，我们就实现了 effect & reactive & 依赖收集 & 触发依赖 的happy path。
 
-**ps**: 当然这只是最简形态的reactive，就比如：分支切换（三元表达式）、嵌套effect，我们都完全还没有考虑进去。
+**ps:** 当然这只是最简形态的reactive，就比如：分支切换（三元表达式）、嵌套effect，我们都完全还没有考虑进去。
