@@ -4,7 +4,7 @@
 
 那我们先来编写第一个测试案例，删掉之前的`index.spec.ts`，建立`effect.spec.ts`，实现`reactivity`的`happy path`(核心逻辑)。
 
-```ts
+```js
 describe('effect', function () {
   it.skip('happy path', function () {
     // * 首先定义一个响应式对象
@@ -37,7 +37,7 @@ describe('effect', function () {
 
 那在实现`reactive`之前，依旧先来写`reactive`核心逻辑的单测。
 
-```ts
+```js
 describe('reactive', function () {
   it('happy path', function () {
     const original = { foo: 1 };

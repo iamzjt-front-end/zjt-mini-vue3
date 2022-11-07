@@ -43,7 +43,7 @@ obj.foo++;
 
 首先还是藉由单测来梳理一下功能，这是直接从`vue3`源码中粘贴过来对`scheduler的`单测，里面很详细的描述了`scheduler`的功能。
 
-```ts
+```js
 it('scheduler', () => {
   let dummy;
   let run: any;
@@ -154,7 +154,7 @@ export function effect(fn, options: any = {}) {
 
 好，现在我们再回到最初的栗子，在上面`scheduler`基础上，完成现有需求，继续看一下对此需求的单测。
 
-```ts
+```js
 it('job queue', () => {
   // 定义一个任务队列
   const jobQueue = new Set();
