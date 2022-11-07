@@ -56,3 +56,7 @@ export function effect(fn, options: any = {}) {
 
   return _effect.run.bind(_effect);
 }
+
+export function stop(runner) {
+
+}
