@@ -268,7 +268,7 @@ Object.assign(_effect, options);
 目录，然后建立`index.ts`，专门放置各个模块通用的工具函数。
 
 ```js
-// src -> shared -> index.ts
+// src/shared/index.ts
 
 export const extend = Object.assign;
 
