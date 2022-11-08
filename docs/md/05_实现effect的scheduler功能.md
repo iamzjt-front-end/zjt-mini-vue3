@@ -241,6 +241,10 @@ for (const effect of dep) {
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211071701323.png" width="666" alt="05_02_jobQueue的实现"/>
 
+测试结束完以后，由于`job queue`是一个实际案例单测，所以我们将其抽离到`examples`下面的`testCase`里，建立`jobQueue.spec.ts`。
+
+### 五、结语
+
 可能你已经注意到了，这个功能点类似于在`Vue.js`中连续多次修改响应式数据但只会触发一次更新，实际上`Vue.js`
 内部实现了一个更加完善的调度器，思路与上文介绍的相同。
 
