@@ -1,5 +1,6 @@
 class ReactiveEffect {
   private _fn: any;
+  deps = [];
 
   // 在构造函数的参数上使用public等同于创建了同名的成员变量
   constructor(fn, public scheduler?) {
@@ -9,6 +10,14 @@ class ReactiveEffect {
   run() {
     activeEffect = this;
     return this._fn();
+  }
+
+  stop() {
+    // 要从收集到当前依赖的dep中删除当前依赖activeEffect
+    // 但是我们根本不知道activeEffect存在于哪些dep中，所以就要用activeEffect反向收集dep
+    this.deps.forEach((dep: any) => {
+      dep.delete(this);
+    });
   }
 }
 
@@ -31,6 +40,7 @@ export function track(target, key) {
   }
 
   dep.add(activeEffect);
+  activeEffect.deps.push(dep);
 }
 
 // * ============================== ↓ 触发依赖 trigger ↓ ============================== * //
@@ -54,9 +64,12 @@ export function effect(fn, options: any = {}) {
 
   _effect.run();
 
-  return _effect.run.bind(_effect);
+  const runner: any = _effect.run.bind(_effect);
+  runner.effect = _effect;
+
+  return runner;
 }
 
 export function stop(runner) {
-
+  runner.effect.stop();
 }
