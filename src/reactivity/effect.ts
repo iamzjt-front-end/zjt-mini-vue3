@@ -1,7 +1,10 @@
+import { extend } from '../shared';
+
 class ReactiveEffect {
   private _fn: any;
   deps = [];
   active = true;
+  onStop?: () => void;
 
   // 在构造函数的参数上使用public等同于创建了同名的成员变量
   constructor(fn, public scheduler?) {
@@ -18,6 +21,9 @@ class ReactiveEffect {
     // 但是我们根本不知道activeEffect存在于哪些dep中，所以就要用activeEffect反向收集dep
     if (this.active) {
       cleanupEffect(this);
+      if (this.onStop) {
+        this.onStop();
+      }
       this.active = false;
     }
   }
@@ -47,6 +53,8 @@ export function track(target, key) {
     depsMap.set(key, (dep = new Set()));
   }
 
+  if (!activeEffect) return;
+
   dep.add(activeEffect);
   activeEffect.deps.push(dep);
 }
@@ -58,7 +66,8 @@ export function trigger(target, key) {
 
   for (const effect of dep) {
     if (effect.scheduler) {
-      effect.scheduler();
+      // ! effect._fn 为了让scheduler能拿到原始依赖
+      effect.scheduler(effect._fn);
     } else {
       effect.run();
     }
@@ -69,6 +78,7 @@ let activeEffect;
 
 export function effect(fn, options: any = {}) {
   const _effect = new ReactiveEffect(fn, options.scheduler);
+  extend(_effect, options);
 
   _effect.run();
 
