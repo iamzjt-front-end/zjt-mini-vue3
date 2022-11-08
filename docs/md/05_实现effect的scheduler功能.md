@@ -154,7 +154,7 @@ export function effect(fn, options: any = {}) {
 
 好，现在我们再回到最初的栗子，在上面`scheduler`基础上，完成现有需求，继续看一下对此需求的单测。
 
-```js
+```ts
 it('job queue', () => {
   // 定义一个任务队列
   const jobQueue = new Set();
@@ -171,13 +171,11 @@ it('job queue', () => {
     isFlushing = true;
     // 在微任务队列中刷新 jobQueue 队列
     p.then(() => {
-      // @ts-ignore
-      jobQueue.forEach(job => job());
+      jobQueue.forEach((job: any) => job());
     }).finally(() => {
-      // ! 若此处finally报错的话，可以去tsconfig.json中的lib加一下"ESNext"
       // 结束后重置 isFlushing
       isFlushing = false;
-      // 虽然scheduler执行两次，但是由于是Set，所以只有一项依赖
+      // 虽然scheduler执行两次，但是由于是Set，所以只有一项
       expect(jobQueue.size).toBe(1);
       // 期望最终结果拿数组存储后进行断言
       expect(logArr).toEqual([1, 3]);
@@ -185,11 +183,10 @@ it('job queue', () => {
   }
 
   const obj = reactive({ foo: 1 });
-  let logArr = [];
+  let logArr: number[] = [];
 
   effect(
     () => {
-      // @ts-ignore
       logArr.push(obj.foo);
     },
     {
