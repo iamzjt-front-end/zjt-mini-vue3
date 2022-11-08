@@ -1,6 +1,7 @@
 class ReactiveEffect {
   private _fn: any;
   deps = [];
+  active = true;
 
   // 在构造函数的参数上使用public等同于创建了同名的成员变量
   constructor(fn, public scheduler?) {
@@ -15,10 +16,17 @@ class ReactiveEffect {
   stop() {
     // 要从收集到当前依赖的dep中删除当前依赖activeEffect
     // 但是我们根本不知道activeEffect存在于哪些dep中，所以就要用activeEffect反向收集dep
-    this.deps.forEach((dep: any) => {
-      dep.delete(this);
-    });
+    if (this.active) {
+      cleanupEffect(this);
+      this.active = false;
+    }
   }
+}
+
+function cleanupEffect(effect: any) {
+  effect.deps.forEach((dep: any) => {
+    dep.delete(effect);
+  });
 }
 
 // * ============================== ↓ 依赖收集 track ↓ ============================== * //
