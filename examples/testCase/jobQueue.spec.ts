@@ -17,8 +17,7 @@ it('job queue', () => {
     isFlushing = true;
     // 在微任务队列中刷新 jobQueue 队列
     p.then(() => {
-      // @ts-ignore
-      jobQueue.forEach(job => job());
+      jobQueue.forEach((job: any) => job());
     }).finally(() => {
       // 结束后重置 isFlushing
       isFlushing = false;
@@ -30,11 +29,10 @@ it('job queue', () => {
   }
 
   const obj = reactive({ foo: 1 });
-  let logArr = [];
+  let logArr: number[] = [];
 
   effect(
     () => {
-      // @ts-ignore
       logArr.push(obj.foo);
     },
     {
