@@ -42,3 +42,7 @@ export function readonly(raw) {
 ```
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090816236.png" width="666" alt="07_readonly单测结果"/>
+
+单测通过。
+
+### 三、逻辑重构
