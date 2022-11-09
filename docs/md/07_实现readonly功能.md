@@ -191,3 +191,51 @@ export function readonly(raw) {
 在大部分情况下，我们只关注这个函数实现了什么功能，这个函数内部具体怎么处理，我们并不关心。
 
 如果一定要看具体的代理逻辑，那就去另一个文件中去阅读。
+
+#### 3. 三次重构（梅开三度）
+
+`reactive`和`readonly`的主要逻辑基本相同，都是对象代理，不具备一个良好的语义性。
+
+```ts
+// + src/reactivity/reactive.ts
+import { mutableHandlers, readonlyHandlers } from './baseHandlers';
+
+function createActiveObject(raw: any, baseHandlers) {
+  return new Proxy(raw, baseHandlers);
+}
+
+export function reactive(raw) {
+  return createActiveObject(raw, mutableHandlers);
+}
+
+export function readonly(raw) {
+  return createActiveObject(raw, readonlyHandlers);
+}
+```
+
+再看到`mutableHandlers`和`readonlyHandlers`，会发现，每次调用`mutableHandlers`，实际上都会重新创建`get`
+，所以考虑用一个全局变量存储，就不会被销毁。
+
+```ts
+// + src/reactivity/baseHandlers.ts
+const get = createGetter();
+const set = createSetter();
+const readonlyGet = createGetter(true);
+
+// * reactive
+export const mutableHandlers = {
+  get,
+  set,
+};
+
+// * readonly
+export const readonlyHandlers = {
+  get: readonlyGet,
+  set(target, key, value) {
+    // todo 抛出警告⚠️ 不可以被set
+    return true;
+  },
+};
+```
+
+### 四、

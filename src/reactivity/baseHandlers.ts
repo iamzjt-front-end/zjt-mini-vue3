@@ -18,16 +18,19 @@ function createSetter() {
   };
 }
 
+const get = createGetter();
+const set = createSetter();
+const readonlyGet = createGetter(true);
+
 // * reactive
 export const mutableHandlers = {
-  get: createGetter(),
-  set: createSetter(),
+  get,
+  set,
 };
 
 // * readonly
 export const readonlyHandlers = {
-  get: createGetter(true),
-
+  get: readonlyGet,
   set(target, key, value) {
     // todo 抛出警告⚠️ 不可以被set
     return true;
