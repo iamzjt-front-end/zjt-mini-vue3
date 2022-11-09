@@ -41,8 +41,153 @@ export function readonly(raw) {
 }
 ```
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090816236.png" width="666" alt="07_readonly单测结果"/>
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090816236.png" width="666" alt="07_01_readonly单测结果"/>
 
 单测通过。
 
-### 三、逻辑重构
+### 三、代码重构
+
+#### 1. 封装
+
+可以看到`reactive`和`readonly`的`get`比较相似，就可以抽离出一个高阶函数`createGetter`，返回一个`get`函数。
+
+```ts
+function createGetter(isReadonly = false) {
+  return function get(target, key) {
+    const res = Reflect.get(target, key);
+
+    !isReadonly && track(target, key);
+    return res;
+  };
+}
+```
+
+为了保持代码的一致性，再把`set`也抽离出来。
+
+```ts
+function createSetter() {
+  return function set(target, key, value) {
+    const res = Reflect.set(target, key, value);
+
+    trigger(target, key);
+    return res;
+  };
+}
+```
+
+抽离后的代码如下：
+
+```ts
+import { track, trigger } from './effect';
+
+function createGetter(isReadonly = false) {
+  return function get(target, key) {
+    const res = Reflect.get(target, key);
+
+    !isReadonly && track(target, key);
+    return res;
+  };
+}
+
+function createSetter() {
+  return function set(target, key, value) {
+    const res = Reflect.set(target, key, value);
+
+    trigger(target, key);
+    return res;
+  };
+}
+
+export function reactive(raw) {
+  return new Proxy(raw, {
+    get: createGetter(),
+    set: createSetter(),
+  });
+}
+
+export function readonly(raw) {
+  return new Proxy(raw, {
+    get: createGetter(true),
+
+    set(target, key, value) {
+      // ps 此处由于做不一样的操作，就不写成createSetter()了
+      // todo 抛出警告⚠️ 不可以被set
+      return true;
+    },
+  });
+}
+```
+
+抽离完成后，别忘记继续跑一遍全部单测。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211100656520.png" width="666" alt="07_02_第一次封装后的单测结果"/>
+
+---------------------------------------------------------------------------------------
+
+#### 2. 二次封装
+
+其实再仔细观察代码，可以看出两个`new Proxy`的第二个参数有很多相似的地方，这时候我们就可以考虑二次封装了。
+
+功能划分，`reactive.ts`里面只做对对象的代理，而具体的代理操作，我们单独抽离出一个文件进行管理，可能后续还有其他处理的对象代理。
+
+所以，在`reactivity`下建立`baseHandlers.ts`，专门存储用于代理处理函数。
+
+```ts
+// + src/reactivity/baseHandlers.ts
+
+import { track, trigger } from './effect';
+
+function createGetter(isReadonly = false) {
+  return function get(target, key) {
+    const res = Reflect.get(target, key);
+
+    !isReadonly && track(target, key);
+    return res;
+  };
+}
+
+function createSetter() {
+  return function set(target, key, value) {
+    const res = Reflect.set(target, key, value);
+
+    trigger(target, key);
+    return res;
+  };
+}
+
+// * reactive
+export const mutableHandlers = {
+  get: createGetter(),
+  set: createSetter(),
+};
+
+// * readonly
+export const readonlyHandlers = {
+  get: createGetter(true),
+
+  set(target, key, value) {
+    // todo 抛出警告⚠️ 不可以被set
+    return true;
+  },
+};
+```
+
+从`baseHandlers.ts`中导出`mutableHandlers`和`readonlyHandlers`，然后在`reactive.ts`中进行导入即可。
+
+```ts
+import { mutableHandlers, readonlyHandlers } from './baseHandlers';
+
+export function reactive(raw) {
+  return new Proxy(raw, mutableHandlers);
+}
+
+export function readonly(raw) {
+  return new Proxy(raw, readonlyHandlers);
+}
+```
+
+这时候，`reactive.ts`中的代码就很简洁。在这里，我们能看到的是，`reactive`和`readonly`对对象进行了不同的代理操作。
+
+在大部分情况下，我们只关注这个函数实现了什么功能，这个函数内部具体怎么处理，我们并不关心。
+
+如果一定要看具体的代理逻辑，那就去另一个文件中去阅读。

@@ -1,34 +1,9 @@
-import { track, trigger } from './effect';
+import { mutableHandlers, readonlyHandlers } from './baseHandlers';
 
 export function reactive(raw) {
-  return new Proxy(raw, {
-    get(target, key) {
-      const res = Reflect.get(target, key);
-
-      track(target, key);
-      return res;
-    },
-
-    set(target, key, value) {
-      const res = Reflect.set(target, key, value);
-
-      trigger(target, key);
-      return res;
-    },
-  });
+  return new Proxy(raw, mutableHandlers);
 }
 
 export function readonly(raw) {
-  return new Proxy(raw, {
-    get(target, key) {
-      const res = Reflect.get(target, key);
-      
-      return res;
-    },
-
-    set(target, key, value) {
-      // todo 抛出警告⚠️ 不可以被set
-      return true;
-    },
-  });
+  return new Proxy(raw, readonlyHandlers);
 }
