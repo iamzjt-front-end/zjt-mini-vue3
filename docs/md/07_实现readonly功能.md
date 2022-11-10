@@ -192,6 +192,12 @@ export function readonly(raw) {
 
 如果一定要看具体的代理逻辑，那就去另一个文件中去阅读。
 
+继续跑一下单测，确保重构没有问题。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211100804889.png" width="666" alt="07_03_第二次封装后的单测结果"/>
+
+---------------------------------------------------------------------------------------
+
 #### 3. 三次重构（梅开三度）
 
 `reactive`和`readonly`的主要逻辑基本相同，都是对象代理，不具备一个良好的语义性。
@@ -237,5 +243,11 @@ export const readonlyHandlers = {
   },
 };
 ```
+
+这样重构就完成了，暂时看不出什么可以再进行优化的点了。
+
+那最后再次跑一下单测。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211100806238.png" width="666" alt="07_04_第三次封装后的单测结果"/>
 
 ### 四、
