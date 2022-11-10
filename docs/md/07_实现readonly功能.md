@@ -250,4 +250,37 @@ export const readonlyHandlers = {
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211100806238.png" width="666" alt="07_04_第三次封装后的单测结果"/>
 
-### 四、警告单测
+### 四、实现警告
+
+到此为止，还剩最后一个地方需要完善，就是上面的`todo`，`readonly`变量被`set`时，抛出警告。
+
+1. 单元测试
+
+   先来看一下单测。
+
+   ```js
+   it('warn then call set', () => {
+     // console.warn()
+     // mock
+     // ps: jest.fn() 用于创建一个 Mock 函数，可以设置该函数的返回值、监听该函数的调用、改变函数的内部实现等等。通过 jest.fn() 创建的函数有一个特殊的 .mock 属性，该属性保存了每一次调用情况
+     console.warn = jest.fn();
+   
+     const user = readonly({ age: 10 });
+     user.age = 11;
+   
+     expect(console.warn).toBeCalled();
+   });
+   ```
+
+2. 代码实现
+
+   ```ts
+   export const readonlyHandlers = {
+     get: readonlyGet,
+     set(target, key, value) {
+       // ! 抛出警告⚠️ 不可以被set
+       console.warn(`key: ${ key } set value: ${ value } failed, because the target is readonly!`, target);
+       return true;
+     }
+   };
+   ```
