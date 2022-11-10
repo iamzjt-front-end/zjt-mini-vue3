@@ -5,7 +5,7 @@ describe('effect', () => {
   it('happy path', () => {
     // * 首先定义一个响应式对象
     const user = reactive({
-      age: 10,
+      age: 10
     });
 
     // * get -> 收集依赖
@@ -54,7 +54,7 @@ describe('effect', () => {
       () => {
         dummy = obj.foo;
       },
-      { scheduler },
+      { scheduler }
     );
     expect(scheduler).not.toHaveBeenCalled();
     expect(dummy).toBe(1);
@@ -93,8 +93,8 @@ describe('effect', () => {
         dummy = obj.foo;
       },
       {
-        onStop,
-      },
+        onStop
+      }
     );
 
     stop(runner);

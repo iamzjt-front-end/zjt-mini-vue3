@@ -25,7 +25,7 @@ const readonlyGet = createGetter(true);
 // * reactive
 export const mutableHandlers = {
   get,
-  set
+  set,
 };
 
 // * readonly
@@ -35,5 +35,5 @@ export const readonlyHandlers = {
     // ! 抛出警告⚠️ 不可以被set
     console.warn(`key: ${ key } set value: ${ value } failed, because the target is readonly!`, target);
     return true;
-  }
+  },
 };
