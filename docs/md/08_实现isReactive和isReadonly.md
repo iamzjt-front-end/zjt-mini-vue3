@@ -158,3 +158,68 @@ yarn test readonly --silent=true
 ```
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211110651096.png" width="666" alt="08_03_isReadonly单测结果"/>
+
+### 三、代码重构
+
+```ts
+export function isReactive(value) {
+  return !!value['is_reactive'];
+}
+
+export function isReadonly(value) {
+  return !!value['is_readonly'];
+}
+```
+
+这里就是一个优化的点，就像报错信息一样，报错可以用字典来维护起来，这里也是一样，可以用`ts`的`enum`枚举来维护。
+
+```ts
+// src/reactivity/reactive.ts
+
+export const enum ReactiveFlags {
+  IS_REACTIVE = '__v_isReactive',
+  IS_READONLY = '__v_isReadonly'
+}
+
+// + 用到之前标识的地方，相应的进行修改
+export function isReactive(value) {
+  return !!value[ReactiveFlags.IS_REACTIVE];
+}
+
+export function isReadonly(value) {
+  return !!value[ReactiveFlags.IS_READONLY];
+}
+```
+
+```ts
+// src/reactivity/baseHandlers.ts
+
+import { track, trigger } from './effect';
+import { ReactiveFlags } from './reactive';
+
+function createGetter(isReadonly = false) {
+  return function get(target, key) {
+    const res = Reflect.get(target, key);
+
+    // + 改成枚举的方式
+    if (key === ReactiveFlags.IS_REACTIVE) {
+      return !isReadonly;
+    } else if (key === ReactiveFlags.IS_READONLY) {
+      return isReadonly;
+    }
+
+    !isReadonly && track(target, key);
+    return res;
+  };
+}
+```
+
+大概就这么多，重构完以后，依旧完整的跑一遍所有的单测。
+
+```shell
+# --watchAll可以进入watch模式, 下面有很多 usage 可供使用
+# 这样做的好处是, 我们不需要每次都执行 yarn test, 在第一次执行之后, 进程会自动监听测试用例的变化, 如果测试用例代码发生了变化, 会自动执行
+yarn test --watchAll --silent=true
+```
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211110739444.png" width="666" alt="08_04_重构后的单测结果"/>
