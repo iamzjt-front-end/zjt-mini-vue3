@@ -4,6 +4,10 @@ function createGetter(isReadonly = false) {
   return function get(target, key) {
     const res = Reflect.get(target, key);
 
+    if (key === 'is_reactive') {
+      return !isReadonly;
+    }
+
     !isReadonly && track(target, key);
     return res;
   };
@@ -25,7 +29,7 @@ const readonlyGet = createGetter(true);
 // * reactive
 export const mutableHandlers = {
   get,
-  set,
+  set
 };
 
 // * readonly
@@ -35,5 +39,5 @@ export const readonlyHandlers = {
     // ! 抛出警告⚠️ 不可以被set
     console.warn(`key: ${ key } set value: ${ value } failed, because the target is readonly!`, target);
     return true;
-  },
+  }
 };

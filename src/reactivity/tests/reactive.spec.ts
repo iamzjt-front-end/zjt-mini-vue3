@@ -1,4 +1,4 @@
-import { reactive } from '../reactive';
+import { reactive, isReactive } from '../reactive';
 
 describe('reactive', function () {
   it('happy path', function () {
@@ -7,5 +7,8 @@ describe('reactive', function () {
 
     expect(observed).not.toBe(original);
     expect(observed.foo).toBe(original.foo);
+
+    expect(isReactive(observed)).toBe(true);
+    expect(isReactive(original)).toBe(false);
   });
 });
