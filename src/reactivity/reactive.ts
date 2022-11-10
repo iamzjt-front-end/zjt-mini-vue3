@@ -15,3 +15,7 @@ export function readonly(raw) {
 export function isReactive(value) {
   return !!value['is_reactive'];
 }
+
+export function isReadonly(value) {
+  return !!value['is_readonly'];
+}

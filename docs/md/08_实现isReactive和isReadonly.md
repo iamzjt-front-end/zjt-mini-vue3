@@ -8,6 +8,7 @@
 
 ```js
 // src/reactivity/tests/reactive.spec.ts
+
 import { reactive, isReactive } from '../reactive';
 
 describe('reactive', function () {
@@ -92,7 +93,68 @@ yarn test reactive
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211110626780.png" width="666" alt="08_02_isReactive实现单测结果"/>
 
-#### 3. 代码重构
-
-
 ### 二、实现isReadonly
+
+实现了`isReactive`之后，`isReadonly`就很类似了。
+
+#### 1. 单元测试
+
+```js
+// src/reactivity/tests/readonly.spec.ts
+
+it('happy path', () => {
+  const original = { foo: 1, bar: { baz: 2 } };
+  const wrapped = readonly(original);
+
+  expect(wrapped).not.toBe(original);
+  expect(wrapped.foo).toBe(1);
+
+  // ! 不能被set
+  wrapped.foo = 2;
+  expect(wrapped.foo).toBe(1);
+
+  // + isReadonly
+  expect(isReadonly(wrapped)).toBe(true);
+  expect(isReadonly(original)).toBe(false);
+});
+```
+
+#### 2. 代码实现
+
+同上，即可。
+
+```ts
+// src/reactivity/reactive.ts
+
+export function isReadonly(value) {
+  return !!value['is_readonly'];
+}
+```
+
+```ts
+// src/reactivity/baseHandlers.ts
+
+function createGetter(isReadonly = false) {
+  return function get(target, key) {
+    const res = Reflect.get(target, key);
+
+    if (key === 'is_reactive') {
+      return !isReadonly;
+    } else if (key === 'is_readonly') { // + is_readonly
+      return isReadonly;
+    }
+
+    !isReadonly && track(target, key);
+    return res;
+  };
+}
+```
+
+走一下`readonly`的单测。
+
+```shell
+# --silent=true 是禁用控制台打印，静默测试，主要是因为之前的set会触发console.warn
+yarn test readonly --silent=true
+```
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211110651096.png" width="666" alt="08_03_isReadonly单测结果"/>
