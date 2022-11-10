@@ -32,7 +32,8 @@ export const mutableHandlers = {
 export const readonlyHandlers = {
   get: readonlyGet,
   set(target, key, value) {
-    // todo 抛出警告⚠️ 不可以被set
+    // ! 抛出警告⚠️ 不可以被set
+    console.warn(`key: ${ key } set value: ${ value } failed, because the target is readonly!`, target);
     return true;
   },
 };
