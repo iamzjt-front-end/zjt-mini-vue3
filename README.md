@@ -21,4 +21,8 @@
 
 [07_实现readonly功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/07_实现readonly功能.md)
 
+[08_实现isReactive和isReadonly](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/08_实现isReactive和isReadonly.md)
+
+[09_优化stop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/09_优化stop功能.md)
+
 待续...
