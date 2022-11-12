@@ -1,9 +1,12 @@
 import { extend } from '../shared';
 
+let activeEffect;
+let shouldTrack = false;
+
 class ReactiveEffect {
   private _fn: any;
   deps = [];
-  active = true;
+  active = true; // 是否已经 stop 过，true 为 未stop
   onStop?: () => void;
 
   // 在构造函数的参数上使用public等同于创建了同名的成员变量
@@ -12,8 +15,19 @@ class ReactiveEffect {
   }
 
   run() {
+    // 已经被stop，那就直接返回结果
+    if (!this.active) {
+      return this._fn();
+    }
+    // 未stop，继续往下走
+    // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
+    shouldTrack = true;
     activeEffect = this;
-    return this._fn();
+    const result = this._fn();
+    // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集，所以调用完以后就关上开关，不允许再次收集依赖
+    shouldTrack = false;
+
+    return result;
   }
 
   stop() {
@@ -41,6 +55,9 @@ const targetMap = new WeakMap();
 
 // * target -> key -> dep
 export function track(target, key) {
+  if (!activeEffect) return;
+  if (!shouldTrack) return;
+
   // * depsMap: key -> dep
   let depsMap = targetMap.get(target);
   if (!depsMap) {
@@ -52,8 +69,6 @@ export function track(target, key) {
   if (!dep) {
     depsMap.set(key, (dep = new Set()));
   }
-
-  if (!activeEffect) return;
 
   dep.add(activeEffect);
   activeEffect.deps.push(dep);
@@ -73,8 +88,6 @@ export function trigger(target, key) {
     }
   }
 }
-
-let activeEffect;
 
 export function effect(fn, options: any = {}) {
   const _effect = new ReactiveEffect(fn, options.scheduler);

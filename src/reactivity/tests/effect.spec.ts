@@ -73,6 +73,8 @@ describe('effect', () => {
     let dummy;
     const obj = reactive({ prop: 1 });
     const runner = effect(() => {
+      // todo
+      // obj.prop++;
       dummy = obj.prop;
     });
 
@@ -81,11 +83,16 @@ describe('effect', () => {
 
     stop(runner);
     // obj.prop = 3;
+    // get set
     obj.prop++;
     expect(dummy).toBe(2);
 
     runner();
     expect(dummy).toBe(3);
+
+    // todo
+    obj.prop++;
+    expect(dummy).toBe(4);
   });
 
   it('onStop', () => {
