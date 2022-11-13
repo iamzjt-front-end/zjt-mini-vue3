@@ -11,8 +11,6 @@ describe('effect', () => {
     // * get -> 收集依赖
     let nextAge;
     effect(() => {
-      // todo
-      // user.age++;
       nextAge = user.age + 1;
     });
 
@@ -22,6 +20,12 @@ describe('effect', () => {
     // * set -> 触发依赖
     user.age++;
     expect(nextAge).toBe(12);
+  });
+
+  it('reactive params type', () => {
+    // 传入的不是一个对象
+    const foo = reactive(1);
+    expect(foo).toBe(1);
   });
 
   it('runner', () => {

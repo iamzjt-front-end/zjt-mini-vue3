@@ -6,6 +6,10 @@ export const enum ReactiveFlags {
 }
 
 function createActiveObject(raw: any, baseHandlers) {
+  if (!isObject(raw)) {
+    console.log(`value cannot be made reactive: ${ String(raw) }`);
+    return raw;
+  }
   return new Proxy(raw, baseHandlers);
 }
 
