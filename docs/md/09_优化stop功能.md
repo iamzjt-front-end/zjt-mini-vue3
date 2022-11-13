@@ -149,7 +149,7 @@ class ReactiveEffect {
     shouldTrack = true;
     activeEffect = this;
     const result = this._fn();
-    // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集，所以调用完以后就关上开关，不允许再次收集依赖
+    // 由于运行原始依赖的时候，必然会触发代理对象的get操作，会重复进行依赖收集，所以调用完以后就关上开关，不允许再次收集依赖
     shouldTrack = false;
 
     return result;
@@ -161,6 +161,7 @@ class ReactiveEffect {
 }
 ```
 
+[//]: # (todo 分析runner以后还是无响应式的情况)
 
 而`run`被调用只有三种情况：
 

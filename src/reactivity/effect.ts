@@ -81,7 +81,7 @@ export function trigger(target, key) {
 
   for (const effect of dep) {
     if (effect.scheduler) {
-      // ! effect._fn 为了让scheduler能拿到原始依赖
+      // ps: effect._fn 为了让scheduler能拿到原始依赖
       effect.scheduler(effect._fn);
     } else {
       effect.run();
