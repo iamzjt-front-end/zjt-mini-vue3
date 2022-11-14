@@ -18,5 +18,36 @@
 
 ### 二、reactive相关考虑完善
 
+#### （一）参数类型问题
+
+1. 众所周知，`proxy`不能代理基本数据类型，所以遇到基本数据类型，我们应该直接返回原数据，并给一个提醒。
+
+   那第一步，就得判断是不是对象，而且这应该是一个工具函数，所以，封装进`shared`。
+
+   ```ts
+   // src/shared/index.ts
+   
+   export const isObject = (val) => {
+     return val !== null && typeof val === 'object';
+   };
+   ```
+
+2. 在`reactive`函数进行判断。
+
+   ```ts
+   // src/reactivity/reactive.ts
+   
+   function createReactiveObject(raw: any, baseHandlers) {
+     // + 不是对象，警告，返回原数据
+     if (!isObject(raw)) {
+       console.log(`value cannot be made reactive: ${ String(raw) }`);
+       return raw;
+     }
+     return new Proxy(raw, baseHandlers);
+   }
+   ```
+
+#### （二）多层嵌套问题
+
 
 ### 三、effect相关考虑完善

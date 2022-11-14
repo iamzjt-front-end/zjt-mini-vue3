@@ -206,16 +206,16 @@ export function readonly(raw) {
 // + src/reactivity/reactive.ts
 import { mutableHandlers, readonlyHandlers } from './baseHandlers';
 
-function createActiveObject(raw: any, baseHandlers) {
+function createReactiveObject(raw: any, baseHandlers) {
   return new Proxy(raw, baseHandlers);
 }
 
 export function reactive(raw) {
-  return createActiveObject(raw, mutableHandlers);
+  return createReactiveObject(raw, mutableHandlers);
 }
 
 export function readonly(raw) {
-  return createActiveObject(raw, readonlyHandlers);
+  return createReactiveObject(raw, readonlyHandlers);
 }
 ```
 

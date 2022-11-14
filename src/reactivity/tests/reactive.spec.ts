@@ -11,4 +11,13 @@ describe('reactive', function () {
     expect(isReactive(observed)).toBe(true);
     expect(isReactive(original)).toBe(false);
   });
+
+  it('reactive params type must be object', () => {
+    // 传入的不是一个对象
+    const original = reactive(1);
+
+    console.warn = jest.fn();
+    expect(console.warn).toBeCalled();
+    expect(original).toBe(1);
+  });
 });

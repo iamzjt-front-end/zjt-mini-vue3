@@ -1,4 +1,4 @@
-import { reactive } from '../reactive';
+import { reactive, readonly } from '../reactive';
 import { effect, stop } from '../effect';
 
 describe('effect', () => {
@@ -20,12 +20,6 @@ describe('effect', () => {
     // * set -> 触发依赖
     user.age++;
     expect(nextAge).toBe(12);
-  });
-
-  it('reactive params type', () => {
-    // 传入的不是一个对象
-    const foo = reactive(1);
-    expect(foo).toBe(1);
   });
 
   it('runner', () => {
