@@ -54,7 +54,10 @@ function createGetter(isReadonly = false) {
       return !isReadonly;
     }
 
-    !isReadonly && track(target, key);
+    if (!isReadonly) {
+      track(target, key);
+    }
+
     return res;
   };
 }
@@ -144,7 +147,10 @@ function createGetter(isReadonly = false) {
       return isReadonly;
     }
 
-    !isReadonly && track(target, key);
+    if (!isReadonly) {
+      track(target, key);
+    }
+
     return res;
   };
 }
@@ -208,7 +214,10 @@ function createGetter(isReadonly = false) {
       return isReadonly;
     }
 
-    !isReadonly && track(target, key);
+    if (!isReadonly) {
+      track(target, key);
+    }
+
     return res;
   };
 }

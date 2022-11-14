@@ -56,7 +56,10 @@ function createGetter(isReadonly = false) {
   return function get(target, key) {
     const res = Reflect.get(target, key);
 
-    !isReadonly && track(target, key);
+    if (!isReadonly) {
+      track(target, key);
+    }
+
     return res;
   };
 }
@@ -84,7 +87,10 @@ function createGetter(isReadonly = false) {
   return function get(target, key) {
     const res = Reflect.get(target, key);
 
-    !isReadonly && track(target, key);
+    if (!isReadonly) {
+      track(target, key);
+    }
+
     return res;
   };
 }
@@ -141,7 +147,10 @@ function createGetter(isReadonly = false) {
   return function get(target, key) {
     const res = Reflect.get(target, key);
 
-    !isReadonly && track(target, key);
+    if (!isReadonly) {
+      track(target, key);
+    }
+
     return res;
   };
 }
