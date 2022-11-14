@@ -1,5 +1,5 @@
 import { track, trigger } from './effect';
-import { ReactiveFlags, reactive } from './reactive';
+import { ReactiveFlags, reactive, readonly } from './reactive';
 import { isObject } from '../shared';
 
 function createGetter(isReadonly = false) {
@@ -13,13 +13,13 @@ function createGetter(isReadonly = false) {
     }
 
     if (isObject(res)) {
-      return reactive(res);
+      return isReadonly ? readonly(res) : reactive(res);
     }
 
     if (!isReadonly) {
       track(target, key);
     }
-    
+
     return res;
   };
 }

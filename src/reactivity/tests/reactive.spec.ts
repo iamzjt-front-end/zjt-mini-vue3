@@ -21,7 +21,7 @@ describe('reactive', function () {
     expect(original).toBe(1);
   });
 
-  test('nested reactive', () => {
+  it('nested reactive', () => {
     const original = {
       nested: {
         foo: 1
