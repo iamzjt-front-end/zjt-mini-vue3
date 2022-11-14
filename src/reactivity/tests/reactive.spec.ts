@@ -16,7 +16,7 @@ describe('reactive', function () {
     console.warn = jest.fn();
     // 传入的不是一个对象
     const original = reactive(1);
-    
+
     expect(console.warn).toBeCalled();
     expect(original).toBe(1);
   });
