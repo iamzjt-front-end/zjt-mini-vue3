@@ -43,11 +43,13 @@ class ReactiveEffect {
   }
 }
 
-function cleanupEffect(effect: any) {
+function cleanupEffect(effect: ReactiveEffect) {
   effect.deps.forEach((dep: any) => {
     dep.delete(effect);
   });
+  effect.deps.length = 0;
 }
+
 
 // * ============================== ↓ 依赖收集 track ↓ ============================== * //
 // * targetMap: target -> key
@@ -55,8 +57,7 @@ const targetMap = new WeakMap();
 
 // * target -> key -> dep
 export function track(target, key) {
-  if (!activeEffect) return;
-  if (!shouldTrack) return;
+  if (!isTracking()) return;
 
   // * depsMap: key -> dep
   let depsMap = targetMap.get(target);
@@ -70,9 +71,16 @@ export function track(target, key) {
     depsMap.set(key, (dep = new Set()));
   }
 
+  if (dep.has(activeEffect)) return;
+  
   dep.add(activeEffect);
   activeEffect.deps.push(dep);
 }
+
+function isTracking() {
+  return shouldTrack && activeEffect !== undefined;
+}
+
 
 // * ============================== ↓ 触发依赖 trigger ↓ ============================== * //
 export function trigger(target, key) {
