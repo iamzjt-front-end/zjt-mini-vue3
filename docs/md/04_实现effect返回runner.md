@@ -13,7 +13,7 @@
 
 单测用例如下：
 
-```js
+```ts
 it('runner', function () {
   // effect(fn) -> return runner -> runner() == fn() -> return
   let foo = 10;

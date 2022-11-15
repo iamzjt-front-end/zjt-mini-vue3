@@ -4,7 +4,7 @@
 
 1. reactive
 
-   ```js
+   ```ts
    // src/reactivity/tests/reactive.spec.ts
    
    it('nested reactive', () => {
@@ -23,7 +23,7 @@
 
 2. readonly
 
-   ```js
+   ```ts
    it('nested readonly', () => {
      const original = { foo: 1, bar: { baz: 2 } };
      const wrapped = readonly(original);

@@ -43,7 +43,7 @@ obj.foo++;
 
 首先还是藉由单测来梳理一下功能，这是直接从`vue3`源码中粘贴过来对`scheduler的`单测，里面很详细的描述了`scheduler`的功能。
 
-```js
+```ts
 it('scheduler', () => {
   let dummy;
   let run: any;

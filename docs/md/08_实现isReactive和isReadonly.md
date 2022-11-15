@@ -6,7 +6,7 @@
 
 #### 1. 单元测试
 
-```js
+```ts
 // src/reactivity/tests/reactive.spec.ts
 
 import { reactive, isReactive } from '../reactive';
@@ -102,7 +102,7 @@ yarn test reactive
 
 #### 1. 单元测试
 
-```js
+```ts
 // src/reactivity/tests/readonly.spec.ts
 
 it('happy path', () => {

@@ -2,7 +2,7 @@
 
 ### 一、单元测试
 
-```js
+```ts
 describe('readonly', () => {
   it('happy path', () => {
     const original = { foo: 1, bar: { baz: 2 } };
@@ -22,7 +22,7 @@ describe('readonly', () => {
 
 ### 二、代码实现
 
-```js
+```ts
 // src/reactivity/reactive.ts
 
 export function readonly(raw) {
@@ -267,7 +267,7 @@ export const readonlyHandlers = {
 
    先来看一下单测。
 
-   ```js
+   ```ts
    it('should call console.warn when set', () => {
      // console.warn()
      // mock

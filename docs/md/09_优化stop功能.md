@@ -63,7 +63,7 @@ it('stop', () => {
 
 抓到元凶了！
 
-```js
+```ts
 obj.prop = 3;
 obj.prop++;
 ```

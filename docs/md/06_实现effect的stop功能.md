@@ -4,7 +4,7 @@
 
 #### 1. 单元测试
 
-```js
+```ts
 it('stop', () => {
   let dummy;
   const obj = reactive({ prop: 1 });
@@ -92,7 +92,7 @@ export function stop(runner) {
 答：此时，我们并不知道当前`effect`存在于哪些`dep`中，所以考虑从`track`时入手，在`dep`收集`activeEffect`后，让`activeEffect`
 反向收集`dep`，这样，就知道了当前`effect`所在的`dep`，接下来删掉就行了。
 
-```js
+```ts
 dep.add(activeEffect);
 activeEffect.deps.push(dep);
 ```
@@ -179,7 +179,7 @@ class ReactiveEffect {
 
 #### 1. 单元测试
 
-```js
+```ts
 it('onStop', () => {
   const obj = reactive({ prop: 1 });
   const onStop = jest.fn();
@@ -260,14 +260,14 @@ export function effect(fn, options: any = {}) {
 
 考虑到后续`options`可能还会传入很多其他选项，所以进行一下重构
 
-```js
+```ts
 Object.assign(_effect, options);
 ```
 
 感觉语义化稍弱，所以，就抽离出一个`extend`方法，又考虑到这个方法可以抽离成一个`工具函数`，所以在`src`下建立`shared`
 目录，然后建立`index.ts`，专门放置各个模块通用的工具函数。
 
-```js
+```ts
 // src/shared/index.ts
 
 export const extend = Object.assign;
@@ -298,7 +298,7 @@ yarn test
 不难看出`observed.foo`也是触发了`get`操作，也就是触发了`track`去收集依赖，而此时并没有`effect`
 包裹着的依赖存在，所以`run`不会执行，也就没有`activeEffect`，所以此时我们并不应该去收集依赖，所以增加一个判断。
 
-```js
+```ts
 if (!activeEffect) return;
 
 dep.add(activeEffect);
