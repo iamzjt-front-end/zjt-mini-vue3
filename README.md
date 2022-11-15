@@ -29,4 +29,6 @@
 
 [10_实现reactive和readonly的嵌套对象转换功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/10_实现reactive和readonly的嵌套对象转换功能.md)
 
+[11_实现shallowReadonly功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/11_实现shallowReadonly功能.md)
+
 待续...
