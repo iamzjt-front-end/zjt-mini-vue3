@@ -1,4 +1,4 @@
-import { readonly, isReadonly } from '../reactive';
+import { readonly, isReadonly, isProxy } from '../reactive';
 
 describe('readonly', () => {
   it('happy path', () => {
@@ -14,6 +14,7 @@ describe('readonly', () => {
 
     expect(isReadonly(wrapped)).toBe(true);
     expect(isReadonly(original)).toBe(false);
+    expect(isProxy(wrapped)).toBe(true);
   });
 
   it('nested readonly', () => {
@@ -23,7 +24,7 @@ describe('readonly', () => {
     expect(isReadonly(wrapped)).toBe(true);
     expect(isReadonly(wrapped.bar)).toBe(true);
   });
-  
+
   it('should call console.warn when set', () => {
     // console.warn()
     // mock

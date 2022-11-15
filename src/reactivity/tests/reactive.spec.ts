@@ -1,4 +1,4 @@
-import { reactive, isReactive } from '../reactive';
+import { reactive, isReactive, isProxy } from '../reactive';
 
 describe('reactive', function () {
   it('happy path', function () {
@@ -10,6 +10,7 @@ describe('reactive', function () {
 
     expect(isReactive(observed)).toBe(true);
     expect(isReactive(original)).toBe(false);
+    expect(isProxy(observed)).toBe(true);
   });
 
   it('reactive params type must be object', () => {
