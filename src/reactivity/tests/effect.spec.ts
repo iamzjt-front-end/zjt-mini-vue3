@@ -69,7 +69,7 @@ describe('effect', () => {
     expect(dummy).toBe(2);
   });
 
-  it.skip('stop', () => {
+  it('stop', () => {
     let dummy;
     const obj = reactive({ prop: 1 });
     const runner = effect(() => {
@@ -84,7 +84,7 @@ describe('effect', () => {
     stop(runner);
     obj.prop = 3;
     // get set
-    // todo ++的情况依旧会触发
+    // todo ++的情况依旧会触发数据的变化，并未停止响应式
     // obj.prop++;
     expect(dummy).toBe(2);
 

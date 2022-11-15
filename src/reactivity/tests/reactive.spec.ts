@@ -23,9 +23,7 @@ describe('reactive', function () {
 
   it('nested reactive', () => {
     const original = {
-      nested: {
-        foo: 1
-      },
+      nested: { foo: 1 },
       array: [{ bar: 2 }]
     };
 
