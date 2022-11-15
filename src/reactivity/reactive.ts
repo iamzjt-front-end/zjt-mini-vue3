@@ -22,6 +22,10 @@ export function readonly(raw) {
   return createReactiveObject(raw, readonlyHandlers);
 }
 
+export function shallowReadonly(raw) {
+  return createReactiveObject(raw, shallowReadonlyHandlers);
+}
+
 export function isReactive(value) {
   return !!value[ReactiveFlags.IS_REACTIVE];
 }
