@@ -1,4 +1,4 @@
-class RefImpl<T> {
+class RefImpl {
   private _value: any;
 
   constructor(value: any) {
