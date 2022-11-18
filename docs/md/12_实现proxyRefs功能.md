@@ -15,6 +15,7 @@ it('isRef', function () {
 
   expect(isRef(a)).toBe(true);
   expect(isRef(1)).toBe(false);
+  
   expect(isRef(user)).toBe(false);
 });
 ```
