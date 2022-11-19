@@ -40,5 +40,5 @@ export function isRef(ref) {
 }
 
 export function unRef(ref) {
-  return !!ref?.__v_isRef ? ref.value : ref;
+  return isRef(ref) ? ref.value : ref;
 }
