@@ -57,8 +57,39 @@ export function isRef(ref) {
 }
 ```
 
-[//]: # (todo 单测截图)
+单测也是通过。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211201611107.png" width="666" alt="13_01_isRef单测结果"/>
 
 ---------------------------------------------------------------------------------------
 
 ### 二、实现unRef
+
+`unRef`: 如果参数是一个`ref`则返回它的`value`，否则返回参数本身。
+
+#### （一）单元测试
+
+```ts
+it('unRef', function () {
+  const a = ref(1);
+
+  expect(unRef(a)).toBe(1);
+  expect(unRef(1)).toBe(1);
+});
+```
+
+可以看到单测也比较简单，我们只需要根据是不是`ref`，然后返回`.value`还是数据本身即可，那就可以复用上面的`isRef`。
+
+#### （二）代码实现
+
+```ts
+// src/reactivity/ref.ts
+
+export function unRef(ref) {
+  return isRef(ref) ? ref.value : ref;
+}
+```
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211201624580.png" width="666" alt="13_02_unRef单测结果"/>
+
+单测也全部通过了。😋
