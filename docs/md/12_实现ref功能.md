@@ -51,7 +51,11 @@ export function ref(value) {
 }
 ```
 
+我们在`class`顶层定义一个`_value`来存储传进来的`value`，然后后续操作这个`_value`就够了，可以看到`happy path`的实现是比较简单的。
+
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211170649496.png" width="666" alt="12_01_ref happy path单测"/>
+
+---------------------------------------------------------------------------------------
 
 ### 三、完善逻辑 v2
 
@@ -77,15 +81,44 @@ it('should be reactive', () => {
   expect(calls).toBe(2);
   expect(dummy).toBe(2);
   // + 设置同样的value不应该再次触发更新
-  a.value = 2;
-  expect(calls).toBe(2);
+  // a.value = 2;
+  // expect(calls).toBe(2);
 });
 ```
 
+先运行一下单测，看看哪里会出问题，然后针对性的去结局问题。
+
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211180745600.png" width="888" alt="12_02_用例2单测失败"/>
 
-[//]: # (todo 分析)
+可以看到第二个用例测试失败，我们期望`calls`为`2`，实际值为`1`，说明`effect`没有调用第二次，也就是当`a`的值发生变化后，依赖没有被重新触发。这很容易理解，因为我们根本就没去收集依赖。
 
+那接下来，我们就来完善这部分内容？其实也不难，回去看`effect`就能知道，我们已经做过相关的内容了。只需要抽离封装部分代码，然后复用即可。
+
+```ts
+// src/reactivity/effect.ts
+
+// + 抽离dep的收集逻辑
+export function trackEffects(dep) {
+  if (dep.has(activeEffect)) return;
+
+  dep.add(activeEffect);
+  activeEffect.deps.push(dep);
+}
+
+// + 抽离dep的触发逻辑
+export function triggerEffects(dep) {
+  for (const effect of dep) {
+    if (effect.scheduler) {
+      // ps: effect._fn 为了让scheduler能拿到原始依赖
+      effect.scheduler(effect._fn);
+    } else {
+      effect.run();
+    }
+  }
+}
+```
+
+再回到`ref.ts`，将`effect`中抽离的`trackEffects`和`triggerEffects`集成进来。
 
 ```ts
 // src/reactivity/ref.ts
@@ -117,9 +150,20 @@ export function ref(value) {
 }
 ```
 
+再跑一遍单测。
+
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211180821267.png" width="888" alt="12_03_依赖收集后happy path单测失败"/>
 
-[//]: # (todo 分析)
+白给，用例1出现了错误，`activeEffect`没了，是`undefined`。
+
+分析一下，大概就是两个问题：
+
+1. 为什么`activeEffect`会是`undefined`？
+
+   `activeEffect`是在`run`的时候去赋值的，也就是必须要有相关的`effect`。在第一个测试用例中，可以看出我们并没有相关的依赖，所以也就不存在依赖收集的情况。
+
+2. 该怎么解决这个问题？
+   那这么说，我们此时并不需要去收集依赖。实际上，我们之前的`isTracking`就是用来判断，是否应该收集依赖。加上即可。
 
 ```ts
 if (isTracking()) {
@@ -130,9 +174,34 @@ return this._value;
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211180826227.png" width="666" alt="12_04_依赖收集后单测结果"/>
 
-放开下面两行，继续完善。
+可以看到，用例1通过了。
+
+那我们继续放开下面两行，继续完善用例2最后的逻辑。那还是老样子，先跑一下单测，确定一下问题所在。
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211180829757.png" width="888" alt="12_05_设置同样value继续触发单测结果"/>
+
+依旧很轻松可以看出，设置同样的值，`calls`加一，意思是`effect`还是被触发了一遍，这跟我们预想的并不一致。
+
+那我们就需要在`triggerEffects`前判断，新设置的值是否有变化。
+
+```ts
+if (Object.is(newVal, this._value)) {
+  this._value = newVal;
+  triggerEffects(this.dep);
+}
+```
+
+可能后续会经常用到这类函数，所以我们考虑封装一下进`shared`里面。
+
+```ts
+// src/shared/index.ts
+
+export const hasChanged = (val, newVal) => {
+  return !Object.is(val, newVal);
+};
+```
+
+那继续回去用起来。
 
 ```ts
 if (hasChanged(newVal, this._value)) {
@@ -141,7 +210,13 @@ if (hasChanged(newVal, this._value)) {
 }
 ```
 
+逻辑差不多完善，跑一下单测。
+
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211180832626.png" width="666" alt="12_06_前2用例单测通过"/>
+
+通过，美滋滋。
+
+---------------------------------------------------------------------------------------
 
 ### 四、完善逻辑 v3
 
@@ -191,3 +266,5 @@ class RefImpl {
 ```
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211180833819.png" width="666" alt="12_07_单测全部通过"/>
+
+至此，三个单元测试全部通过，`ref`的基本实现也已经完成，喝彩！！！
