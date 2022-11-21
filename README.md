@@ -35,4 +35,8 @@
 
 [13_实现isRef和unRef功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/13_实现isRef和unRef功能)
 
+[14_实现proxyRefs功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/14_实现proxyRefs功能)
+
+[15_实现computed计算属性](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/15_实现computed计算属性)
+
 待续...
