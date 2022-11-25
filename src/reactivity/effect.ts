@@ -3,7 +3,7 @@ import { extend } from '../shared';
 let activeEffect;
 let shouldTrack = false;
 
-class ReactiveEffect {
+export class ReactiveEffect {
   private _fn: any;
   deps = [];
   active = true; // 是否已经 stop 过，true 为 未stop
