@@ -228,11 +228,13 @@ class ComputedRefImpl {
 
 重新报错也是在预期内，因为当依赖值发生变化，会重新触发依赖，就会重新调用`effect.run()`。
 
-此时，一方面，我们并不需要实时触发依赖；
+此时，一方面，我们并不需要实时触发依赖，也不需要去调用`run`，只有在`computed`的`get`被触发的时候，也就是需要重新计算的时候`run()`即可。
 
-另一方面，我们也需要在依赖值发生时，将`_dirty`的值重新初始化`true`，以便于可以在需要是进行重新计算。
+另一方面，我们也需要将`_dirty`重新初始化为`true`，以便于下次需要时可以重新计算。
 
 基于上述需要，`scheduler`此时站出来了。
+
+因为当有`scheduler`时，`trigger`的时候，就会触发`scheduler`，而`scheduler`的逻辑，是可以让我们自定义的，那么问题就迎刃而解了。
 
 ```ts
 this._effect = new ReactiveEffect(getter, () => {
