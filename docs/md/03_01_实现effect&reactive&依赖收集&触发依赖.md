@@ -2,7 +2,12 @@
 
 ### 一、reactivity happy path
 
-那我们先来编写第一个测试案例，删掉之前的`index.spec.ts`，建立`effect.spec.ts`，实现`reactivity`的`happy path`(核心逻辑)。
+首先我们知道`reactivity`的`happy path`（核心逻辑）就是: 通过`reactive`定义响应式变量，然后通过`effect`
+去收集响应式变量的依赖，然后实现依赖的自动收集和自动触发。
+
+那我们先来编写第一个测试案例，通过单测来带大家看一看功能需求。
+
+首先删掉之前的`index.spec.ts`，建立`effect.spec.ts`，实现`reactivity`的`happy path`。
 
 ```ts
 describe('effect', function () {
@@ -49,7 +54,12 @@ describe('reactive', function () {
 });
 ```
 
-接着建立`reactive.ts`，实现核心逻辑。
+这个单测需要我们实现的功能主要有两点:
+
+1. 响应式对象`observed`和原始对象`original`不全等；
+2. `observed`也能取到`foo`属性的值，并且与`original`一致。
+
+那带着这些需求，我们接着建立`reactive.ts`，实现一下`reactive`的这个最核心的逻辑。
 
 ```ts
 export function reactive(raw) {
@@ -72,7 +82,9 @@ export function reactive(raw) {
 }
 ```
 
-至此，`reactive`的`happy path`实现完毕，至于如何进行`依赖收集`和`触发依赖`，我们放到后面再去慢慢考虑。那现在，先来看一下单测有没有通过。
+至此，`reactive`的`happy path`实现完毕，至于如何进行`依赖收集`和`触发依赖`，我们放到后面再去慢慢考虑。
+
+那现在，先来看一下单测有没有通过。
 
 ```shell
 yarn test reactive
@@ -80,7 +92,8 @@ yarn test reactive
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050559517.png" width="666" alt="03_01_reactive核心逻辑单测"/>
 
-测试通过，那么接下来，我们继续完善`reactive`的逻辑代码。  
+测试通过，那么接下来，我们继续完善`reactive`的逻辑代码。
+
 接着，再去`reactive.spec.ts`和`effect.spec.ts`中引入`reactive`。
 
 ```ts
@@ -93,8 +106,9 @@ import { reactive } from '../reactive';
 
 ### 三、effect happy path
 
-那只要再把`effect`完善，那`reactivity`的`happy path`的单测就不会报错了，那么，现在，咱就去完善`effect`。  
-建立`effect.ts`文件，并完善基础逻辑。
+那只要再把`effect`完善，那`reactivity`的`happy path`的单测就不会报错了。
+
+那么，现在，咱就去完善`effect`。建立`effect.ts`文件，并完善基础逻辑。
 
 ```ts
 class ReactiveEffect {
@@ -116,8 +130,21 @@ export function effect(fn) {
 }
 ```
 
-此处封装了`ReactiveEffect`类，是因为`effect`方法接收一个函数作为参数，需要将其保存，并执行一次；  
-以后还会扩展出更多的功能，所以将其封装为一个`ReactiveEffect`类进行维护。
+可以注意到，此处我们封装了`ReactiveEffect`类。是因为我们需要对传进来的依赖进行不同的操作，并且以后还会扩展出更多的功能，所以将其封装也是为了日后更好地维护。
+
+> 此处多说两句：
+>
+> 封装概念通常由两部分组成，封装数据和封装实现，也就是：
+>
+> 1. 相关的数据（用于存储属性）
+> 2. 基于这些数据所能做的事（所能调用的方法）；
+>
+> 封装的目的是将信息隐藏，即属性与方法的可见性。
+>
+>
+从《设计模式》的角度出发，封装在更重要的层面体现为封装变化。通过封装变化的方式，把系统中稳定不变的部分和容易变化的部分隔离开来，在系统的演变过程中，我们只需要替换那些容易变化的部分，如果这些部分是已经封装好的，替换起来也相对容易。这可以最大程度地保证程序的稳定性和可扩展性。
+
+继续回归正题。💬
 
 此时，去掉`effect` `happy path`中`it`的`skip`，然后注释掉`set -> 触发依赖`后的两行，先不看`update`的过程，运行一下测试。
 
@@ -131,7 +158,7 @@ yarn test
 
 ### 四、重中之重 依赖收集和触发依赖
 
-那现在的难点就来了，如何让 **`user.age++`** 的时候，`nextAge`也自动更新。  
+那现在的难点就来了，如何让`user.age++`的时候，`nextAge`也自动更新。  
 这其实就已经到了响应式系统的核心逻辑了，也就是 **`依赖收集`** 和 **`触发依赖`**，也就是`track`和`trigger`的实现。
 
 #### 1. 依赖收集 track
@@ -155,7 +182,7 @@ export function track(target, key) {
 }
 ```
 
-从上可以看出，依赖对应的结构应该如下：
+从上可以看出，依赖对应的结构🌲应该如下：
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051239948.png" width="388" alt="03_03_依赖树形关系"/>
 
@@ -227,8 +254,8 @@ export function trigger(target, key) {
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051504999.png" width="666" alt="03_05_effect、reactive全流程单测"/>
 
-可以，全部通过，美滋滋啊~
+可以，全部通过，美滋滋啊~ 🍉
 
-那么至此，我们就实现了 effect & reactive & 依赖收集 & 触发依赖 的happy path。
+那么至此，我们就实现了 **`effect`** & **`reactive`** & **`依赖收集`** & **`触发依赖`** 的`happy path`。
 
-**ps:** 当然这只是最简形态的reactive，就比如：分支切换（三元表达式）、嵌套effect，我们都完全还没有考虑进去。
+**`ps:`** 当然这只是最简形态的`reactive`，就比如: 分支切换（三元表达式）、嵌套effect、++的情况，我们都完全还没有考虑进去，下一篇我们将来完善对这些情况的处理。
