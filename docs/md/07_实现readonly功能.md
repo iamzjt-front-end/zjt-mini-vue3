@@ -299,3 +299,5 @@ export const readonlyHandlers = {
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211110527968.png" width="999" alt="07_05_打印警告单测结果"/>
 
 可以看到，警告也打印了，所有的测试用例也都通过了。
+
+[//]: # (todo reactive中嵌套readonly情况考虑，需要加个单测)
