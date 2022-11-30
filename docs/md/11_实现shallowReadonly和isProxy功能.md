@@ -107,7 +107,7 @@ it('should NOT make nested properties readonly', () => {
 
 ### 二、实现isProxy
 
-这里贴上官网对`isReadonly`的描述。
+这里贴上官网对`isProxy`的描述。
 
 > Checks if an object is a proxy created by reactive or readonly
 
