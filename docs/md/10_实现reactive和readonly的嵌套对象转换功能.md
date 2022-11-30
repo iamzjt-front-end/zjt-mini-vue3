@@ -73,3 +73,5 @@ function createGetter(isReadonly = false) {
 
 **ps:** 其实这里需要注意的一点就是，在`get`中处理嵌套转换，我们只有在用到这个`子对象`的时候，才会将这个`子对象`
 转换成响应时代理，避免了不必要的性能浪费。对比`vue2`的递归遍历`defineProperty`来说，也是一个优化的地方。
+
+[//]: # (todo readonly嵌套reactive的情况，也需要考虑并完善之前的代码)

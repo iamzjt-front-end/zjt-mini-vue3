@@ -300,4 +300,4 @@ export const readonlyHandlers = {
 
 可以看到，警告也打印了，所有的测试用例也都通过了。
 
-[//]: # (todo reactive中嵌套readonly情况考虑，需要加个单测)
+[//]: # (todo reactive中嵌套readonly情况考虑，需要加个单测，例如：reactive(readonly))
