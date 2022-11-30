@@ -1,4 +1,8 @@
-# 03_02_理解Proxy和Reflect
+---
+theme: orange
+---
+
+# 04_理解 Proxy 和 Reflect
 
 ### 一、开始之前:
 
@@ -189,16 +193,17 @@ if (Reflect.defineProperty(target, property, attributes)) {
 
 不要着急，有了上篇文章的响应式基础和这些前置知识，我们就能知道为什么要使用`Reflect`了。
 
-其实`Reflect.get`还有第三个参数，即指定接收者`receiver`，你可以把它理解为函数调用过程中的 `this`。
+其实一句话就能总结：`Reflect.get`还有第三个参数，即指定接收者`receiver`，你可以把它理解为函数调用过程中的 `this`。
 
 ```js
 const obj = { foo: 1 };
 
-// 输出的是 2 而不是 1
-console.log(Reflect.get(obj, 'foo', { foo: 2 }));
+const result = Reflect.get(obj, 'foo', { foo: 2 });
+
+console.log(result); // 输出的是 2 而不是 1
 ```
 
-我们看一下不用`Reflect`的情况：
+我们看一下`reactive`的实现里面不用`Reflect`的情况：
 
 ```js
 const obj = { foo: 1 }
@@ -206,18 +211,19 @@ const obj = { foo: 1 }
 const p = new Proxy(obj, { 
   get(target, key) {
     track(target, key);
-    // 注意，这里我们没有使用 Reflect.get 完成读取
     return target[key];
   },
-  set(target, key, newVal) { 
-    // 这里同样没有使用 Reflect.set 完成设置
+  set(target, key, newVal) {
     target[key] = newVal;
     trigger(target, key);
   }
 })
 ```
 
-那么这么写的问题出在什么地方呢？我们借助`effect`让问题暴露出来。  
+乍一看，似乎没什么问题。  
+确实，大多数情况下，两者没什么区别。  
+那么到底什么时候会出问题呢？接着往下看。
+
 首先，我们修改一下`obj`对象，为它添加`bar`属性：
 
 ```js
@@ -229,28 +235,26 @@ const obj = {
 }
 ```
 
-可以看到：`bar`属性是一个访问器属性，它返回了`this.foo`属性的值。接着，我们在`effect`副作用函数中通过代理对象`p`访问`bar`属性：
+可以看到：`bar`属性是一个访问器属性，它返回了`this.foo`属性的值。  
+接着，我们在`effect`中通过代理对象`p`访问`bar`属性。
 
 ```js
 effect(() => {
-  console.log(p.bar);
-  // 1
+  console.log(p.bar); // 1
 })
 ```
 
-我们来分析一下这个过程发生了什么。
+首先`effect`首次执行收集依赖的时候，会读取`p.bar`属性，它发现`p.bar`是一个访问器属性，因此执行`getter`函数。由于在`getter`函数中通过`this.foo`读取了`foo`属性值，因此我们认为`effect`中的依赖会被作为与`foo`属性的依赖收集起来。
 
-当`effect`注册的副作用函数执行时，会读取`p.bar`属性，它发现`p.bar`是一个访问器属性，因此执行`getter`函数。  
-由于在`getter`函数中通过`this.foo`读取了`foo`属性值，因此我们认为副作用函数与属`foo`之间也会建立联系。  
-当我们修改`p.foo`的值时应该能够触发响应，使得副作用函数重新执行才对。  
+转而当我们修改`p.foo`的值时，依赖应该被重新触发，`p.bar`应该是2才对。  
 然而实际并非如此，当我们尝试修改`p.foo`的值时：
 
 ```js
 p.foo = 2;
 ```
 
-副作用函数并没有重新执行，问题出在哪里呢？  
-实际上，问题就出在`bar`属性的访问器函数`getter`里：
+依赖并没有重新执行，奇了怪了？  
+实际上，问题就出在`bar`属性的访问器函数`getter`里，也就是代理中的`this指向问题`：
 
 ```js
 const obj = {
@@ -262,8 +266,13 @@ const obj = {
 }
 ```
 
-当我们使用`this.foo`读取`foo`属性值时，这里的`this`指向的是谁呢？  
-我们回顾一下整个流程。首先，我们通过代理对象`p`访问`p.bar`，这会触发代理对象的`get`拦截函数执行：
+当我们使用`obj`读取`bar`属性值时，这里的`this`指向哪里呢？  
+那当我们用代理对象`p`访问`bar`，这时候`this`又指向的哪里呢？
+
+很显然，方法中的`this`通常指向调用这个方法的对象。
+
+那接着，我们来回顾一下整个流程。  
+首先，我们通过代理对象`p`访问`p.bar`，这会触发代理对象的`get`拦截函数执行：
 
 ```js
 const p = new Proxy(obj, {
@@ -278,20 +287,22 @@ const p = new Proxy(obj, {
 
 在`get`拦截函数内，通过`target[key]`返回属性值。  
 其中`target`是原始对象`obj`，而`key`就是字符串`'bar'`，所以`target[key]`相当于`obj.bar`。  
-因此，当我们使用`p.bar`访问`bar`属性时，它的`getter`函数内的`this`指向的其实是原始对象`obj`，这说明我们最终访问的其实是`obj.foo`。  
-很显然，在副作用函数内通过原始对象访问它的某个属性是不会建立响应联系的，这等价于：
+因此，当我们使用`p.bar`访问`bar`属性时，它的`getter`函数内的`this`指向的其实是原始对象`obj`，这说明我们最终访问的其实是`obj.foo`。
+
+很显然，这里没有响应式对象，所以自然依赖也不会进行收集。  
+因为在副作用函数内通过原始对象访问它的某个属性，这等价于：
 
 ```js
 effect(() => {
-  // obj 是原始数据，不是代理对象，这样的访问不能够建立响应联系
+  // obj 是原始数据，不是代理过的对象，这样的访问不能够建立响应联系
   // 这里也就是上文中开头引用中提到的：直接操作会绕过代理施予的行为。
   obj.foo;
 })
 ```
 
-因为这样做不会建立响应联系，所以出现了无法触发响应的问题。  
-那么这个问题应该如何解决呢？这时`Reflect.get`函数就派上用场了。  
-先给出解决问题的代码：
+因为这样做不会收集依赖，所以无法触发响应的问题也就明了了。
+
+那么这个问题应该如何解决呢？这时`Reflect.get`的第三个参数`receiver`就派上用场了。
 
 ```js
 const p = new Proxy(obj, {
@@ -311,9 +322,8 @@ const p = new Proxy(obj, {
 p.bar // 代理对象 p 在读取 bar 属性
 ```
 
-当我们使用代理对象`p`访问`bar`属性时，那么`receiver`就是`p`，你可以把它简单地理解为函数调用中的`this`。  
-接着关键的一步发生了，我们使用`Reflect.get(target, key, receiver)`代替之前的`target[key]`，这里的关键点就是第三个参数`receiver`。  
-我们已经知道它就是代理对象`p`，所以访问器属性`bar`的`getter`函数内的`this`指向代理对象`p`：
+当我们使用代理对象`p`访问`bar`属性时，那么`receiver`就是`p`，你可以把它简单地理解为函数调用中的`this`。
+那么此时，访问器属性`bar`的`getter`函数内的`this`的指向就是代理对象`p`：
 
 ```js
 const obj = {
@@ -325,7 +335,7 @@ const obj = {
 }
 ```
 
-可以看到，`this`由原始对象`obj`变成了代理对象`p`。  
-很显然，这会在副作用函数与响应式数据之间建立响应联系，从而达到依赖收集的效果。  
-如果此时再对`p.foo`进行`set`操作，会发现已经能够触发副作用函数重新执行了。  
-正是基于上述原因，后文讲解中将统一使用`Reflect.*`方法。
+`this`由原始对象`obj`变成了代理对象`p`。那么，依赖此时就能正常进行收集。  
+如果此时再对`p.foo`进行`set`操作，会发现已经能够触发依赖重新执行了。
+
+正是基于上述原因，`vue3`的响应式系统采用了`Reflect.*`方法，而我们的`mini-vue`也同样如此。
