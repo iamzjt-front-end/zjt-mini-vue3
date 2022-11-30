@@ -22,6 +22,7 @@ describe('reactive', function () {
     expect(original).toBe(1);
   });
 
+
   it('nested reactive', () => {
     const original = {
       nested: { foo: 1 },
@@ -33,5 +34,19 @@ describe('reactive', function () {
     expect(isReactive(observed.nested)).toBe(true);
     expect(isReactive(observed.array)).toBe(true);
     expect(isReactive(observed.array[0])).toBe(true);
+  });
+
+  it('observing already observed value should return same Proxy', () => {
+    const original = { foo: 1 };
+    const observed = reactive(original);
+    const observed2 = reactive(observed);
+    expect(observed2).toBe(observed);
+  });
+
+  it('observing the same value multiple times should return same Proxy', () => {
+    const original = { foo: 1 };
+    const observed = reactive(original);
+    const observed2 = reactive(original);
+    expect(observed2).toBe(observed);
   });
 });
