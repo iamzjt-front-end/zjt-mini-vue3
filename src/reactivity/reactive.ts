@@ -3,12 +3,16 @@ import { isObject } from '../shared';
 
 export const enum ReactiveFlags {
   IS_REACTIVE = '__v_isReactive',
-  IS_READONLY = '__v_isReadonly'
+  IS_READONLY = '__v_isReadonly',
+  RAW = '__v_raw'
 }
 
 function createReactiveObject(raw: any, baseHandlers) {
   if (!isObject(raw)) {
     console.warn(`value cannot be made reactive: ${ String(raw) }`);
+    return raw;
+  }
+  if (raw[ReactiveFlags.RAW]) {
     return raw;
   }
   return new Proxy(raw, baseHandlers);

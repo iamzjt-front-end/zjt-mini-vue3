@@ -23,9 +23,9 @@
 
 #### （一）参数类型问题
 
-1. 先来写一下单测
+1. 先来看一下单测
 
-   ```ts
+   ```
    it('reactive params type must be object', () => {
      console.warn = jest.fn();
      // 传入的不是一个对象
@@ -41,7 +41,7 @@
    众所周知，`proxy`不能代理基本数据类型，所以遇到基本数据类型，我们应该直接返回原数据，并给一个提示。  
    那第一步，就得判断是不是对象，而且这应该是一个工具函数，所以，封装进`shared`。
 
-   ```ts
+   ```
    // src/shared/index.ts
    
    export const isObject = (val) => {
@@ -51,7 +51,7 @@
 
    工具函数完成，那我们只需要在`reactive`中对入参进行判断即可。
 
-   ```ts
+   ```
    // src/reactivity/reactive.ts
    
    function createReactiveObject(raw: any, baseHandlers) {
@@ -70,10 +70,30 @@
 
 #### （二）多层嵌套问题
 
-`ReactiveFlags`增加`RAW`属性，值为`__v_raw`，然后当嵌套时，判断`target`是否有`ReactiveFlags[RAW]`
-，如果已经是响应式对象，则在`createGetter`中判断是否`key`
-为`ReactiveFlags[RAW]`，是的话，则返回`target`。
+1. 先来看一下单测
 
+   ```js
+   it('observing already observed value should return same Proxy', () => {
+     const original = { foo: 1 };
+   
+     const observed = reactive(original);
+     const observed2 = reactive(observed);
+   
+     expect(observed2).toBe(observed);
+   });
+   ```
+
+2. 完善逻辑
+
+   核心逻辑：我们只需要判断`raw`是否是响应式对象，是的话，则返回`raw`，否则就按正常逻辑来。
+
+   具体实现：
+   仔细一看，是不是类比`isReactive`和`isReadonly`的实现，
+   `ReactiveFlags`增加`RAW`属性，值为`__v_raw`，然后当嵌套时，判断`target`是否有`ReactiveFlags[RAW]`
+   ，如果已经是响应式对象，则在`createGetter`中判断是否`key`
+   为`ReactiveFlags[RAW]`，是的话，则返回`target`。
+
+#### （三）多次监测问题
 
 ### 三、effect相关考虑完善
 
