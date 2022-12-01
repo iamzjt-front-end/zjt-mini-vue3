@@ -62,4 +62,7 @@
 
 #### （二）多层嵌套问题
 
+`ReactiveFlags`增加`RAW`属性，值为`__v_raw`，然后当嵌套时，判断`target`是否有`ReactiveFlags[RAW]`，如果已经是响应式对象，则在`createGetter`中判断是否`key`
+为`ReactiveFlags[RAW]`，是的话，则返回`target`。
+
 ### 三、effect相关考虑完善
