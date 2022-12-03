@@ -88,10 +88,12 @@
    核心逻辑：我们只需要判断`raw`是否是响应式对象，是的话，则返回`raw`，否则就按正常逻辑来。
 
    具体实现：
-   仔细一看，是不是类比`isReactive`和`isReadonly`的实现，
-   `ReactiveFlags`增加`RAW`属性，值为`__v_raw`，然后当嵌套时，判断`target`是否有`ReactiveFlags[RAW]`
-   ，如果已经是响应式对象，则在`createGetter`中判断是否`key`
-   为`ReactiveFlags[RAW]`，是的话，则返回`target`。
+   仔细一看，是不是可以类比`isReactive`和`isReadonly`的实现，这样的话，那就简单了。
+
+   我们为`ReactiveFlags`增加一个枚举`RAW`，值为`__v_raw`。  
+   然后当嵌套时，判断`target`是否有`ReactiveFlags[RAW]`。
+   如果已经是响应式对象，则在`createGetter`中判断读取是否`key`为`ReactiveFlags[RAW]`，是的话，则返回`target`，中断`reactive`。
+   那如果不是响应式对象呢，那自然就没有这个属性，继续往下走好了。
 
 #### （三）多次监测问题
 
