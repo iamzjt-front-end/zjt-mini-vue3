@@ -23,9 +23,9 @@
 
 #### （一）参数类型问题
 
-1. 先来看一下单测
+1. 单测用例
 
-   ```
+   ```js
    it('reactive params type must be object', () => {
      console.warn = jest.fn();
      // 传入的不是一个对象
@@ -41,7 +41,7 @@
    众所周知，`proxy`不能代理基本数据类型，所以遇到基本数据类型，我们应该直接返回原数据，并给一个提示。  
    那第一步，就得判断是不是对象，而且这应该是一个工具函数，所以，封装进`shared`。
 
-   ```
+   ```js
    // src/shared/index.ts
    
    export const isObject = (val) => {
@@ -51,7 +51,7 @@
 
    工具函数完成，那我们只需要在`reactive`中对入参进行判断即可。
 
-   ```
+   ```js
    // src/reactivity/reactive.ts
    
    function createReactiveObject(raw: any, baseHandlers) {
@@ -66,11 +66,11 @@
 
 3. 单测结果
 
-[//]: # (todo 单测截图)
+   <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212040641529.png" width="777" alt="16_01_reactive参数类型问题单测结果"/>
 
 #### （二）多层嵌套问题
 
-1. 先来看一下单测
+1. 单测用例
 
    ```js
    it('observing already observed value should return same Proxy', () => {
@@ -95,7 +95,29 @@
    如果已经是响应式对象，则在`createGetter`中判断读取是否`key`为`ReactiveFlags[RAW]`，是的话，则返回`target`，中断`reactive`。
    那如果不是响应式对象呢，那自然就没有这个属性，继续往下走好了。
 
+3. 单测结果
+
+   <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212040646325.png" width="777" alt="16_02_reactive多层嵌套问题单测结果"/>
+
 #### （三）多次监测问题
+
+1. 单测用例
+
+   ```js
+   it('observing the same value multiple times should return same Proxy', () => {
+     const original = { foo: 1 };
+
+     const observed = reactive(original);
+     const observed2 = reactive(original);
+
+     expect(observed2).toBe(observed);
+   });
+   ```
+
+2. 完善逻辑
+
+
+3. 单测结果
 
 ### 三、effect相关考虑完善
 

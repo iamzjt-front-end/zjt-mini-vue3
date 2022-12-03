@@ -13,16 +13,6 @@ describe('reactive', function () {
     expect(isProxy(observed)).toBe(true);
   });
 
-  it('reactive params type must be object', () => {
-    console.warn = jest.fn();
-    // 传入的不是一个对象
-    const original = reactive(1);
-
-    expect(console.warn).toBeCalled();
-    expect(original).toBe(1);
-  });
-
-
   it('nested reactive', () => {
     const original = {
       nested: { foo: 1 },
@@ -36,6 +26,15 @@ describe('reactive', function () {
     expect(isReactive(observed.array[0])).toBe(true);
   });
 
+  it('reactive params type must be object', () => {
+    console.warn = jest.fn();
+    // 传入的不是一个对象
+    const original = reactive(1);
+
+    expect(console.warn).toBeCalled();
+    expect(original).toBe(1);
+  });
+
   it('observing already observed value should return same Proxy', () => {
     const original = { foo: 1 };
 
@@ -45,7 +44,7 @@ describe('reactive', function () {
     expect(observed2).toBe(observed);
   });
 
-  it.skip('observing the same value multiple times should return same Proxy', () => {
+  it('observing the same value multiple times should return same Proxy', () => {
     const original = { foo: 1 };
 
     const observed = reactive(original);
