@@ -11,35 +11,35 @@ export const reactiveMap = new WeakMap();
 export const readonlyMap = new WeakMap();
 export const shallowReadonlyMap = new WeakMap();
 
-function createReactiveObject(raw: any, baseHandlers, proxyMap) {
-  if (!isObject(raw)) {
-    console.warn(`value cannot be made reactive: ${ String(raw) }`);
-    return raw;
+function createReactiveObject(target: any, baseHandlers, proxyMap) {
+  if (!isObject(target)) {
+    console.warn(`value cannot be made reactive: ${ String(target) }`);
+    return target;
   }
-  if (raw[ReactiveFlags.RAW]) {
-    return raw;
+  if (target[ReactiveFlags.RAW]) {
+    return target;
   }
-  const existingProxy = proxyMap.get(raw);
+  const existingProxy = proxyMap.get(target);
   // + 这里解决的是reactive多层嵌套的问题
   if (existingProxy) {
     return existingProxy;
   }
-  const proxy = new Proxy(raw, baseHandlers);
+  const proxy = new Proxy(target, baseHandlers);
   // + 缓存一下已经被代理的对象
-  proxyMap.set(raw, proxy);
+  proxyMap.set(target, proxy);
   return proxy;
-};
-
-export function reactive(raw) {
-  return createReactiveObject(raw, mutableHandlers, reactiveMap);
 }
 
-export function readonly(raw) {
-  return createReactiveObject(raw, readonlyHandlers, readonlyMap);
+export function reactive(target) {
+  return createReactiveObject(target, mutableHandlers, reactiveMap);
 }
 
-export function shallowReadonly(raw) {
-  return createReactiveObject(raw, shallowReadonlyHandlers, shallowReadonlyMap);
+export function readonly(target) {
+  return createReactiveObject(target, readonlyHandlers, readonlyMap);
+}
+
+export function shallowReadonly(target) {
+  return createReactiveObject(target, shallowReadonlyHandlers, shallowReadonlyMap);
 }
 
 export function isReactive(value) {
