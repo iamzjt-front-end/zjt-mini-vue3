@@ -50,7 +50,7 @@
 
 ### 二、runtime-core篇
 
-[01_实现初始化component流程](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/runtime-core/01_实现初始化component流程.md)
+[01_实现初始化component流程](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/runtime-core/01_实现初始化component主流程.md)
 
 
 ### 三、compiler篇
