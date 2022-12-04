@@ -5,44 +5,57 @@
 
 下面为此项目同步更新的系列文章：
 
-[01_vue3源码的介绍](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/01_vue3源码的介绍.md)
+### 一、reactivity篇
 
-[02_TDD开发环境搭建](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/02_TDD开发环境搭建.md)
+[01_vue3源码的介绍](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/01_vue3源码的介绍.md)
 
-[03_01_实现effect&reactive&依赖收集&触发依赖](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/03_01_实现effect&reactive&依赖收集&触发依赖.md)
+[02_TDD开发环境搭建](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/02_TDD开发环境搭建.md)
 
-[03_02_理解Proxy和Reflect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/03_02_理解Proxy和Reflect.md)
+[03_01_实现effect&reactive&依赖收集&触发依赖](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/03_01_实现effect&reactive&依赖收集&触发依赖.md)
 
-[03_03_实现相对完善的reactive和effect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/03_03_实现相对完善的reactive和effect.md)
+[03_02_理解Proxy和Reflect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/03_02_理解Proxy和Reflect.md)
 
-[04_实现effect返回runner](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/04_实现effect返回runner.md)
+[03_03_实现相对完善的reactive和effect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/03_03_实现相对完善的reactive和effect.md)
 
-[05_实现effect的scheduler功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/05_实现effect的scheduler功能.md)
+[04_实现effect返回runner](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/04_实现effect返回runner.md)
 
-[06_实现effect的stop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/06_实现effect的stop功能.md)
+[05_实现effect的scheduler功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/05_实现effect的scheduler功能.md)
 
-[07_实现readonly功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/07_实现readonly功能.md)
+[06_实现effect的stop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/06_实现effect的stop功能.md)
 
-[08_实现isReactive和isReadonly](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/08_实现isReactive和isReadonly.md)
+[07_实现readonly功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/07_实现readonly功能.md)
 
-[09_优化stop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/09_优化stop功能.md)
+[08_实现isReactive和isReadonly](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/08_实现isReactive和isReadonly.md)
 
-[10_实现reactive和readonly的嵌套对象转换功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/10_实现reactive和readonly的嵌套对象转换功能.md)
+[09_优化stop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/09_优化stop功能.md)
 
-[11_实现shallowReadonly和isProxy功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/11_实现shallowReadonly和isProxy功能.md)
+[10_实现reactive和readonly的嵌套对象转换功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/10_实现reactive和readonly的嵌套对象转换功能.md)
 
-[12_实现ref功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/12_实现ref功能.md)
+[11_实现shallowReadonly和isProxy功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/11_实现shallowReadonly和isProxy功能.md)
 
-[13_实现isRef和unRef功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/13_实现isRef和unRef功能.md)
+[12_实现ref功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/12_实现ref功能.md)
 
-[14_实现proxyRefs功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/14_实现proxyRefs功能.md)
+[13_实现isRef和unRef功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/13_实现isRef和unRef功能.md)
 
-[15_实现computed计算属性](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/15_实现computed计算属性.md)
+[14_实现proxyRefs功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/14_实现proxyRefs功能.md)
 
-[16_实现相对完善的reactive](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/16_实现相对完善的reactive.md)
+[15_实现computed计算属性](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/15_实现computed计算属性.md)
 
-[17_实现相对完善的effect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/17_实现相对完善的effect.md)
+[16_实现相对完善的reactive](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/16_实现相对完善的reactive.md)
 
-[18_一些未曾注意到的细节](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/18_一些未曾注意到的细节.md)
+[17_实现相对完善的effect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/17_实现相对完善的effect.md)
+
+[18_一些未曾注意到的细节](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/18_一些未曾注意到的细节.md)
+
+
+### 二、runtime-core篇
+
+[01_实现初始化component流程](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/runtime-core/01_实现初始化component流程.md)
+
+
+### 三、compiler篇
+
+[01_编译模块概述.md](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/compiler/01_编译模块概述.md)
+
 
 待续...
