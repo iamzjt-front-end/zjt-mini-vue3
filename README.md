@@ -39,4 +39,10 @@
 
 [15_实现computed计算属性](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/15_实现computed计算属性.md)
 
+[16_实现相对完善的reactive](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/16_实现相对完善的reactive.md)
+
+[17_实现相对完善的effect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/17_实现相对完善的effect.md)
+
+[18_一些未曾注意到的细节](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/18_一些未曾注意到的细节.md)
+
 待续...
