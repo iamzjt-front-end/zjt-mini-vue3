@@ -25,8 +25,8 @@ describe('readonly', () => {
 ```ts
 // src/reactivity/reactive.ts
 
-export function readonly(raw) {
-  return new Proxy(raw, {
+export function readonly(target) {
+  return new Proxy(target, {
     get(target, key) {
       const res = Reflect.get(target, key);
 
@@ -104,15 +104,15 @@ function createSetter() {
   };
 }
 
-export function reactive(raw) {
-  return new Proxy(raw, {
+export function reactive(target) {
+  return new Proxy(target, {
     get: createGetter(),
     set: createSetter(),
   });
 }
 
-export function readonly(raw) {
-  return new Proxy(raw, {
+export function readonly(target) {
+  return new Proxy(target, {
     get: createGetter(true),
 
     set(target, key, value) {
@@ -186,12 +186,12 @@ export const readonlyHandlers = {
 ```ts
 import { mutableHandlers, readonlyHandlers } from './baseHandlers';
 
-export function reactive(raw) {
-  return new Proxy(raw, mutableHandlers);
+export function reactive(target) {
+  return new Proxy(target, mutableHandlers);
 }
 
-export function readonly(raw) {
-  return new Proxy(raw, readonlyHandlers);
+export function readonly(target) {
+  return new Proxy(target, readonlyHandlers);
 }
 ```
 
@@ -215,16 +215,16 @@ export function readonly(raw) {
 // + src/reactivity/reactive.ts
 import { mutableHandlers, readonlyHandlers } from './baseHandlers';
 
-function createReactiveObject(raw: any, baseHandlers) {
-  return new Proxy(raw, baseHandlers);
+function createReactiveObject(target: any, baseHandlers) {
+  return new Proxy(target, baseHandlers);
 }
 
-export function reactive(raw) {
-  return createReactiveObject(raw, mutableHandlers);
+export function reactive(target) {
+  return createReactiveObject(target, mutableHandlers);
 }
 
-export function readonly(raw) {
-  return createReactiveObject(raw, readonlyHandlers);
+export function readonly(target) {
+  return createReactiveObject(target, readonlyHandlers);
 }
 ```
 

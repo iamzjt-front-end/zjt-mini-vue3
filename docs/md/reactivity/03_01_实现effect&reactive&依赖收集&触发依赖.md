@@ -62,8 +62,8 @@ describe('reactive', function () {
 那带着这些需求，我们接着建立`reactive.ts`，实现一下`reactive`的这个最核心的逻辑。
 
 ```ts
-export function reactive(raw) {
-  return new Proxy(raw, {
+export function reactive(target) {
+  return new Proxy(target, {
     // 此处使用proxy报错的话，需要进tsconfig.json中，配置"lib": ["DOM", "ES6"]。
     get(target, key) {
       const res = Reflect.get(target, key);
