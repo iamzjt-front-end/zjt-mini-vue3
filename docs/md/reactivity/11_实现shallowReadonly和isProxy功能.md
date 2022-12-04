@@ -28,8 +28,8 @@ describe('shallowReadonly', () => {
 
 import { mutableHandlers, readonlyHandlers, shallowReadonlyHandlers } from './baseHandlers';
 
-export function shallowReadonly(raw) {
-  return createReactiveObject(raw, shallowReadonlyHandlers);
+export function shallowReadonly(target) {
+  return createReactiveObject(target, shallowReadonlyHandlers);
 }
 ```
 
