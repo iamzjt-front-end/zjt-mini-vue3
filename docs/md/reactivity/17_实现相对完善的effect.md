@@ -2,7 +2,8 @@
 
 ### 一、我们要优化哪些点？
 
-在上篇[实现相对完善的reactive](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/16_实现相对完善的reactive.md)后，那我们继续来实现相对完善的`effect`。
+在上篇[实现相对完善的reactive](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/16_实现相对完善的reactive.md)
+后，那我们继续来实现相对完善的`effect`。
 
 首先我们还是列举一些对`effect`的简单考虑：
 
