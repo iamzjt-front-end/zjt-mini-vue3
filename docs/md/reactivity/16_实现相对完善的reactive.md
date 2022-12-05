@@ -225,5 +225,3 @@
 3. 单测结果
 
    <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212050553680.png" width="777" alt="16_03_reactive多次监测问题单测结果"/>
-
-### 三、结语
