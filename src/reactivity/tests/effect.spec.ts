@@ -47,6 +47,27 @@ describe('effect', () => {
     expect(conditionalSpy).toHaveBeenCalledTimes(3);
   });
 
+  it('should not be triggered by mutating a property, which is used in an inactive branch', () => {
+    let dummy;
+    const obj = reactive({ prop: 'value', run: true });
+
+    const conditionalSpy = jest.fn(() => {
+      dummy = obj.run ? obj.prop : 'other';
+    });
+    effect(conditionalSpy);
+
+    expect(dummy).toBe('value');
+    expect(conditionalSpy).toHaveBeenCalledTimes(1);
+
+    obj.run = false;
+    expect(dummy).toBe('other');
+    expect(conditionalSpy).toHaveBeenCalledTimes(2);
+
+    obj.prop = 'value2';
+    expect(dummy).toBe('other');
+    expect(conditionalSpy).toHaveBeenCalledTimes(2);
+  });
+
   it.skip('should allow nested effects', () => {
     const nums = reactive({ num1: 0, num2: 1, num3: 2 });
     const dummy: any = {};
@@ -83,17 +104,16 @@ describe('effect', () => {
     expect(childSpy).toHaveBeenCalledTimes(5);
   });
 
-  it.skip('should handle multiple effects', () => {
-    let dummy1, dummy2;
+  it.skip('should avoid implicit infinite recursive loops with itself', () => {
     const counter = reactive({ num: 0 });
-    effect(() => (dummy1 = counter.num));
-    effect(() => (dummy2 = counter.num));
+    const counterSpy = jest.fn(() => counter.num++);
+    effect(counterSpy);
 
-    expect(dummy1).toBe(0);
-    expect(dummy2).toBe(0);
-    counter.num++;
-    expect(dummy1).toBe(1);
-    expect(dummy2).toBe(1);
+    expect(counter.num).toBe(1);
+    expect(counterSpy).toHaveBeenCalledTimes(1);
+    counter.num = 4;
+    expect(counter.num).toBe(5);
+    expect(counterSpy).toHaveBeenCalledTimes(2);
   });
 
   it('runner', () => {
@@ -111,6 +131,24 @@ describe('effect', () => {
     const r = runner();
     expect(foo).toBe(12);
     expect(r).toBe('foo');
+  });
+
+  it.skip('should discover new branches when running manually', () => {
+    let dummy;
+    let run = false;
+    const obj = reactive({ prop: 'value' });
+    const runner = effect(() => {
+      dummy = run ? obj.prop : 'other';
+    });
+
+    expect(dummy).toBe('other');
+    runner();
+    expect(dummy).toBe('other');
+    run = true;
+    runner();
+    expect(dummy).toBe('value');
+    obj.prop = 'World';
+    expect(dummy).toBe('World');
   });
 
   it('scheduler', () => {
