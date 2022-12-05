@@ -22,6 +22,80 @@ describe('effect', () => {
     expect(nextAge).toBe(12);
   });
 
+  it('should discover new branches while running automatically', () => {
+    let dummy;
+    const obj = reactive({ prop: 'value', run: false });
+
+    const conditionalSpy = jest.fn(() => {
+      dummy = obj.run ? obj.prop : 'other';
+    });
+    effect(conditionalSpy);
+
+    expect(dummy).toBe('other');
+    expect(conditionalSpy).toHaveBeenCalledTimes(1);
+
+    obj.prop = 'Hi';
+    expect(dummy).toBe('other');
+    expect(conditionalSpy).toHaveBeenCalledTimes(1);
+
+    obj.run = true;
+    expect(dummy).toBe('Hi');
+    expect(conditionalSpy).toHaveBeenCalledTimes(2);
+
+    obj.prop = 'World';
+    expect(dummy).toBe('World');
+    expect(conditionalSpy).toHaveBeenCalledTimes(3);
+  });
+
+  it.skip('should allow nested effects', () => {
+    const nums = reactive({ num1: 0, num2: 1, num3: 2 });
+    const dummy: any = {};
+
+    const childSpy = jest.fn(() => (dummy.num1 = nums.num1));
+    const childEffect = effect(childSpy);
+    const parentSpy = jest.fn(() => {
+      dummy.num2 = nums.num2;
+      childEffect();
+      dummy.num3 = nums.num3;
+    });
+    effect(parentSpy);
+
+    expect(dummy).toEqual({ num1: 0, num2: 1, num3: 2 });
+    expect(parentSpy).toHaveBeenCalledTimes(1);
+    expect(childSpy).toHaveBeenCalledTimes(2);
+
+    // * 应该只触发childEffect
+    nums.num1 = 4;
+    expect(dummy).toEqual({ num1: 4, num2: 1, num3: 2 });
+    expect(parentSpy).toHaveBeenCalledTimes(1);
+    expect(childSpy).toHaveBeenCalledTimes(3);
+
+    // * 触发parentEffect，触发一次childEffect
+    nums.num2 = 10;
+    expect(dummy).toEqual({ num1: 4, num2: 10, num3: 2 });
+    expect(parentSpy).toHaveBeenCalledTimes(2);
+    expect(childSpy).toHaveBeenCalledTimes(4);
+
+    // * 触发parentEffect，触发一次childEffect
+    nums.num3 = 7;
+    expect(dummy).toEqual({ num1: 4, num2: 10, num3: 7 });
+    expect(parentSpy).toHaveBeenCalledTimes(3);
+    expect(childSpy).toHaveBeenCalledTimes(5);
+  });
+
+  it.skip('should handle multiple effects', () => {
+    let dummy1, dummy2;
+    const counter = reactive({ num: 0 });
+    effect(() => (dummy1 = counter.num));
+    effect(() => (dummy2 = counter.num));
+
+    expect(dummy1).toBe(0);
+    expect(dummy2).toBe(0);
+    counter.num++;
+    expect(dummy1).toBe(1);
+    expect(dummy2).toBe(1);
+  });
+
   it('runner', () => {
     // effect(fn) -> return runner -> runner() == fn() -> return
     // effect(fn)执行会返回一个runner, 执行runner, 相当于重新执行一遍effect里面传入的fn, 同时也会将fn的返回值返回。
