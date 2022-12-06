@@ -33,11 +33,11 @@ export function stop(runner) {
 }
 ```
 
-再开始完善stop函数。
+再开始完善`stop`函数。
 
 继续分析：
 
-通过`runner`停止当前`effect`的响应式 -> 也就是从收集到当前`effect`的`dep`中将其删除，实际上是对`effect`
+通过`runner`停止当前`effect`的响应式 → 也就是从收集到当前`effect`的`dep`中将其删除，实际上是对`effect`
 的操作，所以继续在`ReactiveEffect`上维护一个`stop`方法。
 
 ```ts
@@ -198,9 +198,7 @@ it('onStop', () => {
 });
 ```
 
-其实通过单测，可以看出功能跟stop有些类似，逻辑也很简单，就是通过`effect`的第二个参数，给定一个`onStop`
-函数，当有这个函数时，我们再去调用`stop(runner)`
-时，`onStop`就会被调用一次。
+其实通过单测，可以看出功能跟`stop`有些类似，逻辑也很简单，就是通过`effect`的第二个参数，给定一个`onStop`函数，当有这个函数时，我们再去调用`stop(runner)`时，`onStop`就会被调用一次。
 
 那么实现思路也就很清晰了，我们首先得在`ReactiveEffect`类中去接收这个函数，然后调用`stop`的时候，手动调用一下`onStop`即可。
 
@@ -264,8 +262,7 @@ export function effect(fn, options: any = {}) {
 Object.assign(_effect, options);
 ```
 
-感觉语义化稍弱，所以，就抽离出一个`extend`方法，又考虑到这个方法可以抽离成一个`工具函数`，所以在`src`下建立`shared`
-目录，然后建立`index.ts`，专门放置各个模块通用的工具函数。
+感觉语义化稍弱，所以，就抽离出一个`extend`方法，又考虑到这个方法可以抽离成一个`工具函数`，所以在`src`下建立`shared`目录，然后建立`index.ts`，专门放置各个模块通用的工具函数。
 
 ```ts
 // src/shared/index.ts
@@ -281,7 +278,7 @@ extend(_effect, options);
 
 ### （四）解决问题的思路
 
-可以看到effect的单测是通过的，那完成这一组功能后，继续完成的跑一下所有单测，看看是否对其他功能造成影响。
+可以看到`effect`的单测是通过的，那完成这一组功能后，继续完成的跑一下所有单测，看看是否对其他功能造成影响。
 
 ```shell
 yarn test
