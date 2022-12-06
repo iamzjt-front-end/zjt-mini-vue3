@@ -21,7 +21,7 @@
 
 [05_实现effect的scheduler功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/05_实现effect的scheduler功能.md)
 
-[06_实现effect的stop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/06_实现effect的stop功能.md)
+[06_实现effect的stop和onStop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/06_实现effect的stop和onStop功能.md)
 
 [07_实现readonly功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/07_实现readonly功能.md)
 
