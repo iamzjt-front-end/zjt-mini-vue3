@@ -5,7 +5,7 @@ let shouldTrack = false;
 
 export class ReactiveEffect {
   private _fn: any;
-  deps = [];
+  deps: any[] = [];
   active = true; // 是否已经 stop 过，true 为 未stop
   onStop?: () => void;
 
@@ -44,10 +44,13 @@ export class ReactiveEffect {
 }
 
 function cleanupEffect(effect: ReactiveEffect) {
-  effect.deps.forEach((dep: any) => {
-    dep.delete(effect);
-  });
-  effect.deps.length = 0;
+  const { deps } = effect;
+  if (deps.length) {
+    for (let i = 0; i < deps.length; i++) {
+      deps[i].delete(effect);
+    }
+    deps.length = 0;
+  }
 }
 
 
