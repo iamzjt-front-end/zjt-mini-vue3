@@ -59,11 +59,11 @@ describe('reactive', function () {
 1. 响应式对象`observed`和原始对象`original`不全等；
 2. `observed`也能取到`foo`属性的值，并且与`original`一致。
 
-那带着这些需求，我们接着建立`reactive.ts`，实现一下`reactive`的这个最核心的逻辑。
+那带着这些需求，我们接着建立`reactive.ts`，来实现一下`reactive`的这个最核心的逻辑。
 
 ```ts
-export function reactive(target) {
-  return new Proxy(target, {
+export function reactive(raw) {
+  return new Proxy(raw, {
     // 此处使用proxy报错的话，需要进tsconfig.json中，配置"lib": ["DOM", "ES6"]。
     get(target, key) {
       const res = Reflect.get(target, key);
@@ -90,7 +90,7 @@ export function reactive(target) {
 yarn test reactive
 ```
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050559517.png" width="666" alt="03_01_reactive核心逻辑单测"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83aa40ccb1ce427c9ff5fd3482d17274~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="03_01_reactive核心逻辑单测"/>
 
 测试通过，那么接下来，我们继续完善`reactive`的逻辑代码。
 
@@ -134,7 +134,7 @@ export function effect(fn) {
 
 > 此处多说两句：
 >
-> 封装概念通常由两部分组成，封装数据和封装实现，也就是：
+> 封装概念通常由两部分组成，`封装数据`和`封装实现`，也就是：
 >
 > 1. 相关的数据（用于存储属性）
 > 2. 基于这些数据所能做的事（所能调用的方法）；
@@ -154,14 +154,14 @@ export function effect(fn) {
 yarn test
 ```
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211050708340.png" width="666" alt="03_02_effect部分逻辑单测"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3753e37ad2814fa28e7e76f1c51b33df~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="03_02_effect部分逻辑单测"/>
 
 ---------------------------------------------------------------------------------------
 
 ### 四、重中之重 依赖收集和触发依赖
 
 那现在的难点就来了，如何让`user.age++`的时候，`nextAge`也自动更新。  
-这其实就已经到了响应式系统的核心逻辑了，也就是 **`依赖收集`** 和 **`触发依赖`**，也就是`track`和`trigger`的实现。
+这其实就已经到了响应式系统的核心逻辑了，也就是 **`依赖收集`** 和 **`触发依赖`**，也就是 **`track`** 和 **`trigger`** 的实现。
 
 #### 1. 依赖收集 track
 
@@ -186,7 +186,7 @@ export function track(target, key) {
 
 从上可以看出，依赖对应的结构🌲应该如下：
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051239948.png" width="388" alt="03_03_依赖树形关系"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f374a78888b847f9b7f317c3cde154a3~tplv-k3u1fbpfcp-zoom-1.image" width="388" alt="03_03_依赖树形关系"/>
 
 - target：被操作（读取）的代理对象（ **user** ）；
 - key：被操作（读取）的字段名（ **age** ）；
@@ -200,7 +200,7 @@ export function track(target, key) {
 其中`WeakMap`的键是原始对象`target`，值是一个`Map`实例；  
 而`Map`的键是原始对象`target`的`key`，值是一个由副作用函数组成的`Set`。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051251337.png" width="666" alt="03_04_WeakMap、Map和Set之间的关系"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5af3f9e840044aee98e4cc01b72a2dfc~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="03_04_WeakMap、Map和Set之间的关系"/>
 
 搞清楚他们的关系之后，有必要解释一下这里为什么用`WeakMap`，这就涉及到了`WeakMap`和`Map`的区别。
 
@@ -254,7 +254,7 @@ export function trigger(target, key) {
 
 感觉好像就这样，没啥问题了，那继续跑一下单测吧，看看是不是真的没问题了。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211051504999.png" width="666" alt="03_05_effect、reactive全流程单测"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f60ce586768645fd8950a5b90a47cf21~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="03_05_effect、reactive全流程单测"/>
 
 可以，全部通过，美滋滋啊~ 🍉
 
@@ -262,4 +262,14 @@ export function trigger(target, key) {
 
 - - -
 
-**`ps:`** 当然这只是最简形态的`reactive`，就比如: 分支切换（三元表达式）、嵌套effect、++的情况，我们都完全还没有考虑进去，下一篇我们将来完善对这些情况的处理。
+### end
+
+当然这只是最简形态的`reactive`，就比如: 分支切换（三元表达式）、嵌套effect、++的情况，我们都完全还没有考虑进去，后续在`reactivity`
+模块的末尾，我们将来完善对这些情况的处理。
+
+### ps
+
+这是一个 [早起俱乐部](https://juejin.cn/pin/7173512204149325861)！
+
+⭐️ 适合人群：所有想有所改变的人，可以先从早起半小时开始！抽出30分钟，从初心开始！！  
+⭐️ 没有任何其它意味，只是本人想寻找一起早起、志同道合的小伙伴。
