@@ -72,3 +72,11 @@ export function effect(fn) {
 单测结果如下：
 
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c7d6b81e10514032a244deccf1171d13~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="04_实现effect返回runner"/>
+
+
+### ps
+
+这是一个 [早起俱乐部](https://juejin.cn/pin/7173512204149325861)！
+
+⭐️ 适合人群：所有想有所改变的人，可以先从早起半小时开始！抽出30分钟，从初心开始！！  
+⭐️ 没有任何其它意味，只是本人想寻找一起早起、志同道合的小伙伴。
