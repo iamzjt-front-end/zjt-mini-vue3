@@ -7,3 +7,5 @@ export const isObject = (val) => {
 export const hasChanged = (val, newVal) => {
   return !Object.is(val, newVal);
 };
+
+export const isArray = Array.isArray

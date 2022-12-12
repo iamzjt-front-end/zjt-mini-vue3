@@ -80,7 +80,16 @@ it('should not be triggered by mutating a property, which is used in an inactive
 
 下面我们分步来具体讲解一下。
 
-在第一段单测中，
+在第一段单测中，运行的过程中会发现报错了，报错信息如下：
+
+[//]: # (todo 截图)
+
+然后在点击进入到报错位置，打上断点，开始调试。
+
+发现`dep`的值是`undefined`，然后再看`depsMap`中，只有`run`属性的依赖。  
+这个很容易理解，因为`effect`首次运行时，只读取了`run`的值，自然就只有`run`被收集起来。
+
+
 
 在第二段单测中，初始的依赖对应关系如下：
 
@@ -103,8 +112,6 @@ it('should not be triggered by mutating a property, which is used in an inactive
 但这并不是我们所期望的，一方面，我们希望的是当分支不活跃时，理应冗余依赖应从`targetMap`中删除；  
 另一方面，就算不活跃分支中的响应式对象发生变化，也不需要去进行这种不必要地更新，因为无论更不更新都不会影响程序运行的结果且浪费性能。
 
-那我们就根据这两项期望，去完善我们的代码。
-   
 ##### 3. 单测结果
 
 
