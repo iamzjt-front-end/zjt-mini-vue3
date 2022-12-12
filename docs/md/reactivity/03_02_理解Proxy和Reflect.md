@@ -1,13 +1,9 @@
----
-theme: orange
----
-
-# 04_理解 Proxy 和 Reflect
+# 03_02_理解 Proxy 和 Reflect
 
 ### 一、开始之前:
 
-为什么还会有这一篇文章呢？  
-不是手写`mini-vue`吗？其实可以理解成支线任务、番外篇，是对主线内容的补充。
+为什么还会有这一篇文章呢？不是手写`mini-vue`吗？  
+其实可以理解成支线任务、番外篇，是对主线内容的补充。
 
 这一篇文章可能文字比较多，理论知识比较多，参考了4本书相关的章节写的。  
 可以泡杯咖啡或者喝杯茶，坐下来慢慢看哦。☕️
@@ -23,9 +19,12 @@ theme: orange
 使用代理的主要目的是可以定义捕获器（`trap`）。  
 捕获器就是在处理程序对象中定义的“`基本操作`的拦截器”。
 
-每个处理程序对象可以包含零个或多个捕获器，每个捕获器都对应一种基本操作，可以直接或间接在代理对象上调用。例如：get和set都知道就不说了，`apply`可以用来捕获函数的调用操作。
+每个处理程序对象可以包含零个或多个捕获器，每个捕获器都对应一种基本操作，可以直接或间接在代理对象上调用。例如：get和set都知道就不说了，`apply`
+可以用来捕获函数的调用操作。
 
-每次在`代理对象`上调用这些基本操作时，代理可以在这些操作传播到目标对象之前先调用捕获器函数，从而拦截并修改相应的行为。大致可以理解为`代理对象`在`目标对象`前设置了一层“拦截”层。
+每次在`代理对象`
+上调用这些基本操作时，代理可以在这些操作传播到目标对象之前先调用捕获器函数，从而拦截并修改相应的行为。大致可以理解为`代理对象`
+在`目标对象`前设置了一层“拦截”层。
 
 那这样，对于对象属性的读取和设置，我们就可以感知到，只有在这个基础之上，我们才能去实现响应式。
 
@@ -145,9 +144,11 @@ objj.fn();
 
 `Reflect`又叫反射，设计的目的主要有以下几个：
 
-（1）将`Object`对象的一些明显属于语言内部的方法（比如`Object.defineProperty`），放到`Reflect`对象上。现阶段，某些方法同时在`Object`和`Reflect`对象上部署，未来的新方法将只部署在`Reflect`对象上。也就是说，从`Reflect`对象上可以拿到语言内部的方法。
+（1）将`Object`对象的一些明显属于语言内部的方法（比如`Object.defineProperty`），放到`Reflect`对象上。现阶段，某些方法同时在`Object`
+和`Reflect`对象上部署，未来的新方法将只部署在`Reflect`对象上。也就是说，从`Reflect`对象上可以拿到语言内部的方法。
 
-（2）修改某些`Object`方法的返回结果，让其变得更合理。比如，`Object.defineProperty(obj, name, desc)` 在无法定义属性时，会抛出一个错误，而`Reflect.defineProperty(obj, name, desc)`则会返回`false`。
+（2）修改某些`Object`方法的返回结果，让其变得更合理。比如，`Object.defineProperty(obj, name, desc)`
+在无法定义属性时，会抛出一个错误，而`Reflect.defineProperty(obj, name, desc)`则会返回`false`。
 
 ```js
 // 老写法
@@ -166,9 +167,12 @@ if (Reflect.defineProperty(target, property, attributes)) {
 }
 ```
 
-（3）让`Object`操作都变成`函数行为`。某些`Object`操作是`命令式`，比如`name in obj`和`delete obj[name]`，而`Reflect.has(obj, name)`和`Reflect.deleteProperty(obj, name)`让它们变成了函数行为，。
+（3）让`Object`操作都变成`函数行为`。某些`Object`操作是`命令式`，比如`name in obj`和`delete obj[name]`，而`Reflect.has(obj, name)`
+和`Reflect.deleteProperty(obj, name)`让它们变成了函数行为，。
 
-（4）其实可能你已经注意到了，`Reflect`对象的方法与`Proxy`对象的方法一一对应，只要是`Proxy`对象的方法，就能在`Reflect`对象上找到对应的方法。这就让`Proxy`对象可以方便地调用对应的`Reflect`方法，完成默认行为，作为修改行为的基础。`Proxy`可以捕获13种不同的基本操作，这些操作有各自不同的`Reflect API`方法。
+（4）其实可能你已经注意到了，`Reflect`对象的方法与`Proxy`对象的方法一一对应，只要是`Proxy`对象的方法，就能在`Reflect`
+对象上找到对应的方法。这就让`Proxy`对象可以方便地调用对应的`Reflect`方法，完成默认行为，作为修改行为的基础。`Proxy`
+可以捕获13种不同的基本操作，这些操作有各自不同的`Reflect API`方法。
 
 这里稍微列举一下：
 
@@ -208,7 +212,7 @@ console.log(result); // 输出的是 2 而不是 1
 ```js
 const obj = { foo: 1 }
 
-const p = new Proxy(obj, { 
+const p = new Proxy(obj, {
   get(target, key) {
     track(target, key);
     return target[key];
@@ -244,7 +248,8 @@ effect(() => {
 })
 ```
 
-首先`effect`首次执行收集依赖的时候，会读取`p.bar`属性，它发现`p.bar`是一个访问器属性，因此执行`getter`函数。由于在`getter`函数中通过`this.foo`读取了`foo`属性值，因此我们认为`effect`中的依赖会被作为与`foo`属性的依赖收集起来。
+首先`effect`首次执行收集依赖的时候，会读取`p.bar`属性，它发现`p.bar`是一个访问器属性，因此执行`getter`函数。由于在`getter`
+函数中通过`this.foo`读取了`foo`属性值，因此我们认为`effect`中的依赖会被作为与`foo`属性的依赖收集起来。
 
 转而当我们修改`p.foo`的值时，依赖应该被重新触发，`p.bar`应该是2才对。  
 然而实际并非如此，当我们尝试修改`p.foo`的值时：
@@ -280,14 +285,15 @@ const p = new Proxy(obj, {
     track(target, key)
     // 注意，这里我们没有使用 Reflect.get 完成读取
     return target[key];
-   },
-   // 省略部分代码
+  },
+  // 省略部分代码
 })
 ```
 
 在`get`拦截函数内，通过`target[key]`返回属性值。  
 其中`target`是原始对象`obj`，而`key`就是字符串`'bar'`，所以`target[key]`相当于`obj.bar`。  
-因此，当我们使用`p.bar`访问`bar`属性时，它的`getter`函数内的`this`指向的其实是原始对象`obj`，这说明我们最终访问的其实是`obj.foo`。
+因此，当我们使用`p.bar`访问`bar`属性时，它的`getter`函数内的`this`指向的其实是原始对象`obj`
+，这说明我们最终访问的其实是`obj.foo`。
 
 很显然，这里没有响应式对象，所以自然依赖也不会进行收集。  
 因为在副作用函数内通过原始对象访问它的某个属性，这等价于：
@@ -339,3 +345,11 @@ const obj = {
 如果此时再对`p.foo`进行`set`操作，会发现已经能够触发依赖重新执行了。
 
 正是基于上述原因，`vue3`的响应式系统采用了`Reflect.*`方法，而我们的`mini-vue`也同样如此。
+
+
+### ps
+
+这是一个 [早起俱乐部](https://juejin.cn/pin/7173512204149325861)！
+
+⭐️ 适合人群：所有想有所改变的人，可以先从早起半小时开始！抽出30分钟，从初心开始！！  
+⭐️ 没有任何其它意味，只是本人想寻找一起早起、志同道合的小伙伴。
