@@ -92,7 +92,10 @@ export function isTracking() {
 // * ============================== ↓ 触发依赖 trigger ↓ ============================== * //
 export function trigger(target, key) {
   let depsMap = targetMap.get(target);
+  if (!depsMap) return;
+
   let dep = depsMap.get(key);
+  if (!dep) return;
 
   triggerEffects(dep);
 }
