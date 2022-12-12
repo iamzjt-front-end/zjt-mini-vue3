@@ -122,7 +122,7 @@ class ReactiveEffect {
 
 功能完成后，继续看一下单测结果。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211080822280.png" width="666" alt="06_01_stop的单测结果"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6b642640f1584c1fbea8b47eaf152810~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="06_01_stop的单测结果"/>
 
 #### （三）代码优化
 
@@ -198,7 +198,9 @@ it('onStop', () => {
 });
 ```
 
-其实通过单测，可以看出功能跟`stop`有些类似，逻辑也很简单，就是通过`effect`的第二个参数，给定一个`onStop`函数，当有这个函数时，我们再去调用`stop(runner)`时，`onStop`就会被调用一次。
+其实通过单测，可以看出功能跟`stop`有些类似，逻辑也很简单，就是通过`effect`的第二个参数，给定一个`onStop`
+函数，当有这个函数时，我们再去调用`stop(runner)`
+时，`onStop`就会被调用一次。
 
 那么实现思路也就很清晰了，我们首先得在`ReactiveEffect`类中去接收这个函数，然后调用`stop`的时候，手动调用一下`onStop`即可。
 
@@ -252,7 +254,7 @@ export function effect(fn, options: any = {}) {
 
 单测通过：
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090531550.png" width="666" alt="06_02_onStop单测结果"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/67b2a38fd05a473aa9bc707dd17bb5e3~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="06_02_onStop单测结果"/>
 
 #### （三）代码优化
 
@@ -262,7 +264,8 @@ export function effect(fn, options: any = {}) {
 Object.assign(_effect, options);
 ```
 
-感觉语义化稍弱，所以，就抽离出一个`extend`方法，又考虑到这个方法可以抽离成一个`工具函数`，所以在`src`下建立`shared`目录，然后建立`index.ts`，专门放置各个模块通用的工具函数。
+感觉语义化稍弱，所以，就抽离出一个`extend`方法，又考虑到这个方法可以抽离成一个`工具函数`，所以在`src`下建立`shared`
+目录，然后建立`index.ts`，专门放置各个模块通用的工具函数。
 
 ```ts
 // src/shared/index.ts
@@ -274,9 +277,9 @@ extend(_effect, options);
 
 当然，重构完以后，别忘了重新跑一下`effect`单测。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090603047.png" width="666" alt="06_03_onStop重构后的单测结果"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1358777c2e60408c9fda4bf490e269e1~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="06_03_onStop重构后的单测结果"/>
 
-### （四）解决问题的思路
+#### （四）解决问题的思路
 
 可以看到`effect`的单测是通过的，那完成这一组功能后，继续完成的跑一下所有单测，看看是否对其他功能造成影响。
 
@@ -286,11 +289,11 @@ yarn test
 
 果然，不出意外的话，出现意外了。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090709131.png" width="888" alt="06_04_完整单测结果"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4ec6c8d8482349eb94bb1c7d9bf3f23e~tplv-k3u1fbpfcp-zoom-1.image" width="888" alt="06_04_完整单测结果"/>
 
 可以看到是`reactive`的`happy path`单测出了问题，而且`activeEffect`是个`undefined`，那我们回去重新看一下。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090632425.png" width="666" alt="06_05_reactive单测"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e6bdc70f2bb645b58525f65ebf1dac75~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="06_05_reactive单测"/>
 
 不难看出`observed.foo`也是触发了`get`操作，也就是触发了`track`去收集依赖，而此时并没有`effect`
 包裹着的依赖存在，所以`run`不会执行，也就没有`activeEffect`，所以此时我们并不应该去收集依赖，所以增加一个判断。
@@ -304,4 +307,11 @@ activeEffect.deps.push(dep);
 
 为了验证结果，再次跑一下全部的单测。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211090713460.png" width="666" alt="06_06_完整单测结果2"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c388d9eaf9fa4fa7a6fb55bcbc9e89ed~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="06_06_完整单测结果2"/>
+
+### ps
+
+这是一个 [早起俱乐部](https://juejin.cn/pin/7173512204149325861)！
+
+⭐️ 适合人群：所有想有所改变的人，可以先从早起半小时开始！抽出30分钟，从初心开始！！  
+⭐️ 没有任何其它意味，只是本人想寻找一起早起、志同道合的小伙伴。
