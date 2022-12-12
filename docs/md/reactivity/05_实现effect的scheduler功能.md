@@ -1,15 +1,22 @@
+---
+theme: nico
+---
+
+开启掘金成长之旅！这是我参与「掘金日新计划 · 12
+月更文挑战」的第6天，[点击查看活动详情](https://juejin.cn/post/7167294154827890702 "https://juejin.cn/post/7167294154827890702")
+
 # 05_实现effect的scheduler功能
 
 ### 一、调度执行
 
-说到`scheduler`，也就是`vue3`的调度器，可能大家还不是特别明白调度器的作用，先大概介绍一下。
+说到`scheduler`，也就是`vue3`的调度器，可能大家还不是特别明白调度器的是什么，先大概介绍一下。
 
 > 可调度性是响应式系统非常重要的特性。首先我们要明确什么是可调度性。所谓可调度性，指的是当`trigger`
 > 动作触发副作用函数重新执行时，有能力决定副作用函数执行的时机、次数以及方式。
 
 > 有了调度函数，我们在`trigger`函数中触发副作用函数重新执行时，就可以直接调用用户传递的调度器函数，从而把控制权交给用户。
 
-举个栗子：
+举个栗子🌰：
 
 ```ts
 const obj = reactive({ foo: 1 });
@@ -148,11 +155,11 @@ export function effect(fn, options: any = {}) {
 
 代码实现完成，那接下来看一下单测结果。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211070652467.png" width="666" alt="05_01_scheduler单测结果05_scheduler单测结果05_scheduler单测结果"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d106665d486a40578851a43ff37cb738~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="05_01_scheduler单测结果05_scheduler单测结果05_scheduler单测结果"/>
 
 ### 四、回归实现
 
-好，现在我们再回到最初的栗子，在上面`scheduler`基础上，完成现有需求，继续看一下对此需求的单测。
+好，现在我们再回到最初的栗子🌰，在上面`scheduler`基础上，完成现有需求，继续看一下对此需求的单测。
 
 ```ts
 it('job queue', () => {
@@ -229,8 +236,7 @@ for (const effect of dep) {
 需要注意的是，在`flushJob`内通过`p.then`将一个函数添加到`微任务队列`，在`微任务队列`内完成对`jobQueue`的遍历执行。
 
 整段代码的效果是，连续对`obj.foo`执行两次自增操作，会同步且连续地执行两次`scheduler`
-调度函数，这意味着同一个副作用函数会被`jobQueue.add(fn)`添加两次，但由于`Set`数据结构的去重能力，最终`jobQueue`
-中只会有一项，即当前副作用函数。
+调度函数，这意味着同一个副作用函数会被`jobQueue.add(fn)`添加两次，但由于`Set`数据结构的去重能力，最终`jobQueue`中只会有一项，即当前副作用函数。
 
 类似地，`flushJob`也会同步且连续执行两次，但由于`isFlushing`标志的存在，实际上`flushJob`函数在一个事件循环内只会执行一次，即在微任务队列内执行一次。
 
@@ -239,7 +245,7 @@ for (const effect of dep) {
 
 再跑一遍完整流程，来看一下单测结果，确保新增代码不影响以往功能。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202211071701323.png" width="666" alt="05_02_jobQueue的实现"/>
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dcec56f128bd4b35b3e3db8681275acc~tplv-k3u1fbpfcp-zoom-1.image" width="666" alt="05_02_jobQueue的实现"/>
 
 测试结束完以后，由于`job queue`是一个实际案例单测，所以我们将其抽离到`examples`下面的`testCase`里，建立`jobQueue.spec.ts`。
 
@@ -248,4 +254,11 @@ for (const effect of dep) {
 可能你已经注意到了，这个功能点类似于在`Vue.js`中连续多次修改响应式数据但只会触发一次更新，实际上`Vue.js`
 内部实现了一个更加完善的调度器，思路与上文介绍的相同。
 
-此外，综合前面的这些内容，我们就可以实现`Vue.js`中一个非常重要且非常有特色的能力--`computed计算属性`，这个就后面再慢慢实现吧...
+此外，综合前面的这些内容，我们就可以实现`Vue.js`中一个非常重要且非常有特色的能力：`computed计算属性`，这个就后面再慢慢实现吧...
+
+### ps
+
+这是一个 [早起俱乐部](https://juejin.cn/pin/7173512204149325861)！
+
+⭐️ 适合人群：所有想有所改变的人，可以先从早起半小时开始！抽出30分钟，从初心开始！！  
+⭐️ 没有任何其它意味，只是本人想寻找一起早起、志同道合的小伙伴。
