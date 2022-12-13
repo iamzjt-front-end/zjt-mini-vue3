@@ -115,7 +115,7 @@ export function trigger(target, key) {
 
 再跑一遍第一段单测。
 
-<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212130605186.png" width="999" alt="17_06_第一段测试通过"/>
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212130605186.png" width="999" alt="17_07_第一段测试通过"/>
 
 可以看到测试已通过。
 
@@ -139,9 +139,10 @@ export function trigger(target, key) {
 
 继续往下走，当`obj.prop`变化时，也触发了`trigger`，并且取到了依赖，触发更新。
 
-但这并不是我们所期望的，非活跃分支中的响应式对象发生变化，不需要去进行这种不必要地更新，因为无论更不更新都不会影响程序运行的结果且浪费性能。
+但这并不是我们所期望的，一方面，我们希望的是当分支不活跃时，理应冗余依赖应从`targetMap`中删除；  
+另一方面，就算不活跃分支中的响应式对象发生变化，也不需要去进行这种不必要地更新，因为无论更不更新都不会影响程序运行的结果且浪费性能。
 
-
+那实现思路就很清晰了。
 
 ##### 3. 单测结果
 
