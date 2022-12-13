@@ -22,6 +22,7 @@ export class ReactiveEffect {
     // 未stop，继续往下走
     // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
     shouldTrack = true;
+    cleanupEffect(this);
     activeEffect = this;
     const result = this._fn();
     // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集，所以调用完以后就关上开关，不允许再次收集依赖
@@ -101,7 +102,9 @@ export function trigger(target, key) {
 }
 
 export function triggerEffects(dep) {
-  for (const effect of dep) {
+  const effects = new Set<any>(dep);
+
+  for (const effect of effects) {
     if (effect.scheduler) {
       // ps: effect._fn 为了让scheduler能拿到原始依赖
       effect.scheduler(effect._fn);
