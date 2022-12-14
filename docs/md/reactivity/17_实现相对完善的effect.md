@@ -142,10 +142,98 @@ export function trigger(target, key) {
 但这并不是我们所期望的，一方面，我们希望的是当分支不活跃时，理应冗余依赖应从`targetMap`中删除；  
 另一方面，就算不活跃分支中的响应式对象发生变化，也不需要去进行这种不必要地更新，因为无论更不更新都不会影响程序运行的结果且浪费性能。
 
-那实现思路就很清晰了。
+那实现思路就很清晰了，我们只需要在每次收集依赖前将依赖全部清空，然后再重新收集即可。
 
-##### 3. 单测结果
+```ts
+// src/reactivity/effect.ts
 
+export class ReactiveEffect {
+  // ... 省略部分代码
+
+  run() {
+    // 已经被stop，那就直接返回结果
+    if (!this.active) {
+      return this._fn();
+    }
+    // 未stop，继续往下走
+    // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
+    shouldTrack = true;
+    // + 清空依赖
+    cleanupEffect(this);
+    activeEffect = this;
+    const result = this._fn();
+    // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集，所以调用完以后就关上开关，不允许再次收集依赖
+    shouldTrack = false;
+
+    return result;
+  }
+
+  // ... 省略部分代码
+}
+```
+
+看上去好像结束了，就这么一行代码。  
+但如果你尝试运行单测，会发现目前的实现会导致无限循环执行。
+
+[//]: # (todo 无限运行截图)
+
+原因在哪呢？
+
+问题出在`triggerEffects`的`for of`循环中:  
+这里会遍历执行`run`，而`run`运行中会`cleanupEffect(this)`清空所有依赖;
+然后重新运行`this._fn()`原始依赖时，会继续进行依赖的收集，会重新添加到`dep`中。
+
+就相当于下面这段代码：
+
+```ts
+const set = new Set([1]);
+
+set.forEach(item => {
+  set.delete(1);
+  set.add(1);
+  console.log('遍历中');
+})
+```
+
+在浏览器中运行，会发现无限执行下去，内存暴增，最后卡死。
+
+> 语言规范中对此有明确的说明：在调用 forEach 遍历 Set 集合时，如果一个值已经被访问过了，但该值被删除并重新添加到集合，如果此时 forEach 遍历没有结束，那么该值会重新被访问。
+
+因此，上面的代码会无限执行。  
+解决办法很简单，那就是构造另外一个`Set`集合并遍历它，或者拓展成数组进行遍历。  
+遍历的是新`Set`，而增删操作的是旧的`Set`，并不会造成什么影响。
+
+```ts
+const set = new Set([1]);
+const newSet = new Set(set);
+// const newArr = [...set];
+
+newSet.forEach(item => {
+  set.delete(1);
+  set.add(1);
+  console.log('遍历中');
+})
+```
+
+那我们此处也采用同样的思路去解决。
+
+```ts
+export function triggerEffects(dep) {
+  // + 重新构建一个新的 Set
+  const effects = new Set<any>(dep);
+
+  for (const effect of effects) {
+    if (effect.scheduler) {
+      // ps: effect._fn 为了让scheduler能拿到原始依赖
+      effect.scheduler(effect._fn);
+    } else {
+      effect.run();
+    }
+  }
+}
+```
+
+[//]: # (todo 第二个单测通过截图)
 
 #### （二）嵌套effect问题
 
@@ -193,7 +281,6 @@ it('should allow nested effects', () => {
 
 
 ##### 3. 单测结果
-
 
 #### （三）无限递归循环
 
