@@ -68,7 +68,7 @@ describe('effect', () => {
     expect(conditionalSpy).toHaveBeenCalledTimes(2);
   });
 
-  it.skip('should allow nested effects', () => {
+  it('should allow nested effects', () => {
     const nums = reactive({ num1: 0, num2: 1, num3: 2 });
     const dummy: any = {};
 
