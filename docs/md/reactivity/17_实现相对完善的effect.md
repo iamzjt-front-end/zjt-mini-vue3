@@ -175,7 +175,7 @@ export class ReactiveEffect {
 看上去好像结束了，就这么一行代码。  
 但如果你尝试运行单测，会发现目前的实现会导致无限循环执行。
 
-[//]: # (todo 无限运行截图)
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212160628264.png" width="666" alt="17_08_第二段单测无限循环"/>
 
 原因在哪呢？
 
@@ -197,7 +197,8 @@ set.forEach(item => {
 
 在浏览器中运行，会发现无限执行下去，内存暴增，最后卡死。
 
-> 语言规范中对此有明确的说明：在调用 forEach 遍历 Set 集合时，如果一个值已经被访问过了，但该值被删除并重新添加到集合，如果此时 forEach 遍历没有结束，那么该值会重新被访问。
+> 语言规范中对此有明确的说明：在调用`forEach`遍历`Set`
+> 集合时，如果一个值已经被访问过了，但该值被删除并重新添加到集合，如果此时`forEach`遍历没有结束，那么该值会重新被访问。
 
 因此，上面的代码会无限执行。  
 解决办法很简单，那就是构造另外一个`Set`集合并遍历它，或者拓展成数组进行遍历。  
@@ -233,7 +234,7 @@ export function triggerEffects(dep) {
 }
 ```
 
-[//]: # (todo 第二个单测通过截图)
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212160632767.png" width="999" alt="17_09_第二段单测通过截图"/>
 
 #### （二）嵌套effect问题
 
@@ -281,22 +282,24 @@ it('should allow nested effects', () => {
 
 简单举个栗子就是：组件嵌套、计算属性。  
 那有朋友就要问了，组件嵌套和effect嵌套有什么关系吗？  
-其实关系就在于，组件中的`template`会被转成`render`函数，而组件要实现响应式，就得将`render`函数作为`ReactiveEffect`的参数进行依赖收集。而当组件嵌套或者使用计算属性时，此时就会产生`effect`的嵌套，而这我们是需要支持的。
+其实关系就在于，组件中的`template`会被转成`render`函数，而组件要实现响应式，就得将`render`函数作为`ReactiveEffect`
+的参数进行依赖收集。而当组件嵌套或者使用计算属性时，此时就会产生`effect`的嵌套，而这我们是需要支持的。
 
-上面的单测就展示了`effect(parentSpy)`中嵌套了`childEffect`的情况，然后分别触发`num1`、`num2`和`num3`变化，然后观察`dummy`的变化及`父子effect`的执行情况。
+上面的单测就展示了`effect(parentSpy)`中嵌套了`childEffect`的情况，然后分别触发`num1`、`num2`和`num3`变化，然后观察`dummy`
+的变化及`父子effect`的执行情况。
 
 ##### 2. 完善逻辑
 
 首先先走一遍单测，看一下我们现有的代码哪里会不满足用例的需求。
 
-[//]: # (todo 单测报错截图)
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212160639280.png" width="999" alt="17_09_effect嵌套单测报错截图"/>
 
-通过报错信息可以看到我们期望`num3`为7，但是实际上`num3`还是2。  
+通过报错信息可以看到，我们期望`num3`为7，但是实际上`num3`还是2。  
 很显然，`num3`并没有被更新，也就是`nums.num3 = 7`，并没有触发到`parentSpy`的执行。  
 那我们反推回去，可以猜测`依赖收集`时，`depsMap`中并没有收集到`num3`的依赖。  
 为了验证这个猜想，打上断点，我们来调试一下。
 
-[//]: # (todo 调试截图)
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212160643089.png" width="888" alt="17_10_effect嵌套调试截图"/>
 
 通过调试，可以看出，`depsMap`中果然只有`num1`、`num2`的依赖。  
 那为什么会造成这个情况呢？
@@ -304,8 +307,6 @@ it('should allow nested effects', () => {
 我们使用`activeEffect`这个全局变量来存储通过`effect`注册的依赖，而这么做的话，我们一次只能存储一个依赖。  
 当从`外层effect`进入`里层effect`时，内层函数的执行会覆盖`activeEffect`的值，`activeEffect`的指向从`parentSpy`转向`childSpy`。  
 并且，这个指向的变化是不可逆的，没办法从里向外层转。
-
-
 
 
 ##### 3. 单测结果
