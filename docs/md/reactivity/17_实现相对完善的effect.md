@@ -296,13 +296,20 @@ it('should allow nested effects', () => {
 
 通过报错信息可以看到，我们期望`num3`为7，但是实际上`num3`还是2。  
 很显然，`num3`并没有被更新，也就是`nums.num3 = 7`，并没有触发到`parentSpy`的执行。  
-那我们反推回去，可以猜测`依赖收集`时，`depsMap`中并没有收集到`num3`的依赖。  
-为了验证这个猜想，打上断点，我们来调试一下。
+那我们反推回去，可以猜测`依赖收集`时，`depsMap`中并没有收集到`num3`的依赖。
+
+为了验证这个猜想，我们在`nums.num3 = 7`这一行，打上断点，我们来调试一下。
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212160643089.png" width="888" alt="17_10_effect嵌套调试截图"/>
 
-通过调试，可以看出，`depsMap`中果然只有`num1`、`num2`的依赖。  
-那为什么会造成这个情况呢？
+通过调试，可以看出，`depsMap`中果然只有`num1`、`num2`的依赖。
+
+那为什么会造成这个情况呢？  
+`num1`和`num2`的依赖都能收集到，那意思就是`num3`的`get`操作被触发时，没有`track`到相关的依赖。  
+并且可以看到`depsMap`中连`num3`这个键都没有，那肯定就是`isTracking()`为`false`时，直接`return`掉了。
+
+那我们再次给`parentSpy`中的`dummy.num3 = nums.num3;`这一行打上断点，调试一下看看。
+
 
 我们使用`activeEffect`这个全局变量来存储通过`effect`注册的依赖，而这么做的话，我们一次只能存储一个依赖。  
 当从`外层effect`进入`里层effect`时，内层函数的执行会覆盖`activeEffect`的值，`activeEffect`的指向从`parentSpy`转向`childSpy`。  
