@@ -294,6 +294,8 @@ it('should allow nested effects', () => {
 
 <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212160639280.png" width="999" alt="17_09_effect嵌套单测报错截图"/>
 
+###### 2.1. 出现第一个问题
+
 通过报错信息可以看到，我们期望`num3`为7，但是实际上`num3`还是2。  
 很显然，`num3`并没有被更新，也就是`nums.num3 = 7`，并没有触发到`parentSpy`的执行。  
 那我们反推回去，可以猜测`依赖收集`时，`depsMap`中并没有收集到`num3`的依赖。
@@ -310,10 +312,81 @@ it('should allow nested effects', () => {
 
 那我们再次给`parentSpy`中的`dummy.num3 = nums.num3;`这一行打上断点，调试一下看看。
 
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212190653535.png" width="555" alt="17_10_shouldTrack为false"/>
+
+通过断点进到`num3`触发`get`后的`track`操作，可以看到`shouldTrack`为`false`，那这样的话，我们上面的猜想也就成立了，果然是这个原因。
+
+分析一下过程，首先`shouldTrack`为一个全局变量。  
+当`effect(parentSpy)`开始运行时，会运行`run`方法，`shouldTrack`被置为`true`；  
+再当嵌套的`childEffect()`运行时，也会运行里层`_effect`的`run`方法，`shouldTrack`先被置为`true`
+，进行原始依赖的运行，后被置为`false`，不允许再次收集依赖。  
+当`childEffect`运行结束后，到我们断点的这一行，`shouldTrack`依旧为`false`，所以`nums3`的`track`就直接跳出了。  
+但我们需要的是：`shouldTrack`应该为`true`，因为此时`父级effect`还并未执行结束。
+
+###### 2.2. 解决第一个问题
+
+那我们就可以用一个`lastShouldTrack`来存储上一次的`shouldTrack`，再当执行完时，恢复上一次的状态。
+
+```ts
+// src/reactivity/effect.ts
+
+export class ReactiveEffect {
+  // ... 省略部分代码
+
+  run() {
+    // 已经被stop，那就直接返回结果
+    if (!this.active) {
+      return this._fn();
+    }
+
+    let lastShouldTrack = shouldTrack;
+    // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
+    activeEffect = this;
+    shouldTrack = true;
+    cleanupEffect(this);
+    const result = this._fn();
+    // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集
+    // 调用完以后就恢复上次的状态
+    shouldTrack = lastShouldTrack;
+
+    return result;
+  }
+
+  // ... 省略部分代码
+}
+```
+
+此时，再次调试一下，可以发现，`shouldTrack`已经是`true`了。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212190721211.png" width="666" alt="17_11_shouldTrack正确恢复状态"/>
+
+而且我们也已经可以给`nums3`收集到依赖了。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212190724501.png" width="777" alt="17_12_num3收集到依赖"/>
+
+###### 2.3. 出现第二个问题
+
+这时，我们再次跑单测时，会发现`dummy.nums3`还是不对，还是没有更新。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212190731875.png" width="777" alt="17_13_依赖收集到但nums3并未正确更新"/>
+
+梳理一下现在的情况：
+
+1. 收集到了`nums3`的依赖
+2. `nums3`的依赖触发正常触发
+3. `nums3`的值并未被更新
+
+综上，那只能怀疑一点，那就是`nums3`的依赖收集的并不对。  
+为什么会出现这个情况呢？
 
 我们使用`activeEffect`这个全局变量来存储通过`effect`注册的依赖，而这么做的话，我们一次只能存储一个依赖。  
 当从`外层effect`进入`里层effect`时，内层函数的执行会覆盖`activeEffect`的值，`activeEffect`的指向从`parentSpy`转向`childSpy`。  
-并且，这个指向的变化是不可逆的，没办法从里向外层转。
+并且，这个指向的变化是不可逆的，没办法从里向外层转。  
+所以，导致`nums3`的依赖虽然收集到了，但是收集的`activeEffect`是`childSpy`，而不是`parentSpy`。
+
+###### 2.4. 解决第二个问题
+
+归根结底的原因，其实也可以理解成，由于`effect`的嵌套，导致`activeEffect`的指向未能恢复到上一次的状态。
 
 
 ##### 3. 单测结果
