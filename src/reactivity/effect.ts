@@ -1,5 +1,6 @@
 import { extend } from '../shared';
 
+// const effectStack: any = [];
 let activeEffect;
 let shouldTrack = false;
 
@@ -19,16 +20,40 @@ export class ReactiveEffect {
     if (!this.active) {
       return this._fn();
     }
-    // 未stop，继续往下走
+
+    let parent = activeEffect;
+    let lastShouldTrack = shouldTrack;
     // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
+    activeEffect = this;
     shouldTrack = true;
     cleanupEffect(this);
-    activeEffect = this;
     const result = this._fn();
-    // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集，所以调用完以后就关上开关，不允许再次收集依赖
-    shouldTrack = false;
+    // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集
+    // 调用完以后就恢复上次的状态
+    activeEffect = parent;
+    shouldTrack = lastShouldTrack;
 
     return result;
+
+    // if (!effectStack.includes(this)) {
+    //   cleanupEffect(this);
+    //   let lastShouldTrack = shouldTrack;
+    //   try {
+    //     // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
+    //     shouldTrack = true;
+    //     // 入栈
+    //     effectStack.push(this);
+    //     activeEffect = this;
+    //     return this._fn();
+    //   } finally {
+    //     // 出栈
+    //     effectStack.pop();
+    //     // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集，所以调用完以后就关上开关，不允许再次收集依赖
+    //     // 恢复 shouldTrack 开启之前的状态
+    //     shouldTrack = lastShouldTrack;
+    //     activeEffect = effectStack[effectStack.length - 1];
+    //   }
+    // }
   }
 
   stop() {
