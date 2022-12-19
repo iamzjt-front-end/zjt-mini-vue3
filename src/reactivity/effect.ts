@@ -8,6 +8,8 @@ export class ReactiveEffect {
   private _fn: any;
   deps: any[] = [];
   active = true; // 是否已经 stop 过，true 为 未stop
+  parent: any = undefined;
+
   onStop?: () => void;
 
   // 在构造函数的参数上使用public等同于创建了同名的成员变量
@@ -23,17 +25,30 @@ export class ReactiveEffect {
 
     let parent = activeEffect;
     let lastShouldTrack = shouldTrack;
-    // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
-    activeEffect = this;
-    shouldTrack = true;
-    cleanupEffect(this);
-    const result = this._fn();
-    // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集
-    // 调用完以后就恢复上次的状态
-    activeEffect = parent;
-    shouldTrack = lastShouldTrack;
 
-    return result;
+    while (parent) {
+      if (parent === this) {
+        return;
+      }
+      parent = parent.parent;
+    }
+
+    try {
+      this.parent = activeEffect;
+      // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
+      activeEffect = this;
+      shouldTrack = true;
+
+      cleanupEffect(this);
+      return this._fn();
+    } finally {
+      // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集
+      // 调用完以后就恢复上次的状态
+      activeEffect = this.parent;
+      shouldTrack = lastShouldTrack;
+      this.parent = undefined;
+    }
+
 
     // if (!effectStack.includes(this)) {
     //   cleanupEffect(this);
