@@ -384,9 +384,79 @@ export class ReactiveEffect {
 并且，这个指向的变化是不可逆的，没办法从里向外层转。  
 所以，导致`nums3`的依赖虽然收集到了，但是收集的`activeEffect`是`childSpy`，而不是`parentSpy`。
 
+为了验证是不是这个问题，我们需要调整一下测试用例`nums.num3 = 7;`后面代码的执行顺序，分下面两种情况。
+
+```ts
+// src/reactivity/tests/effect.spec.ts
+
+// 情况1：查看parentSpy的执行次数
+nums.num3 = 7;
+expect(parentSpy).toHaveBeenCalledTimes(3);
+expect(childSpy).toHaveBeenCalledTimes(5);
+expect(dummy).toEqual({ num1: 4, num2: 10, num3: 7 });
+
+// 情况2：查看childSpy的执行次数
+nums.num3 = 7;
+expect(childSpy).toHaveBeenCalledTimes(5);
+expect(parentSpy).toHaveBeenCalledTimes(3);
+expect(dummy).toEqual({ num1: 4, num2: 10, num3: 7 });
+```
+
+[//]: # (todo 调试截图)
+
+果然如此，`parentSpy`的执行次数为`2`，而`childSpy`的执行次数为`5`。  
+证明`nums3`变化后触发了`childSpy`的执行，那收集到的依赖不对，就不言而喻了。
+
 ###### 2.4. 解决第二个问题
 
-归根结底的原因，其实也可以理解成，由于`effect`的嵌套，导致`activeEffect`的指向未能恢复到上一次的状态。
+归根结底的原因，其实也可以理解成：由于`effect`的嵌套，导致`activeEffect`的指向未能恢复到上一次的状态。  
+那我们要做的就是，将`activeEffect`先行保存，结束完以后再恢复。  
+做法其实和解决第一个问题类似。
+
+```ts
+// src/reactivity/effect.ts
+
+export class ReactiveEffect {
+  // ... 省略部分代码
+
+  parent: any = undefined;
+  
+  run() {
+    // 已经被stop，那就直接返回结果
+    if (!this.active) {
+      return this._fn();
+    }
+
+    let parent = activeEffect;
+    let lastShouldTrack = shouldTrack;
+
+    while (parent) {
+      if (parent === this) {
+        return;
+      }
+      parent = parent.parent;
+    }
+
+    try {
+      this.parent = activeEffect;
+      // 此时应该被收集依赖，可以给activeEffect赋值，去运行原始依赖
+      activeEffect = this;
+      shouldTrack = true;
+
+      cleanupEffect(this);
+      return this._fn();
+    } finally {
+      // 由于运行原始依赖的时候，会触发代理对象的get操作，会重复进行依赖收集
+      // 调用完以后就恢复上次的状态
+      activeEffect = this.parent;
+      shouldTrack = lastShouldTrack;
+      this.parent = undefined;
+    }
+  }
+    
+  // ... 省略部分代码
+}
+```
 
 
 ##### 3. 单测结果
