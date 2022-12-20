@@ -492,17 +492,7 @@ export class ReactiveEffect {
 }
 ```
 
-###### 2.6. 闲话时间
-
-在实现和完善这个功能的过程时，我看到了至少不下于3种解法。
-
-这里罗列一下：
-
-1. 定义`parent`局部变量，进行初始状态保存，执行完后进行恢复。
-2. 在`this`上挂载一个`parent`属性进行保存，执行完后重新赋值给`activeEffect`进行恢复，然后再将`this`的`parent`属性置为`undefined`。
-3. 通过数组模拟`栈`结构，进行`入栈`和`出栈`操作。
-
-也就是因此，我发现，源码`effect.ts`中`let parent: ReactiveEffect | undefined = activeEffect`这一行，定义的`parent`变量，后续处理一下之后，似乎并没有在其他地方用到，然后就觉得是冗余的，然后就给官网提了个`issue`，最后发现，还是我献丑了。
+[//]: # (###### 2.6. 代码重构 todo)
 
 #### （三）无限递归循环
 
