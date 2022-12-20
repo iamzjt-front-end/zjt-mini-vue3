@@ -442,6 +442,13 @@ export class ReactiveEffect {
 }
 ```
 
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212200809205.png" width="666" alt="17_15_解决effect后完整effect单测"/>
+
+###### 2.5. 其他思路
+
+
+###### 2.6. 闲话时间
+
 
 #### （三）无限递归循环
 
