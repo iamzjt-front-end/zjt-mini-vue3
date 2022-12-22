@@ -134,7 +134,7 @@ describe('effect', () => {
     expect(r).toBe('foo');
   });
 
-  it.skip('should discover new branches when running manually', () => {
+  it('should discover new branches when running manually', () => {
     let dummy;
     let run = false;
     const obj = reactive({ prop: 'value' });
@@ -186,8 +186,6 @@ describe('effect', () => {
     let dummy;
     const obj = reactive({ prop: 1 });
     const runner = effect(() => {
-      // todo 需reactive完善相关逻辑后进行验证
-      // obj.prop++;
       dummy = obj.prop;
     });
 
@@ -196,17 +194,14 @@ describe('effect', () => {
 
     stop(runner);
     obj.prop = 3;
-    // get set
-    // todo ++的情况依旧会触发数据的变化，并未停止响应式
-    // obj.prop++;
     expect(dummy).toBe(2);
 
     runner();
     expect(dummy).toBe(3);
 
     // todo runner完以后还是丢失响应式
-    // obj.prop++;
-    // expect(dummy).toBe(4);
+    obj.prop++;
+    expect(dummy).toBe(4);
   });
 
   it('onStop', () => {
