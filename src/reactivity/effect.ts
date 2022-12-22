@@ -23,15 +23,15 @@ export class ReactiveEffect {
       return this._fn();
     }
 
-    // let parent = activeEffect;
+    let parent = activeEffect;
     let lastShouldTrack = shouldTrack;
 
-    // while (parent) {
-    //   if (parent === this) {
-    //     return;
-    //   }
-    //   parent = parent.parent;
-    // }
+    while (parent) {
+      if (parent === this) {
+        return;
+      }
+      parent = parent.parent;
+    }
 
     try {
       this.parent = activeEffect;
