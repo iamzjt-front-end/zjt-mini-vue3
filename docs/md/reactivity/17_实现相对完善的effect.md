@@ -502,10 +502,11 @@ export class ReactiveEffect {
 it('should avoid implicit infinite recursive loops with itself', () => {
   const counter = reactive({ num: 0 });
   const counterSpy = jest.fn(() => counter.num++);
-
   effect(counterSpy);
+
   expect(counter.num).toBe(1);
   expect(counterSpy).toHaveBeenCalledTimes(1);
+
   counter.num = 4;
   expect(counter.num).toBe(5);
   expect(counterSpy).toHaveBeenCalledTimes(2);
@@ -514,5 +515,50 @@ it('should avoid implicit infinite recursive loops with itself', () => {
 
 ##### 2. 完善逻辑
 
+还是先来跑一下这个单测，看看有什么问题。
+
+<img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212210713293.png" width="666" alt="17_16_自增导致栈溢出"/>
+
+通过单测可以看出`effect`中的依赖是一个自增操作`counter.num++`，单测运行过程中引起了`栈溢出`。
+
+那为什么会出现`栈溢出`呢？  
+那就要对比`自增`跟我们`之前的依赖`有什么不同？  
+可以注意到，我们`之前的依赖`都是单一操作，要么`读`，要么`写`。  
+而`自增`可以分成两步来看，先读取自身的值，然后再加一并写入。
+
+再来分析一下执行过程:
+
+首先读取`counter.num`的值，这会触发`track`操作，将当前副作用函数收集到`depsMap`中，接着将其加`1`后再赋值给`counter.num`
+，此时会触发`trigger`操作，即把`depsMap`中的副作用函数取出并执行。但问题是该副作用函数正在执行中，还没有执行完毕，就要开始下一次的执行。这样会导致无限递归地调用自己，于是就产生了栈溢出。
+
+解决办法并不难。  
+通过分析这个问题我们能够发现，读取和设置操作是在同一个副作用函数内进行的。  
+此时无论是`track`时收集的副作用函数，还是`trigger`时要触发执行的副作用函数，都是`activeEffect`。基于此，我们可以在`trigger`动作发生时增加守卫条件：如果 trigger 触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行，如以下代码所示：
+
+```ts
+// src/reactivity/effect.ts
+
+export function triggerEffects(dep) {
+  const effects = new Set<any>();
+
+  // + 如果trigger触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行
+  dep && dep.forEach(effect => {
+    if (effect !== activeEffect) {
+      effects.add(effect);
+    }
+  });
+
+  for (const effect of effects) {
+    if (effect.scheduler) {
+      // ps: effect._fn 为了让scheduler能拿到原始依赖
+      effect.scheduler(effect._fn);
+    } else {
+      effect.run();
+    }
+  }
+}
+```
 
 ##### 3. 单测结果
+
+ <img src="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/202212221426903.png" width="888" alt="17_17_解决自增引起的栈溢出"/>

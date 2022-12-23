@@ -142,7 +142,14 @@ export function trigger(target, key) {
 }
 
 export function triggerEffects(dep) {
-  const effects = new Set<any>(dep);
+  const effects = new Set<any>();
+
+  // + 如果trigger触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行
+  dep && dep.forEach(effect => {
+    if (effect !== activeEffect) {
+      effects.add(effect);
+    }
+  });
 
   for (const effect of effects) {
     if (effect.scheduler) {
