@@ -104,13 +104,14 @@ describe('effect', () => {
     expect(childSpy).toHaveBeenCalledTimes(5);
   });
 
-  it.skip('should avoid implicit infinite recursive loops with itself', () => {
+  it('should avoid implicit infinite recursive loops with itself', () => {
     const counter = reactive({ num: 0 });
     const counterSpy = jest.fn(() => counter.num++);
     effect(counterSpy);
 
     expect(counter.num).toBe(1);
     expect(counterSpy).toHaveBeenCalledTimes(1);
+
     counter.num = 4;
     expect(counter.num).toBe(5);
     expect(counterSpy).toHaveBeenCalledTimes(2);
@@ -133,7 +134,7 @@ describe('effect', () => {
     expect(r).toBe('foo');
   });
 
-  it.skip('should discover new branches when running manually', () => {
+  it('should discover new branches when running manually', () => {
     let dummy;
     let run = false;
     const obj = reactive({ prop: 'value' });
@@ -185,8 +186,6 @@ describe('effect', () => {
     let dummy;
     const obj = reactive({ prop: 1 });
     const runner = effect(() => {
-      // todo 需reactive完善相关逻辑后进行验证
-      // obj.prop++;
       dummy = obj.prop;
     });
 
@@ -195,9 +194,6 @@ describe('effect', () => {
 
     stop(runner);
     obj.prop = 3;
-    // get set
-    // todo ++的情况依旧会触发数据的变化，并未停止响应式
-    // obj.prop++;
     expect(dummy).toBe(2);
 
     runner();
