@@ -117,7 +117,7 @@ export function track(target, key) {
 
 而且我们知道，`dep`收集到的依赖其实就是`activeEffect`，而`activeEffect`是在`run`的时候去赋值的。
 
-那我们只需要根据是否已经被`stop`来区分，`run`的时候是否给`activeEffect`赋值。
+那我们只需要根据是否已经被`stop`，来区分`run`的时候是否给`activeEffect`赋值。
 
 然而`ReactiveEffect`类中的`active`状态就是用来判断是否已经被`stop`过，那么问题就迎刃而解了。
 
@@ -162,15 +162,3 @@ class ReactiveEffect {
 ```
 
 [//]: # (todo 分析runner以后还是无响应式的情况)
-
-而`run`被调用只有三种情况：
-
-1. 首次运行 -> _effect.run()
-2. 运行runner -> runner() -> _effect.run()
-3. trigger
-
-第1，第2种情况，很显然没啥区别，而且我们也是希望此时要收集到依赖。
-
-那么只有第3种情况的时候，我们并不想要再次收集依赖。
-
-第3种情况我们来反推一下，也就是：触发`trigger` -> 触发`set`
