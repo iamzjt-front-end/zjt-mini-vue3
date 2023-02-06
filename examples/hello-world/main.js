@@ -1,2 +1,4 @@
 // vue3
-createApp(App).mount("#app");
+import { App } from './App';
+
+createApp(App).mount('#app');
