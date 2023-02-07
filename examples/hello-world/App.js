@@ -1,4 +1,4 @@
-import { h } from '../../lib/guide-mini-vue.esm.js';
+import { h } from '../../lib/zjt-mini-vue.esm.js';
 
 export const App = {
   // .vue
