@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "build": "rollup -c rollup.config.mjs"
+    "build": "rollup -c rollup.config.mjs",
+    "build -w": "rollup -c rollup.config.mjs --watch"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
