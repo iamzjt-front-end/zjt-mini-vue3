@@ -36,10 +36,14 @@ function mountElement(vnode, container) {
   if (typeof children === 'string') {
     el.textContent = children;
   } else if (isArray(children)) {
-    children.forEach(v => patch(v, el));
+    mountChildren(vnode, el);
   }
 
   container.append(el);
+}
+
+function mountChildren(vnode, container) {
+  vnode.children.forEach(v => patch(v, container));
 }
 
 function processComponent(vnode, container) {
