@@ -7,9 +7,15 @@ export function render(vnode, container) {
 
 function patch(vnode, container) {
   // 处理组件
-  // 判断 是不是 element
+  // todo 判断 是不是 element
+  // 是 element 的话，那么就应该处理 element
+  // 如何区分 element 还是 component 类型？ -> type
 
-  processComponent(vnode, container);
+  if (typeof vnode.type === 'string') {
+    // processElement(vnode, container);
+  } else {
+    processComponent(vnode, container);
+  }
 }
 
 function processComponent(vnode, container) {
