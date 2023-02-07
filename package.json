@@ -1,7 +1,8 @@
 {
   "name": "zjt-mini-vue",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/zjt-mini-vue.cjs.js",
+  "module": "lib/zjt-mini-vue.esm.js",
   "repository": "git@github.com:iamzjt-front-end/zjt-mini-vue.git",
   "author": "iamzjt-front-end <iamzjt@foxmail.com>",
   "license": "MIT",
