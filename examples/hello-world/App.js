@@ -6,7 +6,16 @@ export const App = {
   // render
   render() {
     // ui
-    return h('div', 'hi, ' + this.msg);
+    return h(
+      'div',
+      { id: 'root', class: ['red', 'active'] },
+      // 'hi, ' + this.msg
+      // 'hi, mini-vue'
+      [
+        h('div', { class: 'red' }, 'hi'),
+        h('div', { class: 'green' }, 'mini-vue')
+      ]
+    );
   },
 
   setup() {
