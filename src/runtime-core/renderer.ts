@@ -1,4 +1,5 @@
 import { createComponentInstance, setupComponent } from './component';
+import { isObject, isArray } from '../shared';
 
 export function render(vnode, container) {
   // patch
@@ -12,10 +13,33 @@ function patch(vnode, container) {
   // 如何区分 element 还是 component 类型？ -> type
 
   if (typeof vnode.type === 'string') {
-    // processElement(vnode, container);
-  } else {
+    processElement(vnode, container);
+  } else if (isObject(vnode.type)) {
     processComponent(vnode, container);
   }
+}
+
+function processElement(vnode, container) {
+  mountElement(vnode, container);
+}
+
+function mountElement(vnode, container) {
+  const { type, props, children } = vnode;
+
+  const el = document.createElement(type);
+
+  for (const key in props) {
+    const val = props[key];
+    el.setAttribute(key, val);
+  }
+
+  if (typeof children === 'string') {
+    el.textContent = children;
+  } else if (isArray(children)) {
+    children.forEach(v => patch(v, el));
+  }
+
+  container.append(el);
 }
 
 function processComponent(vnode, container) {
