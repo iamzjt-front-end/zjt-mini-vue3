@@ -9,12 +9,12 @@ export const App = {
     return h(
       'div',
       { id: 'root', class: ['red', 'active'] },
-      // 'hi, ' + this.msg
+      'hi, ' + this.msg
       // 'hi, mini-vue'
-      [
-        h('div', { class: 'red' }, 'hi'),
-        h('div', { class: 'green' }, 'mini-vue')
-      ]
+      // [
+      //   h('div', { class: 'red' }, 'hi'),
+      //   h('div', { class: 'green' }, 'mini-vue')
+      // ]
     );
   },
 
