@@ -1,5 +1,6 @@
 import { createComponentInstance, setupComponent } from './component';
 import { isObject, isArray } from '../shared';
+import { ShapeFlags } from '../shared/ShapeFlags';
 
 export function render(vnode, container) {
   // patch
@@ -7,9 +8,12 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-  if (typeof vnode.type === 'string') {
+  const { shapeFlag } = vnode;
+
+  // 获取shapeFlag，并通过与运算判断节点类型
+  if (shapeFlag & ShapeFlags.ELEMENT) {
     processElement(vnode, container);
-  } else if (isObject(vnode.type)) {
+  } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
     processComponent(vnode, container);
   }
 }
@@ -19,7 +23,7 @@ function processElement(vnode, container) {
 }
 
 function mountElement(vnode, container) {
-  const { type, props, children } = vnode;
+  const { type, props, children, shapeFlag } = vnode;
 
   const el = (vnode.el = document.createElement(type));
 
@@ -28,9 +32,10 @@ function mountElement(vnode, container) {
     el.setAttribute(key, val);
   }
 
-  if (typeof children === 'string') {
+  // 判断子节点类型
+  if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
     el.textContent = children;
-  } else if (isArray(children)) {
+  } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
     mountChildren(vnode, el);
   }
 
