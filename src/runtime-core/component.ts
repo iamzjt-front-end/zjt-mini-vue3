@@ -22,9 +22,15 @@ function setupStatefulComponent(instance) {
   instance.proxy = new Proxy({}, {
     get(target, key) {
       // setupState: setup return出来的
-      const { setupState } = instance;
+      const { setupState, vnode } = instance;
       if (key in setupState) {
         return setupState[key];
+      }
+
+      debugger
+      // $el
+      if (key === '$el') {
+        return vnode.el;
       }
     }
   });
