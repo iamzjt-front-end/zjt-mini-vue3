@@ -1,5 +1,5 @@
 import { createComponentInstance, setupComponent } from './component';
-import { isObject, isArray } from '../shared';
+import { isObject, isArray, isOn } from '../shared';
 import { ShapeFlags } from '../shared/ShapeFlags';
 
 export function render(vnode, container) {
@@ -29,7 +29,13 @@ function mountElement(vnode, container) {
 
   for (const key in props) {
     const val = props[key];
-    el.setAttribute(key, val);
+    // 实现注册事件
+    if (isOn(key)) {
+      const name = key.slice(2).toLowerCase();
+      el.addEventListener(name, val);
+    } else {
+      el.setAttribute(key, val);
+    }
   }
 
   // 判断子节点类型
