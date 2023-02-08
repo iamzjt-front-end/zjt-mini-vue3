@@ -1,5 +1,5 @@
 import { createComponentInstance, setupComponent } from './component';
-import { isObject, isArray, isOn } from '../shared';
+import { isOn } from '../shared';
 import { ShapeFlags } from '../shared/ShapeFlags';
 
 export function render(vnode, container) {
