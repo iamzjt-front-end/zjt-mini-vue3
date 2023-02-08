@@ -11,7 +11,13 @@ export const App = {
     window.self = this;
     return h(
       'div',
-      { id: 'root', class: ['red', 'active'] },
+      {
+        id: 'root',
+        class: ['red', 'active'],
+        onClick() {
+          console.log('click');
+        }
+      },
       // setupState
       // this.$el -> get root element
       'hi, ' + this.msg

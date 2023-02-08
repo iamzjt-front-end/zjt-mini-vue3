@@ -8,4 +8,7 @@ export const hasChanged = (val, newVal) => {
   return !Object.is(val, newVal);
 };
 
-export const isArray = Array.isArray
+export const isArray = Array.isArray;
+
+const onRE = /^on[^a-z]/;
+export const isOn = (key: string) => onRE.test(key);
