@@ -27,7 +27,6 @@ function setupStatefulComponent(instance) {
         return setupState[key];
       }
 
-      debugger
       // $el
       if (key === '$el') {
         return vnode.el;
