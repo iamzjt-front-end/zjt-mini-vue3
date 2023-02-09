@@ -534,7 +534,7 @@ it('should avoid implicit infinite recursive loops with itself', () => {
 解决办法并不难。  
 通过分析这个问题我们能够发现，读取和设置操作是在同一个副作用函数内进行的。  
 此时无论是`track`时收集的副作用函数，还是`trigger`时要触发执行的副作用函数，都是`activeEffect`。基于此，我们可以在`trigger`
-动作发生时增加守卫条件：如果 trigger 触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行，如以下代码所示：
+动作发生时增加守卫条件：如果`trigger`触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行，如以下代码所示：
 
 ```ts
 // src/reactivity/effect.ts
