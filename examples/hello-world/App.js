@@ -1,4 +1,5 @@
 import { h } from '../../lib/zjt-mini-vue.esm.js';
+import { Foo } from './Foo.js';
 
 window.self = null;
 
@@ -20,12 +21,16 @@ export const App = {
       },
       // setupState
       // this.$el -> get root element
-      'hi, ' + this.msg
+      // 'hi, ' + this.msg
       // 'hi, mini-vue'
       // [
       //   h('div', { class: 'red' }, 'hi'),
       //   h('div', { class: 'green' }, 'mini-vue')
       // ]
+      [
+        h('div', {}, this.msg),
+        h(Foo, { count: 1 })
+      ]
     );
   },
 
