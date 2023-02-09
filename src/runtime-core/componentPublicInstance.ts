@@ -8,9 +8,6 @@ export const PublicInstanceHandlers = {
   get({ _: instance }, key) {
     // setupState: setup return出来的
     const { setupState, props } = instance;
-    if (key in setupState) {
-      return setupState[key];
-    }
 
     if (hasOwn(setupState, key)) {
       return setupState[key];
