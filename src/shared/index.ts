@@ -12,3 +12,5 @@ export const isArray = Array.isArray;
 
 const onRE = /^on[^a-z]/;
 export const isOn = (key: string) => onRE.test(key);
+
+export const hasOwn = (val, key) => Object.prototype.hasOwnProperty.call(val, key);
