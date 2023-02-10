@@ -103,7 +103,7 @@ The following is a series of articles on the <a href="https://juejin.cn/column/7
 
 ## Corrigendum
 
-If you find an error, you can make a corrigendum to the corresponding issues or contact me on <a href="https://iamzjt-1256754141.cos.ap-nanjing.myqcloud.com/images/IamZJT-WeChat.jpg">WeChat：IamZJT_</a>.
+If you find an error, you can make a corrigendum to the corresponding issues or contact me on <a href="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/IamZJT-WeChat.jpg">WeChat：IamZJT_</a>.
 
 If you like or inspire, welcome star, which is also an encouragement to the author.
 Of course, You can also add my WeChat to communicate and grow together.
