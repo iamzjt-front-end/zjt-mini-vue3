@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/badge/Github-iamzjt--front--end-blue" alt="IamZJT" />
   </a>&emsp;
   <a href="https://github.com/vuejs/core">
-    <img src="https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs">
+    <img src="https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs" alt="Vue">
   </a>&emsp;
   <a href="https://github.com/iamzjt-front-end">
     <img src="https://komarev.com/ghpvc/?username=iamzjt-front-end&label=++访客统计++&color=lightgrey" alt="访客统计" />
@@ -42,6 +42,7 @@
 > 🚀 提高调试能力
 
 > ⚡️ 提高代码质量
+
 
 ## 系列文章
 
@@ -95,8 +96,8 @@
 
 [📰 01_编译模块概述.md]()
 
-
 ✍️ 待续... 
+
 
 ## 勘误
 
@@ -104,6 +105,7 @@
 
 如果喜欢或者有所启发，欢迎 star，对作者也是一种鼓励。
 当然也可以添加我的微信，一起交流成长。
+
 
 ## 许可证
 
