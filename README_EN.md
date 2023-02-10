@@ -48,6 +48,8 @@ Why should I read the source code?
 
 The following is a series of articles on the <a href="https://juejin.cn/column/7168612212133593095"><img src="https://img.shields.io/badge/juejin-juejin column-487DF8"></a> that are updated simultaneously.
 
+👍 welcome all bosses to praise! 😂
+
 #### 一、reactivity
 
 [📑 01_vue3源码的介绍](https://juejin.cn/post/7168664872547254285)
