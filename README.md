@@ -1,21 +1,30 @@
-# <center> zjt-mini-vue  
+<p align="center">
+  <font size="40" color="#41b883">zjt-mini-vue3</font>
+</p>
 
 <div align="center">
-[![github](https://img.shields.io/badge/IamZJT-mini--vue-blue)](https://github.com/iamzjt-front-end/zjt-mini-vue3)
-
-![Vue.js](https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs)
-
-<img src="https://komarev.com/ghpvc/?username=iamzjt-front-end&label=++访客统计++&color=lightgrey" alt="访客统计" />
+  <a href="https://github.com/iamzjt-front-end/zjt-mini-vue3">
+    <img src="https://img.shields.io/badge/IamZJT-zjt--mini--vue3-blue">
+  </a>&emsp;
+  <a href="https://github.com/vuejs/core">
+    <!-- <img src="https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs"> -->
+    <img width="40" src="https://vuejs.org/images/logo.png" alt="Vue logo">
+  </a>&emsp;
+  <a href="#">
+    <img src="https://komarev.com/ghpvc/?username=iamzjt-front-end&label=++访客统计++&color=lightgrey" alt="访客统计" />
+  </a>&emsp;
 </div>
 
-#### <center> [中文](README.md) / [English](README_EN.md)
+### [中文](README.md) / [English](README_EN.md)
 
-此仓库为`vue3`源码学习记录，手写完成`vue3`的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`
+### 介绍
+
+🙋 此仓库为`vue3`源码学习记录，手写完成`vue3`的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`
 （编译），通过实现最简`vue3`模型，来深入学习理解`vue3`源码，仅仅用于学习哦！
 
 下面为此项目同步更新的系列文章：<a href="https://juejin.cn/user/958429872532632/posts?sort=newest"><img src="https://img.shields.io/badge/juejin-掘金-487DF8"></a>
 
-### 一、reactivity篇
+#### 一、reactivity篇
 
 [01_vue3源码的介绍](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/01_vue3源码的介绍.md)
 
@@ -58,12 +67,12 @@
 [18_一些未曾注意到的细节](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/18_一些未曾注意到的细节.md)
 
 
-### 二、runtime-core篇
+#### 二、runtime-core篇
 
 [01_实现初始化component流程](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/runtime-core/01_实现初始化component主流程.md)
 
 
-### 三、compiler篇
+#### 三、compiler篇
 
 [01_编译模块概述.md](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/compiler/01_编译模块概述.md)
 
