@@ -1,6 +1,8 @@
 # zjt-mini-vue  [![github](https://img.shields.io/badge/IamZJT-mini--vue-blue)](https://github.com/iamzjt-front-end/zjt-mini-vue3)  ![Vue.js](https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs)
 
-[中文](README.md) / [English](README_EN.md)
+<p align='center'>
+  <a href='./README.md'>简体中文</a> | English
+</p>
 
 ## Why
 
