@@ -51,58 +51,54 @@
 
 #### 一、reactivity篇
 
-[01_vue3源码的介绍](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/01_vue3源码的介绍.md)
+[📑 01_vue3源码的介绍](https://juejin.cn/post/7168664872547254285)
 
-[02_TDD开发环境搭建](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/02_TDD开发环境搭建.md)
+[📑 02_TDD开发环境搭建](https://juejin.cn/post/7169351734051995678)
 
-[03_01_实现effect&reactive&依赖收集&触发依赖](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/03_01_实现effect&reactive&依赖收集&触发依赖.md)
+[📑 03_01_实现effect&reactive&依赖收集&触发依赖](https://juejin.cn/post/7170480677614256158)
 
-[03_02_理解Proxy和Reflect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/03_02_理解Proxy和Reflect.md)
+[📑 03_02_理解Proxy和Reflect](https://juejin.cn/post/7171655019425431583)
 
-[03_03_实现相对完善的reactive和effect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/03_03_实现相对完善的reactive和effect.md)
+[📑 04_实现effect返回runner](https://juejin.cn/post/7172683900282634254)
 
-[04_实现effect返回runner](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/04_实现effect返回runner.md)
+[📑 05_实现effect的scheduler功能](https://juejin.cn/post/7173498493334454285)
 
-[05_实现effect的scheduler功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/05_实现effect的scheduler功能.md)
+[📑 06_实现effect的stop和onStop功能](https://juejin.cn/post/7174161779264585741)
 
-[06_实现effect的stop和onStop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/06_实现effect的stop和onStop功能.md)
+[📑 07_实现readonly功能](https://juejin.cn/post/7175279305327378490)
 
-[07_实现readonly功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/07_实现readonly功能.md)
+[📑 08_实现isReactive和isReadonly](https://juejin.cn/post/7176086344815837242)
 
-[08_实现isReactive和isReadonly](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/08_实现isReactive和isReadonly.md)
+[📑 09_优化stop功能](https://juejin.cn/post/7179866542857781285)
 
-[09_优化stop功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/09_优化stop功能.md)
+[📑 10_实现reactive和readonly的嵌套对象转换功能](https://juejin.cn/post/7179867852877332517)
 
-[10_实现reactive和readonly的嵌套对象转换功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/10_实现reactive和readonly的嵌套对象转换功能.md)
+[📑 11_实现shallowReadonly和isProxy功能](https://juejin.cn/post/7180887790899920956)
 
-[11_实现shallowReadonly和isProxy功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/11_实现shallowReadonly和isProxy功能.md)
+[📑 12_实现ref功能](https://juejin.cn/post/7181710097863671864)
 
-[12_实现ref功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/12_实现ref功能.md)
+[📑 13_实现isRef和unRef功能](https://juejin.cn/post/7182379390183931960)
 
-[13_实现isRef和unRef功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/13_实现isRef和unRef功能.md)
+[📑 14_实现proxyRefs功能](https://juejin.cn/post/7185443608827265061)
 
-[14_实现proxyRefs功能](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/14_实现proxyRefs功能.md)
+[📑 15_实现computed计算属性](https://juejin.cn/post/7189847454152392760)
 
-[15_实现computed计算属性](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/15_实现computed计算属性.md)
+[📑 16_实现相对完善的reactive](https://juejin.cn/post/7194275202212036667)
 
-[16_实现相对完善的reactive](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/16_实现相对完善的reactive.md)
-
-[17_实现相对完善的effect](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/17_实现相对完善的effect.md)
-
-[18_一些未曾注意到的细节](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/reactivity/18_一些未曾注意到的细节.md)
+[📑 17_实现相对完善的effect](https://juejin.cn/post/7196690584286462008)
 
 
 #### 二、runtime-core篇
 
-[01_实现初始化component流程](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/runtime-core/01_实现初始化component主流程.md)
+[📃 01_实现初始化component流程]()
 
 
 #### 三、compiler篇
 
-[01_编译模块概述.md](https://github.com/iamzjt-front-end/zjt-mini-vue3/blob/main/docs/md/compiler/01_编译模块概述.md)
+[📰 01_编译模块概述.md]()
 
 
-待续...
+待续... 🖋️
 
 ## 勘误
 
