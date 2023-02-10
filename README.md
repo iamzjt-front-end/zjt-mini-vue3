@@ -27,16 +27,21 @@
 
 ## 介绍
 
-🙋 你好！此仓库为 `vue3` 源码学习记录，手写完成 `vue3` 的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`
-（编译），通过实现最简 `vue3` 模型，来深入学习理解 `vue3` 源码，仅仅用于学习哦！
+🙋 你好！
 
-> ✨ [了解 Vue3源码实现原理，读懂尤大理念精髓](https://github.com/type-challenges/type-challenges/issues?q=is%3Aissue+is%3Aopen+label%3Anew-challenge)
+此仓库为 `vue3` 源码学习记录，以 `TDD` 为驱动，致力于用最少的代码实现 `happy path` ，来深入学习理解 `vue3` 源码。
+ 
+手写完成 `vue3` 的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`（编译），实现最简 `vue3` 模型！
 
-> 🔥 Start the challenge in [TypeScript Playground](https://www.typescriptlang.org/play?install-plugin=%40type-challenges%2Fplayground-plugin)
+为什么要读源码？
 
-> 🚀 Start the challenge locally in [your IDE or text editor with TypeScript language support](#play-locally)
+> ✨ 加强对编程语言的理解
 
-> ⚡️ Start the challenge in [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=YRM.type-challenges)
+> 🔥 提升编程能力
+
+> 🚀 提高调试能力
+
+> ⚡️ 提高代码质量
 
 ## 系列文章
 
