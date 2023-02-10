@@ -1,9 +1,19 @@
-# zjt-mini-vue ![Vue.js](https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs)
+# <center> zjt-mini-vue  
+
+<div align="center">
+[![github](https://img.shields.io/badge/IamZJT-mini--vue-blue)](https://github.com/iamzjt-front-end/zjt-mini-vue3)
+
+![Vue.js](https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs)
+
+<img src="https://komarev.com/ghpvc/?username=iamzjt-front-end&label=++访客统计++&color=lightgrey" alt="访客统计" />
+</div>
+
+#### <center> [中文](README.md) / [English](README_EN.md)
 
 此仓库为`vue3`源码学习记录，手写完成`vue3`的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`
 （编译），通过实现最简`vue3`模型，来深入学习理解`vue3`源码，仅仅用于学习哦！
 
-下面为此项目同步更新的系列文章：
+下面为此项目同步更新的系列文章：<a href="https://juejin.cn/user/958429872532632/posts?sort=newest"><img src="https://img.shields.io/badge/juejin-掘金-487DF8"></a>
 
 ### 一、reactivity篇
 
