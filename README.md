@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <a href="https://github.com/iamzjt-front-end/zjt-mini-vue3" target="_blank">
+  <a href="https://github.com/iamzjt-front-end/zjt-mini-vue3">
     <img src="https://img.shields.io/badge/IamZJT-zjt--mini--vue3-blue" alt="IamZJT" />
   </a>&emsp;
   <a href="https://github.com/vuejs/core">
