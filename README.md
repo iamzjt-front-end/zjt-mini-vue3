@@ -48,6 +48,8 @@
 
 下面为同步更新的 <a href="https://juejin.cn/column/7168612212133593095"><img src="https://img.shields.io/badge/juejin-掘金专栏-487DF8"></a> 系列文章：
 
+👍 欢迎各位大佬点点赞啊！🧡
+
 #### 一、reactivity篇
 
 [📑 01_vue3源码的介绍](https://juejin.cn/post/7168664872547254285)
