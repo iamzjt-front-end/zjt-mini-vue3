@@ -15,7 +15,9 @@
   </a>&emsp;
 </p>
 
-### [中文](README.md) / [English](README_EN.md)
+<p align='center'>
+  简体中文 | <a href='./README_EN.md'>English</a>
+</p>
 
 ### 介绍
 
