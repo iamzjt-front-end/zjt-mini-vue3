@@ -1,19 +1,19 @@
-<p align="center">
-  <font size="40" color="#41b883">zjt-mini-vue3</font>
-</p>
+<h1 align="center">
+  zjt-mini-vue3
+</h1>
 
-<div align="center">
+<p align="center">
   <a href="https://github.com/iamzjt-front-end/zjt-mini-vue3">
     <img src="https://img.shields.io/badge/IamZJT-zjt--mini--vue3-blue">
   </a>&emsp;
   <a href="https://github.com/vuejs/core">
     <!-- <img src="https://img.shields.io/badge/-Vue.js-%232c3e50?style=flat-square&logo=vuedotjs"> -->
-    <img width="40" src="https://vuejs.org/images/logo.png" alt="Vue logo">
+    <img width="26" src="https://vuejs.org/images/logo.png" alt="Vue logo">
   </a>&emsp;
-  <a href="#">
+  <a href="https://github.com/iamzjt-front-end">
     <img src="https://komarev.com/ghpvc/?username=iamzjt-front-end&label=++访客统计++&color=lightgrey" alt="访客统计" />
   </a>&emsp;
-</div>
+</p>
 
 ### [中文](README.md) / [English](README_EN.md)
 
