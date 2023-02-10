@@ -22,10 +22,10 @@
 
 ## 介绍
 
-🙋 此仓库为`vue3`源码学习记录，手写完成`vue3`的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`
-（编译），通过实现最简`vue3`模型，来深入学习理解`vue3`源码，仅仅用于学习哦！
+🙋 你好！此仓库为 `vue3` 源码学习记录，手写完成 `vue3` 的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`
+（编译），通过实现最简 `vue3` 模型，来深入学习理解 `vue3` 源码，仅仅用于学习哦！
 
-> ✨ [Upcoming challenges](https://github.com/type-challenges/type-challenges/issues?q=is%3Aissue+is%3Aopen+label%3Anew-challenge)
+> ✨ [了解 Vue3源码实现原理，读懂尤大理念精髓](https://github.com/type-challenges/type-challenges/issues?q=is%3Aissue+is%3Aopen+label%3Anew-challenge)
 
 > 🔥 Start the challenge in [TypeScript Playground](https://www.typescriptlang.org/play?install-plugin=%40type-challenges%2Fplayground-plugin)
 
@@ -99,8 +99,8 @@
 如果发现错误，可以在相应的 issues 进行勘误或者 <a href="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/IamZJT-WeChat.jpg">微信：IamZJT_</a> 联系我。
 
 如果喜欢或者有所启发，欢迎 star，对作者也是一种鼓励。
+当然也可以添加我的微信，一起交流成长。
 
-## License
+## 许可证
 
 所有内容均采用 [MIT](https://spdx.org/licenses/MIT) 进行许可。
-
