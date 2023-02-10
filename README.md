@@ -29,9 +29,9 @@
 
 🙋 你好！
 
-此仓库为 `vue3` 源码学习记录，以 `TDD` 为驱动，致力于用最少的代码实现 `happy path` ，来深入学习理解 `vue3` 源码。
+此仓库为 `Vue3` 源码学习记录，以 `TDD` 为驱动，致力于用最少的代码实现 `happy path` ，来深入学习理解 `Vue3` 源码。
  
-手写完成 `vue3` 的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`（编译），实现最简 `vue3` 模型！
+手写完成 `Vue3` 的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`（编译），实现最简 `Vue3` 模型！
 
 为什么要读源码？
 
@@ -52,7 +52,7 @@
 
 #### 一、reactivity篇
 
-[📑 01_vue3源码的介绍](https://juejin.cn/post/7168664872547254285)
+[📑 01_Vue3源码的介绍](https://juejin.cn/post/7168664872547254285)
 
 [📑 02_TDD开发环境搭建](https://juejin.cn/post/7169351734051995678)
 
