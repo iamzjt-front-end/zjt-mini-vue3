@@ -29,9 +29,9 @@
 
 🙋 Hello!
 
-This repository is `vue3` source code learning record, to `TDD` as the driver, committed to the least code to achieve `happy path`, to learn to understand `vue3` source code in depth.
+This repository is `Vue3` source code learning record, to `TDD` as the driver, committed to the least code to achieve `happy path`, to learn to understand `Vue3` source code in depth.
 
-The three modules of `vue3`, `reactivity`, `runtime` and `compiler`, have been written by hand to achieve the minimalist `vue3` model!
+The three modules of `Vue3`, `reactivity`, `runtime` and `compiler`, have been written by hand to achieve the minimalist `Vue3` model!
 
 Why should I read the source code?
 
@@ -52,7 +52,7 @@ The following is a series of articles on the <a href="https://juejin.cn/column/7
 
 #### 一、reactivity
 
-[📑 01_vue3源码的介绍](https://juejin.cn/post/7168664872547254285)
+[📑 01_Vue3源码的介绍](https://juejin.cn/post/7168664872547254285)
 
 [📑 02_TDD开发环境搭建](https://juejin.cn/post/7169351734051995678)
 
