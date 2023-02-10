@@ -15,16 +15,29 @@
   </a>&emsp;
 </p>
 
-<p align='center'>
+<h3 align="center">
   简体中文 | <a href='./README_EN.md'>English</a>
-</p>
+</h3>
 
-### 介绍
+
+## 介绍
 
 🙋 此仓库为`vue3`源码学习记录，手写完成`vue3`的三大模块，`reactivity`（响应式）、`runtime`（运行时）及`compiler`
 （编译），通过实现最简`vue3`模型，来深入学习理解`vue3`源码，仅仅用于学习哦！
 
-下面为此项目同步更新的系列文章：<a href="https://juejin.cn/user/958429872532632/posts?sort=newest"><img src="https://img.shields.io/badge/juejin-掘金-487DF8"></a>
+> ✨ [Upcoming challenges](https://github.com/type-challenges/type-challenges/issues?q=is%3Aissue+is%3Aopen+label%3Anew-challenge)
+
+> 🔥 Start the challenge in [TypeScript Playground](https://www.typescriptlang.org/play?install-plugin=%40type-challenges%2Fplayground-plugin)
+
+> 🚀 Start the challenge locally in [your IDE or text editor with TypeScript language support](#play-locally)
+
+> ⚡️ Start the challenge in [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=YRM.type-challenges)
+
+## 系列文章
+
+下面为此项目同步更新的系列文章：
+
+<a href="https://juejin.cn/column/7168612212133593095"><img src="https://img.shields.io/badge/juejin-掘金专栏-487DF8"></a>
 
 #### 一、reactivity篇
 
@@ -80,3 +93,14 @@
 
 
 待续...
+
+## 勘误
+
+如果发现错误，可以在相应的 issues 进行勘误或者 <a href="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/IamZJT-WeChat.jpg">微信：IamZJT_</a> 联系我。
+
+如果喜欢或者有所启发，欢迎 star，对作者也是一种鼓励。
+
+## License
+
+所有内容均采用 [MIT](https://spdx.org/licenses/MIT) 进行许可。
+
