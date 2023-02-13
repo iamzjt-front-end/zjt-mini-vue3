@@ -130,7 +130,7 @@
 - [x] setup 可获取 props 和 context
 - [x] 支持 $el、$slots等api
 - [x] 支持 component emit
-- [x] 支持 单节点、多节点slots
+- [x] 支持 单节点、多节点及具名slots
 - [x] 可以在 render 函数中获取 setup 返回的对象
 - [x] nextTick 的实现
 - [x] 支持 proxy
