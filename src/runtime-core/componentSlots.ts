@@ -1,7 +1,18 @@
 import { isArray } from '../shared';
 
 export function initSlots(instance, children) {
+  normalizeObjectSlot(children, instance.slots);
+}
+
+function normalizeObjectSlot(children, slots) {
   // array -> 多节点插槽
-  // object -> 具名插槽?
-  instance.slots = isArray(children) ? children : [children];
+  // object -> 具名插槽
+  for (const key in children) {
+    const value = children[key];
+    slots[key] = normalizeSlotValue(value);
+  }
+}
+
+function normalizeSlotValue(value) {
+  return isArray(value) ? value : [value];
 }
