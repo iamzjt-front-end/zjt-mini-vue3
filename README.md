@@ -101,6 +101,58 @@
 ✍️ 待续... 
 
 
+## 目前已实现功能点
+
+### reactivity
+
+- [x] 实现 reactive
+- [x] 实现 ref
+- [x] 实现 readonly
+- [x] 实现 嵌套reactive和readonly
+- [x] 实现 computed
+- [x] 实现 effect 并支持分支切换、嵌套及++情况下的依赖收集
+- [x] 实现 track 依赖收集
+- [x] 实现 trigger 触发依赖
+- [x] 实现 effect.scheduler 调度器
+- [x] 实现 基于runner、effect.stop 和 onStop的响应式开启关闭控制
+- [x] 实现 isReactive和isReadonly
+- [x] 实现 isProxy
+- [x] 实现 isRef和unRef
+- [x] 实现 shallowReadonly
+- [x] 实现 proxyRefs
+
+### runtime-core
+
+- [x] 支持 component 类型
+- [x] 支持 element 类型
+- [x] 支持 Text 类型节点
+- [x] 初始化 props
+- [x] setup 可获取 props 和 context
+- [x] 支持 $el、$slots等api
+- [x] 支持 component emit
+- [x] 支持 单节点、多节点slots
+- [x] 可以在 render 函数中获取 setup 返回的对象
+- [x] nextTick 的实现
+- [x] 支持 proxy
+- [x] 支持 getCurrentInstance
+- [x] 支持 provide/inject
+- [x] 支持 watchEffect
+
+### compiler-core
+- [x] 解析插值
+- [x] 解析 element
+- [x] 解析 text
+
+### runtime-dom
+- [x] 支持 custom renderer 
+
+### runtime-test
+- [x] 支持测试 runtime-core 的逻辑
+
+### infrastructure
+- [x] support monorepo with pnpm
+
+
 ## 勘误
 
 如果发现错误，可以在相应的 issues 进行勘误或者 <a href="https://iamzjt-1256754140.cos.ap-nanjing.myqcloud.com/images/IamZJT-WeChat.jpg">微信：IamZJT_</a> 联系我。
