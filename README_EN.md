@@ -103,7 +103,7 @@ The following is a series of articles on the <a href="https://juejin.cn/column/7
 
 ## Currently implemented function points
 
-### reactivity
+#### reactivity
 
 - [x] implement reactive
 - [x] implement ref
@@ -121,8 +121,7 @@ The following is a series of articles on the <a href="https://juejin.cn/column/7
 - [x] implement shallowReadonly
 - [x] implement proxyRefs
 
-
-### runtime-core
+#### runtime-core
 
 - [x] support component type
 - [x] support element type
@@ -139,18 +138,18 @@ The following is a series of articles on the <a href="https://juejin.cn/column/7
 - [x] support provide/inject
 - [x] support watchEffect
 
-### compiler-core
+#### compiler-core
 - [x] parse interpolation
 - [x] parse element
 - [x] parse text
 
-### runtime-dom
+#### runtime-dom
 - [x] support custom renderer 
 
-### runtime-test
+#### runtime-test
 - [x] support test runtime-core
 
-### infrastructure
+#### infrastructure
 - [x] support monorepo with pnpm
 
 

@@ -103,7 +103,7 @@
 
 ## 目前已实现功能点
 
-### reactivity
+#### reactivity
 
 - [x] 实现 reactive
 - [x] 实现 ref
@@ -121,7 +121,7 @@
 - [x] 实现 shallowReadonly
 - [x] 实现 proxyRefs
 
-### runtime-core
+#### runtime-core
 
 - [x] 支持 component 类型
 - [x] 支持 element 类型
@@ -138,18 +138,18 @@
 - [x] 支持 provide/inject
 - [x] 支持 watchEffect
 
-### compiler-core
+#### compiler-core
 - [x] 解析插值
 - [x] 解析 element
 - [x] 解析 text
 
-### runtime-dom
+#### runtime-dom
 - [x] 支持 custom renderer 
 
-### runtime-test
+#### runtime-test
 - [x] 支持测试 runtime-core 的逻辑
 
-### infrastructure
+#### infrastructure
 - [x] support monorepo with pnpm
 
 
