@@ -15,11 +15,20 @@ export const App = {
     //   ]
     // );
     // 单节点 slot
+    // const foo = h(
+    //   Foo,
+    //   {},
+    //   h('p', {}, '123')
+    // );
+    // 自定义位置 插槽
     const foo = h(
       Foo,
       {},
-      h('p', {}, '123')
-    );
+      {
+        header: h('p', {}, 'header'),
+        footer: h('p', {}, 'footer')
+      }
+    )
 
     return h('div', {}, [app, foo]);
   },

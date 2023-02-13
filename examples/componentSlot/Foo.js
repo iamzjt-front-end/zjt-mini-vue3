@@ -7,7 +7,13 @@ export const Foo = {
     return h(
       'div',
       {},
-      [foo, renderSlots(this.$slots)]
+      // 1、获取到要渲染的元素
+      // 2、获取要要渲染的位置
+      [
+        renderSlots(this.$slots, 'header'),
+        foo,
+        renderSlots(this.$slots, 'footer')
+      ]
     );
   },
 
