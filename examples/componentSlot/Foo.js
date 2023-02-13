@@ -1,11 +1,14 @@
-import { h } from '../../lib/zjt-mini-vue.esm.js';
+import { h, renderSlots } from '../../lib/zjt-mini-vue.esm.js';
 
 export const Foo = {
   render() {
     const foo = h('p', {}, 'foo');
 
-    console.log(this.$slots);
-    return h('div', {}, [foo, this.$slots]);
+    return h(
+      'div',
+      {},
+      [foo, renderSlots(this.$slots)]
+    );
   },
 
   setup() {
