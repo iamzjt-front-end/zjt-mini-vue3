@@ -111,8 +111,8 @@
 - [x] 实现 嵌套reactive和readonly
 - [x] 实现 computed
 - [x] 实现 effect 并支持分支切换、嵌套及++情况下的依赖收集
-- [x] 实现 track 依赖收集
-- [x] 实现 trigger 触发依赖
+- [x] 实现 track -> 依赖收集
+- [x] 实现 trigger -> 触发依赖
 - [x] 实现 effect.scheduler 调度器
 - [x] 实现 基于runner、effect.stop 和 onStop的响应式开启关闭控制
 - [x] 实现 isReactive和isReadonly
