@@ -130,7 +130,7 @@ The following is a series of articles on the <a href="https://juejin.cn/column/7
 - [x] setup can get props and context
 - [x] support $el、$slots and other api
 - [x] support component emit
-- [x] support single-node, multi-node slots
+- [x] support single-node, multi-node and named slots
 - [x] support get the object returned by setup in the render function
 - [x] support nextTick
 - [x] support proxy
