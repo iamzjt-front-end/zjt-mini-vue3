@@ -9,7 +9,7 @@ function normalizeObjectSlot(children, slots) {
   // object -> 具名插槽
   for (const key in children) {
     const value = children[key];
-    slots[key] = normalizeSlotValue(value);
+    slots[key] = (props) => normalizeSlotValue(value(props));
   }
 }
 

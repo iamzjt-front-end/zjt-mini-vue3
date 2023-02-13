@@ -5,7 +5,13 @@ export const App = {
   name: 'App',
   render() {
     const app = h('div', {}, 'app');
-    // 支持多节点 slot
+    // 单节点插槽
+    // const foo = h(
+    //   Foo,
+    //   {},
+    //   h('p', {}, '123')
+    // );
+    // 多节点插槽
     // const foo = h(
     //   Foo,
     //   {},
@@ -14,21 +20,15 @@ export const App = {
     //     h('p', {}, '456')
     //   ]
     // );
-    // 单节点 slot
-    // const foo = h(
-    //   Foo,
-    //   {},
-    //   h('p', {}, '123')
-    // );
-    // 自定义位置 插槽
+    // 具名插槽
     const foo = h(
       Foo,
       {},
       {
-        header: h('p', {}, 'header'),
-        footer: h('p', {}, 'footer')
+        header: ({ age }) => h('p', {}, 'header' + age),
+        footer: ({ age }) => h('p', {}, 'footer' + age)
       }
-    )
+    );
 
     return h('div', {}, [app, foo]);
   },
