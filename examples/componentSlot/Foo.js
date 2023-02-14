@@ -6,7 +6,7 @@ export const Foo = {
 
     return h(
       'div',
-      {},
+      { class: 'foo-root' },
       // 单节点插槽
       [foo, renderSlots(this.$slots)]
     );

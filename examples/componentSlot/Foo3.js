@@ -6,7 +6,7 @@ export const Foo3 = {
 
     return h(
       'div',
-      {},
+      { class: 'foo3-root' },
       // 具名插槽
       // 1、获取到要渲染的元素
       // 2、获取要要渲染的位置

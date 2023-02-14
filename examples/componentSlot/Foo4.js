@@ -8,7 +8,7 @@ export const Foo4 = {
 
     return h(
       'div',
-      {},
+      { class: 'foo4-root' },
       // 作用域插槽
       [
         renderSlots(this.$slots, 'header', { age: 18 }),

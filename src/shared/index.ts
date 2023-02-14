@@ -10,6 +10,10 @@ export const hasChanged = (val, newVal) => {
 
 export const isArray = Array.isArray;
 
+export const isString = (val) => typeof val === 'string';
+
+export const isFunction = (val) => typeof val === 'function';
+
 const onRE = /^on[^a-z]/;
 export const isOn = (key: string) => onRE.test(key);
 

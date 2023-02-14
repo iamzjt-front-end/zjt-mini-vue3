@@ -3,6 +3,7 @@ import { initProps } from './componentProps';
 import { shallowReadonly } from '../reactivity/reactive';
 import { emit } from './componentEmit';
 import { initSlots } from './componentSlots';
+import { isObject } from '../shared';
 
 export function createComponentInstance(vnode) {
   const component = {
@@ -47,7 +48,7 @@ function handleSetupResult(instance, setupResult) {
   // function object
   // todo function
 
-  if (typeof setupResult === 'object') {
+  if (isObject(setupResult)) {
     instance.setupState = setupResult;
   }
 

@@ -1,4 +1,4 @@
-import { isArray } from '../shared';
+import { isArray, isFunction } from '../shared';
 import { ShapeFlags } from '../shared/ShapeFlags';
 
 export function initSlots(instance, children) {
@@ -15,7 +15,7 @@ function normalizeObjectSlot(children, slots) {
   if (!isArray(children)) {
     for (const key in children) {
       const value = children[key];
-      if (typeof value === 'function') {
+      if (isFunction(value)) {
         slots[key] = (props) => normalizeSlotValue(value(props));
       } else {
         slots[key] = normalizeSlotValue(value);

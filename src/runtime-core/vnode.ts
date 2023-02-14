@@ -1,5 +1,5 @@
 import { ShapeFlags } from '../shared/ShapeFlags';
-import { isArray } from '../shared';
+import { isArray, isString, isObject } from '../shared';
 
 export function createVNode(type, props?, children?) {
   const vnode = {
@@ -11,15 +11,15 @@ export function createVNode(type, props?, children?) {
   };
 
   // 判断子节点类型并加上
-  if (typeof vnode.children === 'string') {
+  if (isString(vnode.children)) {
     vnode.shapeFlag |= ShapeFlags.TEXT_CHILDREN;
   } else if (isArray(vnode.children)) {
     vnode.shapeFlag |= ShapeFlags.ARRAY_CHILDREN;
   }
 
-  // slot -> component + children: object
+  // slot -> type: component + children: object
   if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-    if (typeof children === 'object') {
+    if (isObject(children)) {
       vnode.shapeFlag |= ShapeFlags.SLOT_CHILDREN;
     }
   }
@@ -28,5 +28,5 @@ export function createVNode(type, props?, children?) {
 }
 
 function getShapeFlag(type) {
-  return typeof type === 'string' ? ShapeFlags.ELEMENT : ShapeFlags.STATEFUL_COMPONENT;
+  return isString(type) ? ShapeFlags.ELEMENT : ShapeFlags.STATEFUL_COMPONENT;
 }
