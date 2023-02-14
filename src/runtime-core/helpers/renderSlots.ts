@@ -6,9 +6,9 @@ export function renderSlots(slots, name, props) {
 
   if (slot) {
     if (isFunction(slot)) {
-      return createVNode('div', {}, slot(props));
+      return createVNode('Fragment', {}, slot(props));
     } else {
-      return createVNode('div', {}, slot);
+      return createVNode('Fragment', {}, slot);
     }
   }
 }

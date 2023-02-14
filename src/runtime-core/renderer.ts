@@ -8,14 +8,26 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-  const { shapeFlag } = vnode;
+  const { type, shapeFlag } = vnode;
 
-  // 获取shapeFlag，并通过与运算判断节点类型
-  if (shapeFlag & ShapeFlags.ELEMENT) {
-    processElement(vnode, container);
-  } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-    processComponent(vnode, container);
+  // Fragment -> 只渲染children
+  switch (type) {
+    case 'Fragment':
+      processFragment(vnode, container);
+      break;
+    default:
+      // 获取shapeFlag，并通过与运算判断节点类型
+      if (shapeFlag & ShapeFlags.ELEMENT) {
+        processElement(vnode, container);
+      } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+        processComponent(vnode, container);
+      }
+      break;
   }
+}
+
+function processFragment(vnode, container) {
+  mountChildren(vnode, container);
 }
 
 function processElement(vnode, container) {
