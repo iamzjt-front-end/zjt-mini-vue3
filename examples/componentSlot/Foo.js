@@ -8,7 +8,7 @@ export const Foo = {
       'div',
       { class: 'foo-root' },
       // 单节点插槽
-      [foo, renderSlots(this.$slots)]
+      [foo, renderSlots(this.$slots, 'default')]
     );
   },
 

@@ -9,20 +9,11 @@ export function initSlots(instance, children) {
 }
 
 function normalizeObjectSlot(children, slots) {
-  // object -> 单节点插槽
-  // array -> 多节点插槽
-  // object -> 具名插槽
-  if (!isArray(children)) {
-    for (const key in children) {
-      const value = children[key];
-      if (isFunction(value)) {
-        slots[key] = (props) => normalizeSlotValue(value(props));
-      } else {
-        slots[key] = normalizeSlotValue(value);
-      }
-    }
-  } else {
-    slots = normalizeSlotValue(children);
+  for (const key in children) {
+    const value = children[key];
+    slots[key] = isFunction(value)
+      ? (props) => normalizeSlotValue(value(props))
+      : normalizeSlotValue(value);
   }
 }
 

@@ -48,10 +48,10 @@ export const App = {
       'div',
       { class: 'app-root' },
       [
-        h('div', { class: 'foo1' }, [foo1])
-        // h('div', { class: 'foo2' }, [foo2]),
-        // h('div', { class: 'foo3' }, [foo3]),
-        // h('div', { class: 'foo4' }, [foo4])
+        h('div', { class: 'foo1' }, [foo1]),
+        h('div', { class: 'foo2' }, [foo2]),
+        h('div', { class: 'foo3' }, [foo3]),
+        h('div', { class: 'foo4' }, [foo4])
       ]
     );
   },
