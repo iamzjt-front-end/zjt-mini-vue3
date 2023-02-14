@@ -10,16 +10,20 @@ export const App = {
     const foo1 = h(
       Foo,
       {},
-      h('p', {}, 'foo: 单节点')
+      {
+        default: h('p', {}, 'foo: 单节点')
+      }
     );
     // 多节点插槽
     const foo2 = h(
       Foo,
       {},
-      [
-        h('p', {}, 'foo: 多节点1'),
-        h('p', {}, 'foo: 多节点2')
-      ]
+      {
+        default: [
+          h('p', {}, 'foo: 多节点1'),
+          h('p', {}, 'foo: 多节点2')
+        ]
+      }
     );
     // 具名插槽
     const foo3 = h(
@@ -44,7 +48,7 @@ export const App = {
       'div',
       { class: 'app-root' },
       [
-        h('div', { class: 'foo1' }, [foo1]),
+        h('div', { class: 'foo1' }, [foo1])
         // h('div', { class: 'foo2' }, [foo2]),
         // h('div', { class: 'foo3' }, [foo3]),
         // h('div', { class: 'foo4' }, [foo4])
