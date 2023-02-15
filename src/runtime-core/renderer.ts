@@ -1,7 +1,7 @@
 import { createComponentInstance, setupComponent } from './component';
 import { isOn } from '../shared';
 import { ShapeFlags } from '../shared/ShapeFlags';
-import { Fragment } from './vnode';
+import { Fragment, Text } from './vnode';
 
 export function render(vnode, container) {
   // patch
@@ -16,6 +16,9 @@ function patch(vnode, container) {
     case Fragment:
       processFragment(vnode, container);
       break;
+    case Text:
+      processText(vnode, container);
+      break;
     default:
       // 获取shapeFlag，并通过与运算判断节点类型
       if (shapeFlag & ShapeFlags.ELEMENT) {
@@ -29,6 +32,12 @@ function patch(vnode, container) {
 
 function processFragment(vnode, container) {
   mountChildren(vnode, container);
+}
+
+function processText(vnode, container) {
+  const { children } = vnode;
+  const textNode = (vnode.el = document.createTextNode(children));
+  container.append(textNode);
 }
 
 function processElement(vnode, container) {

@@ -2,6 +2,7 @@ import { h } from '../../lib/zjt-mini-vue.esm.js';
 import { Foo } from './Foo.js';
 import { Foo3 } from './Foo3.js';
 import { Foo4 } from './Foo4.js';
+import { createTextVNode } from '../../lib/zjt-mini-vue.esm.js';
 
 export const App = {
   name: 'App',
@@ -48,6 +49,7 @@ export const App = {
       'div',
       { class: 'app-root' },
       [
+        createTextVNode('哈哈哈'),
         h('div', { class: 'foo1' }, [foo1]),
         h('div', { class: 'foo2' }, [foo2]),
         h('div', { class: 'foo3' }, [foo3]),
