@@ -1,8 +1,7 @@
-import { h } from '../../lib/zjt-mini-vue.esm.js';
+import { h, createTextVNode } from '../../lib/zjt-mini-vue.esm.js';
 import { Foo } from './Foo.js';
 import { Foo3 } from './Foo3.js';
 import { Foo4 } from './Foo4.js';
-import { createTextVNode } from '../../lib/zjt-mini-vue.esm.js';
 
 export const App = {
   name: 'App',
