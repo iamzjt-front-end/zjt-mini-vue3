@@ -5,13 +5,16 @@ import { emit } from './componentEmit';
 import { initSlots } from './componentSlots';
 import { isObject } from '../shared';
 
-export function createComponentInstance(vnode) {
+export function createComponentInstance(vnode, parent) {
+  console.log('createComponentInstance', parent);
   const component = {
     vnode,
     type: vnode.type,
     setupState: {},
     props: {},
     slots: {},
+    provides: {},
+    parent,
     emit: () => {}
   };
 

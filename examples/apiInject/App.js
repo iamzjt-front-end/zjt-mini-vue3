@@ -43,9 +43,10 @@ export default {
 		return h(
 			'div',
 			{},
-
-			h('p', {}, 'apiInject'),
-			h(Provider)
+			[
+				h('p', {}, 'apiInject'),
+				h(Provider)
+			]
 		);
 	}
 };
