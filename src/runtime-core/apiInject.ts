@@ -18,10 +18,6 @@ export function inject(key, defaultValue) {
 	if (currentInstance) {
 		const parentProvides = currentInstance.parent.provides;
 
-		if (key in parentProvides) {
-			return parentProvides[key];
-		} else {
-			return defaultValue;
-		}
+		return key in parentProvides ? parentProvides[key] : defaultValue;
 	}
 }
