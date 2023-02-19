@@ -23,7 +23,8 @@ const Consumer = {
 	setup() {
 		const foo = inject('foo');
 		const bar = inject('bar');
-		const baz = inject('baz', 'bazDefault');
+		// const baz = inject('baz', 'bazDefault');
+		const baz = inject('baz', () => 'bazDefault');
 
 		return {
 			foo,

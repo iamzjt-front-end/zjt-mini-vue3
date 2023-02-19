@@ -1,4 +1,5 @@
 import { getCurrentInstance } from './component';
+import { isFunction } from '../shared';
 
 export function provide(key, value) {
 	// 存
@@ -18,6 +19,10 @@ export function inject(key, defaultValue) {
 	if (currentInstance) {
 		const parentProvides = currentInstance.parent.provides;
 
-		return key in parentProvides ? parentProvides[key] : defaultValue;
+		if (key in parentProvides) {
+			return parentProvides[key];
+		} else if (defaultValue) {
+			return isFunction(defaultValue) ? defaultValue() : defaultValue;
+		}
 	}
 }

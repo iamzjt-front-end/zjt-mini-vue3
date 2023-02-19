@@ -3,7 +3,7 @@ import { isOn } from '../shared';
 import { ShapeFlags } from '../shared/ShapeFlags';
 import { Fragment, Text } from './vnode';
 
-export function render(vnode, container, parentComponent) {
+export function render(vnode, container, parentComponent?) {
   // patch
   patch(vnode, container, parentComponent);
 }
