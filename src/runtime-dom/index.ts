@@ -2,10 +2,12 @@ import { createRenderer } from '../runtime-core';
 import { isOn } from '../shared';
 
 function createElement(type) {
+	console.log('---------createElement---------');
 	return document.createElement(type);
 }
 
 function patchProp(el, key, val) {
+	console.log('---------patchProp---------');
 	// 实现注册事件
 	if (isOn(key)) {
 	  const name = key.slice(2).toLowerCase();
@@ -17,6 +19,7 @@ function patchProp(el, key, val) {
 }
 
 function insert(el, parent) {
+	console.log('---------insert---------');
 	parent.append(el);
 }
 
