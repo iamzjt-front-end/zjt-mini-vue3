@@ -1,6 +1,7 @@
 import { createComponentInstance, setupComponent } from './component';
 import { ShapeFlags } from '../shared/ShapeFlags';
 import { Fragment, Text } from './vnode';
+import { createAppAPI } from './createApp';
 
 export function createRenderer(options) {
 	const { createElement, patchProp, insert } = options;
@@ -49,23 +50,12 @@ export function createRenderer(options) {
 	function mountElement(vnode, container, parentComponent) {
 		const { type, props, children, shapeFlag } = vnode;
 
-		//canvas
-		// new Element()
 		const el = (vnode.el = createElement(type));
 
 		for (const key in props) {
 			const val = props[key];
-			// 实现注册事件
-			// if (isOn(key)) {
-			//   const name = key.slice(2).toLowerCase();
-			//   el.addEventListener(name, val);
-			// } else {
-			//   el.setAttribute(key, val);
-			// }
 			patchProp(el, key, val);
 		}
-		// canvas
-		// el.x = 10
 
 		// 判断子节点类型
 		if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
@@ -74,8 +64,6 @@ export function createRenderer(options) {
 			mountChildren(vnode, el, parentComponent);
 		}
 
-		// container.append(el);
-		// addChild()
 		insert(el, container);
 	}
 
@@ -101,5 +89,9 @@ export function createRenderer(options) {
 		patch(subTree, container, instance);
 
 		initialVnode.el = subTree.el;
+	}
+
+	return {
+		createApp: createAppAPI(render)
 	}
 }
