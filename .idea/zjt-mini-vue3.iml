@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="pixi" level="application" />
+    <orderEntry type="library" name="pixi" level="application" />
   </component>
 </module>
