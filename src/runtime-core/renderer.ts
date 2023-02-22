@@ -82,6 +82,20 @@ export function createRenderer(options) {
 		console.log('patchElement');
 		console.log('n1:', n1);
 		console.log('n2:', n2);
+
+		const oldProps = n1.props || {};
+		const newProps = n1.props || {};
+		patchProps(oldProps, newProps);
+	}
+
+	function patchProps(oldProps, newProps) {
+		for (const key in newProps) {
+			const prevProp = oldProps[key];
+			const nextProp = newProps[key];
+			if (prevProp !== nextProp) {
+
+			}
+		}
 	}
 
 	function mountChildren(vnode, container, parentComponent) {
