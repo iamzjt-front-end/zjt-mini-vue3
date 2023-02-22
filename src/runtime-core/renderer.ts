@@ -97,12 +97,6 @@ export function createRenderer(options) {
 			if (prevProp !== nextProp) {
 				// 更新
 				hostPatchProp(el, key, prevProp, nextProp);
-				console.log('patchProps');
-				console.log('old:', oldProps);
-				console.log('new:', newProps);
-
-			} else if (prevProp && !nextProp) {
-
 			}
 		}
 	}
