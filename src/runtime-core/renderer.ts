@@ -16,8 +16,8 @@ export function createRenderer(options) {
 		patch(null, vnode, container, parentComponent);
 	}
 
-	// n1 -> 老的
-	// n2 -> 新的
+	// * n1 -> 老的
+	// * n2 -> 新的
 	function patch(n1, n2, container, parentComponent) {
 		const { type, shapeFlag } = n2;
 
@@ -52,8 +52,10 @@ export function createRenderer(options) {
 
 	function processElement(n1, n2, container, parentComponent) {
 		if (!n1) {
+			// 初次加载
 			mountElement(n2, container, parentComponent);
 		} else {
+			// 更新
 			patchElement(n1, n2, container);
 		}
 	}
@@ -65,7 +67,7 @@ export function createRenderer(options) {
 
 		for (const key in props) {
 			const val = props[key];
-			hostPatchProp(el, key, val);
+			hostPatchProp(el, key, null, val);
 		}
 
 		// 判断子节点类型
@@ -79,20 +81,27 @@ export function createRenderer(options) {
 	}
 
 	function patchElement(n1, n2, container) {
-		console.log('patchElement');
-		console.log('n1:', n1);
-		console.log('n2:', n2);
-
 		const oldProps = n1.props || {};
-		const newProps = n1.props || {};
-		patchProps(oldProps, newProps);
+		const newProps = n2.props || {};
+
+		const el = (n2.el = n1.el);
+
+		patchProps(el, oldProps, newProps);
 	}
 
-	function patchProps(oldProps, newProps) {
+	function patchProps(el, oldProps, newProps) {
 		for (const key in newProps) {
 			const prevProp = oldProps[key];
 			const nextProp = newProps[key];
+
 			if (prevProp !== nextProp) {
+				// 更新
+				hostPatchProp(el, key, prevProp, nextProp);
+				console.log('patchProps');
+				console.log('old:', oldProps);
+				console.log('new:', newProps);
+
+			} else if (prevProp && !nextProp) {
 
 			}
 		}

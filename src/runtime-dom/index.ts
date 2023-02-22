@@ -5,14 +5,14 @@ function createElement(type) {
 	return document.createElement(type);
 }
 
-function patchProp(el, key, val) {
+function patchProp(el, key, prevVal, nextVal) {
 	// 实现注册事件
 	if (isOn(key)) {
 	  const name = key.slice(2).toLowerCase();
-	  el.addEventListener(name, val);
+	  el.addEventListener(name, nextVal);
 	} else {
 		// 设置属性
-	  el.setAttribute(key, val);
+	  el.setAttribute(key, nextVal);
 	}
 }
 
