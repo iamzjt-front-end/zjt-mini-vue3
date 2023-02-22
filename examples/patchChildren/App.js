@@ -5,7 +5,7 @@ import TextToText from './TextToText';
 import TextToArray from './TextToArray';
 import ArrayToArray from './ArrayToArray';
 
-export default {
+export const App = {
 	name: 'App',
 	setup() {},
 	render() {
