@@ -11,8 +11,13 @@ function patchProp(el, key, prevVal, nextVal) {
 	  const name = key.slice(2).toLowerCase();
 	  el.addEventListener(name, nextVal);
 	} else {
-		// 设置属性
-	  el.setAttribute(key, nextVal);
+		if (nextVal === null || nextVal === undefined) {
+			// 删除属性
+			el.removeAttribute(key);
+		} else {
+			// 设置属性
+			el.setAttribute(key, nextVal);
+		}
 	}
 }
 
