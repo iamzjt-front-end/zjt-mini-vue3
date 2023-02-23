@@ -15,13 +15,13 @@ export const App = {
 			[
 				h('p', {}, '主页'),
 				// 1. array -> text
-				h(ArrayToText),
+				// h(ArrayToText),
 
 				// 2. text -> text
 				// h(TextToText),
 
 				// 3. text -> array
-				// h(TextToArray),
+				h(TextToArray),
 
 				// 4. array -> array
 				// h(ArrayToArray),

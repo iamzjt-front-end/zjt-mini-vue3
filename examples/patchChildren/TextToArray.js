@@ -2,7 +2,7 @@
 
 import { ref, h } from '../../lib/zjt-mini-vue.esm.js';
 
-const prevChildren = 'newChildren';
+const prevChildren = 'oldChildren';
 const nextChildren = [
 	h('div', {}, 'A'),
 	h('div', {}, 'B')
