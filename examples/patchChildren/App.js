@@ -1,9 +1,9 @@
 import { h } from '../../lib/zjt-mini-vue.esm.js';
 
-import ArrayToText from './ArrayToText';
-import TextToText from './TextToText';
-import TextToArray from './TextToArray';
-import ArrayToArray from './ArrayToArray';
+import ArrayToText from './ArrayToText.js';
+import TextToText from './TextToText.js';
+import TextToArray from './TextToArray.js';
+import ArrayToArray from './ArrayToArray.js';
 
 export const App = {
 	name: 'App',
@@ -18,13 +18,13 @@ export const App = {
 				h(ArrayToText),
 
 				// 2. text -> text
-				h(TextToText),
+				// h(TextToText),
 
 				// 3. text -> array
-				h(TextToArray),
+				// h(TextToArray),
 
 				// 4. array -> array
-				h(ArrayToArray),
+				// h(ArrayToArray),
 			]
 		);
 	}
