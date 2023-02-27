@@ -48,7 +48,7 @@
 
 下面为同步更新的 <a href="https://juejin.cn/column/7168612212133593095"><img src="https://img.shields.io/badge/juejin-掘金专栏-487DF8"></a> 系列文章：
 
-👍 欢迎各位大佬点点赞啊！😂
+欢迎各位大佬点点`star`⭐、点点赞👍啊！😂
 
 #### 一、reactivity篇
 
