@@ -21,10 +21,10 @@ export const App = {
 				// h(TextToText),
 
 				// 3. text -> array
-				h(TextToArray),
+				// h(TextToArray),
 
 				// 4. array -> array
-				// h(ArrayToArray),
+				h(ArrayToArray),
 			]
 		);
 	}
