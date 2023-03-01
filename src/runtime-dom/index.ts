@@ -24,7 +24,7 @@ function patchProp(el, key, prevVal, nextVal) {
 function insert(child, parent, anchor) {
 	// parent.append(el);
 	// 当anchor为null时，会默认添加到最后
-	parent.insertBefore(child, anchor || null);
+	parent.insertBefore(child, anchor ?? null);
 }
 
 function remove(child) {

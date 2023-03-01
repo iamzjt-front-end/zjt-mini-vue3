@@ -123,9 +123,10 @@ export function createRenderer(options) {
 
 	// ! diff
 	function patchKeyedChildren(c1, c2, container, parentComponent, anchor) {
-	  let i = 0;
+		let i = 0;
+		let l2 = c2.length;
 		let e1 = c1.length - 1;
-		let e2 = c2.length - 1;
+		let e2 = l2 - 1;
 
 		function isSameVNodeType(n1, n2) {
 			// 基于type key判断
@@ -151,7 +152,7 @@ export function createRenderer(options) {
 		// * 2. 右侧的对比
 		// * a (b c)
 		// * d e (b c)
-		while(i <= e1 && i <= e2) {
+		while (i <= e1 && i <= e2) {
 			const n1 = c1[e1];
 			const n2 = c2[e2];
 
@@ -166,15 +167,23 @@ export function createRenderer(options) {
 		}
 
 		// * 3. 新的比老的长 ->> 创建新的
-		// * 3.1 左侧开始对比
-		// * (a, b)
-		// * (a, b) c
 		if (i > e1) {
 			if (i <= e2) {
-				const nextPos = i - 1;
-				const anchor = nextPos < c1.length ? null : c2[nextPos];
-				patch(null, c2[i], container, parentComponent, anchor);
+				const nextPos = e2 + 1;
+				const anchor = nextPos < l2 ? c2[nextPos].el : null;
+				while (i <= e2) {
+					patch(null, c2[i], container, parentComponent, anchor);
+					i++;
+				}
 			}
+		} else if (i > e2) {
+			// * 4. 老的比新的长 ->> 删除老的
+			while (i <= e1) {
+				hostRemove(c1[i].el);
+				i++;
+			}
+		} else {
+			// TODO 中间乱序的部分
 		}
 	}
 
