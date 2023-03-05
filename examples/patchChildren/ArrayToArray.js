@@ -92,6 +92,29 @@ import { ref, h } from '../../lib/zjt-mini-vue.esm.js';
 // 	h('p', { key: 'C' }, 'C')
 // ];
 
+// * 5. 对比中间的部分
+// * 删除老的（在老的里面存在，新的里面不存在）
+// * 5.1
+// * a, b, (c, d), f, g
+// * a, b, (e, c), f, g
+// * D 节点在新的里面是没有的 -> 需要被删除掉
+// * C 节点 props 也发生了变化
+const prevChildren = [
+	h('p', { key: 'A' }, 'A'),
+	h('p', { key: 'B' }, 'B'),
+	h('p', { key: 'C', id: 'c-prev' }, 'C'),
+	h('p', { key: 'D' }, 'D'),
+	h('p', { key: 'F' }, 'F'),
+	h('p', { key: 'G' }, 'G'),
+];
+const nextChildren = [
+	h('p', { key: 'A' }, 'A'),
+	h('p', { key: 'B' }, 'B'),
+	h('p', { key: 'E' }, 'E'),
+	h('p', { key: 'C', id: 'c-next' }, 'C'),
+	h('p', { key: 'F' }, 'F'),
+	h('p', { key: 'G' }, 'G'),
+];
 
 export default {
 	name: 'ArrayToArray',
