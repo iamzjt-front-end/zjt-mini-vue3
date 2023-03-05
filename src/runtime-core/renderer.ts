@@ -190,6 +190,8 @@ export function createRenderer(options) {
 			let s1 = i;
 			let s2 = i;
 
+			const toBePatched = e2 - s2 + 1;
+			let patched = 0;
 			// * 5.1.1 遍历新节点，建立新节点的映射表 (key -> index)
 			const keyToNewIndexMap = new Map();
 			for (let i = s2; i <= e2; i++) {
@@ -201,6 +203,12 @@ export function createRenderer(options) {
 			for (let i = s1; i <= e1; i++) {
 				const prevChild = c1[i];
 
+				if (patched >= toBePatched) {
+					// * 当新节点全部是老节点中现有节点，并且全部被patch以后
+					// * 那么老节点中多余的部分则没有必要继续往下走，直接删除即可
+					hostRemove(prevChild.el);
+				}
+
 				// 用于存储老节点在新列表中的index
 				let newIndex;
 				// 判断用户是否给节点定义了 key
@@ -209,7 +217,7 @@ export function createRenderer(options) {
 				} else {
 					// 遍历新节点，看是否存在同样的
 					for (let j = s2; j <= e2; j++) {
-						if(isSameVNodeType(prevChild, c2[j]))	{
+						if (isSameVNodeType(prevChild, c2[j])) {
 							newIndex = j;
 							break;
 						}
@@ -221,6 +229,7 @@ export function createRenderer(options) {
 					hostRemove(prevChild.el);
 				} else {
 					patch(prevChild, c2[newIndex], container, parentComponent, null);
+					patched++;
 				}
 			}
 		}
