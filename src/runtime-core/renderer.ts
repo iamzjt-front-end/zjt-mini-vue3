@@ -207,6 +207,7 @@ export function createRenderer(options) {
 					// * 当新节点全部是老节点中现有节点，并且全部被patch以后
 					// * 那么老节点中多余的部分则没有必要继续往下走，直接删除即可
 					hostRemove(prevChild.el);
+					continue;
 				}
 
 				// 用于存储老节点在新列表中的index
