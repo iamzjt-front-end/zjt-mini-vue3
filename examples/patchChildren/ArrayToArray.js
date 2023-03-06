@@ -194,27 +194,40 @@ import { ref, h } from '../../lib/zjt-mini-vue.esm.js';
 // + 3. 老序列中间部分 (c, d, e) 和 新序列中间部分 (d, c, y, e) 进行对比，发现老节点在新序列中为非递增序列，则去取得最长递增子序列
 // + 4. 遍历新序列，发现新节点y，则创建y
 // + 5. 与最长递增子序列倒序对比，依次插入老节点来进行位置的移动
+// const prevChildren = [
+// 	h('p', { key: 'A' }, 'A'),
+// 	h('p', { key: 'B' }, 'B'),
+// 	h('p', { key: 'C' }, 'C'),
+// 	h('p', { key: 'D' }, 'D'),
+// 	h('p', { key: 'E' }, 'E'),
+// 	h('p', { key: 'Z' }, 'Z'),
+// 	h('p', { key: 'F' }, 'F'),
+// 	h('p', { key: 'G' }, 'G'),
+// ];
+// const nextChildren = [
+// 	h('p', { key: 'A' }, 'A'),
+// 	h('p', { key: 'B' }, 'B'),
+// 	h('p', { key: 'D' }, 'D'),
+// 	h('p', { key: 'C' }, 'C'),
+// 	h('p', { key: 'Y' }, 'Y'),
+// 	h('p', { key: 'E' }, 'E'),
+// 	h('p', { key: 'F' }, 'F'),
+// 	h('p', { key: 'G' }, 'G'),
+// ];
+
+// ! fix
 const prevChildren = [
 	h('p', { key: 'A' }, 'A'),
+	h('p', {}, 'C'),
 	h('p', { key: 'B' }, 'B'),
-	h('p', { key: 'C' }, 'C'),
-	h('p', { key: 'D' }, 'D'),
-	h('p', { key: 'E' }, 'E'),
-	h('p', { key: 'Z' }, 'Z'),
-	h('p', { key: 'F' }, 'F'),
-	h('p', { key: 'G' }, 'G'),
+	h('p', { key: 'D' }, 'D')
 ];
 const nextChildren = [
 	h('p', { key: 'A' }, 'A'),
 	h('p', { key: 'B' }, 'B'),
-	h('p', { key: 'D' }, 'D'),
-	h('p', { key: 'C' }, 'C'),
-	h('p', { key: 'Y' }, 'Y'),
-	h('p', { key: 'E' }, 'E'),
-	h('p', { key: 'F' }, 'F'),
-	h('p', { key: 'G' }, 'G'),
+	h('p', {}, 'C'),
+	h('p', { key: 'D' }, 'D')
 ];
-
 
 export default {
 	name: 'ArrayToArray',
