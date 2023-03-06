@@ -251,7 +251,7 @@ export function createRenderer(options) {
 			// * 倒序插入以实现节点稳定
 			for (let i = toBePatched - 1; i >= 0; i--) {
 				const nextIndex = i + s2;
-				const nextChild = c2[nextIndex].el;
+				const nextChild = c2[nextIndex];
 				const anchor = nextIndex + 1 < l2 ? c2[nextIndex + 1].el : null;
 
 				// 只要不在最长递增子序列内则需要移动位置
