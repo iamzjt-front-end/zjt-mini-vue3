@@ -192,8 +192,16 @@ export function createRenderer(options) {
 
 			const toBePatched = e2 - s2 + 1;
 			let patched = 0;
-			// * 5.1.1 遍历新节点，建立新节点的映射表 (key -> index)
 			const keyToNewIndexMap = new Map();
+			// 用于存储映射: 新节点顺序 -> (老节点索引 + 1)
+			const newIndexToOldIndexMap = new Array(toBePatched);
+
+			// 初始化为0
+			for (let i = 0; i < toBePatched; i++) {
+				newIndexToOldIndexMap[i] = 0;
+			}
+
+			// * 5.1.1 遍历新节点，建立新节点的映射表 (key -> index)
 			for (let i = s2; i <= e2; i++) {
 				const nextChild = c2[i];
 				keyToNewIndexMap.set(nextChild.key, i);
@@ -229,8 +237,29 @@ export function createRenderer(options) {
 				if (!newIndex) {
 					hostRemove(prevChild.el);
 				} else {
+					newIndexToOldIndexMap[newIndex - s2] = i + 1;
 					patch(prevChild, c2[newIndex], container, parentComponent, null);
 					patched++;
+				}
+			}
+
+			// 取得最长递增子序列
+			const increasingNewIndexSequence = getSequence(newIndexToOldIndexMap);
+			let j = increasingNewIndexSequence.length - 1;
+
+			// * 对比: [0, 1, 2] --- [1, 2]
+			// * 倒序插入以实现节点稳定
+			for (let i = toBePatched - 1; i >= 0; i--) {
+				const nextIndex = i + s2;
+				const nextChild = c2[nextIndex].el;
+				const anchor = nextIndex + 1 < l2 ? c2[nextIndex + 1].el : null;
+
+				// 只要不在最长递增子序列内则需要移动位置
+				if (i !== increasingNewIndexSequence[j]) {
+					hostInsert(nextChild.el, container, anchor);
+					console.log('移动位置');
+				} else {
+					j--;
 				}
 			}
 		}
