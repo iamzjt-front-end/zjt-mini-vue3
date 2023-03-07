@@ -314,18 +314,30 @@ export function createRenderer(options) {
 	}
 
 	function processComponent(n1, n2, container, parentComponent, anchor) {
-		mountComponent(n2, container, parentComponent, anchor);
+		if (!n1) {
+			mountComponent(n2, container, parentComponent, anchor);
+		} else {
+			updateComponent(n1, n2);
+		}
 	}
 
 	function mountComponent(initialVnode, container, parentComponent, anchor) {
-		const instance = createComponentInstance(initialVnode, parentComponent);
+		const instance = (initialVnode.component = createComponentInstance(initialVnode, parentComponent));
 
 		setupComponent(instance);
 		setupRenderEffect(instance, initialVnode, container, anchor);
 	}
 
+	function updateComponent(n1, n2) {
+		const instance = (n2.component = n1.component);
+		// * 要更新成的新的 vnode
+		instance.next = n2;
+		instance.update();
+	}
+
 	function setupRenderEffect(instance, initialVnode, container, anchor) {
-		effect(() => {
+		// 拿到effect返回的runner
+		instance.update = effect(() => {
 			if (!instance.isMounted) {
 				console.log('init');
 				const { proxy } = instance;
@@ -338,6 +350,14 @@ export function createRenderer(options) {
 				instance.isMounted = true;
 			} else {
 				console.log('update');
+				// 需要更新以后的 vnode
+				const { vnode, next } = instance;
+
+				if (next) {
+					next.el = vnode.el;
+					updateComponentPreRender(instance, next);
+				}
+
 				const { proxy } = instance;
 				// 生成新的subTree
 				const subTree = instance.render.call(proxy);
@@ -349,6 +369,13 @@ export function createRenderer(options) {
 				patch(prevSubTree, subTree, container, instance, anchor);
 			}
 		});
+	}
+
+	function updateComponentPreRender(instance, nextVNode) {
+		instance.vnode = nextVNode;
+		instance.next = null;
+
+		instance.props = nextVNode.props;
 	}
 
 	return {
