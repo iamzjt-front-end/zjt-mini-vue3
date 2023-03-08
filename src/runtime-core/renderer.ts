@@ -4,6 +4,7 @@ import { Fragment, Text } from './vnode';
 import { createAppAPI } from './createApp';
 import { effect } from '../reactivity/effect';
 import { EMPTY_OBJ } from '../shared';
+import { shouldUpdateComponent } from './componentUpdateUtils';
 
 export function createRenderer(options) {
 	const {
@@ -314,7 +315,7 @@ export function createRenderer(options) {
 	}
 
 	function processComponent(n1, n2, container, parentComponent, anchor) {
-		if (!n1) {
+		if (n1 == null) {
 			mountComponent(n2, container, parentComponent, anchor);
 		} else {
 			updateComponent(n1, n2);
@@ -330,9 +331,14 @@ export function createRenderer(options) {
 
 	function updateComponent(n1, n2) {
 		const instance = (n2.component = n1.component);
-		// * 要更新成的新的 vnode
-		instance.next = n2;
-		instance.update();
+		if (shouldUpdateComponent(n1, n2)) {
+			// * 要更新成的新的 vnode
+			instance.next = n2;
+			instance.update();
+		} else {
+			n2.el = n1.el;
+			instance.vnode = n2;
+		}
 	}
 
 	function setupRenderEffect(instance, initialVnode, container, anchor) {

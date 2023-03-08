@@ -41,7 +41,7 @@ export const App = {
 				h(
 					'button',
 					{
-						onclick: this.changeCount
+						onClick: this.changeCount
 					},
 					'change self count'
 				),
