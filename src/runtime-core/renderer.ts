@@ -337,6 +337,7 @@ export function createRenderer(options) {
 			instance.update();
 		} else {
 			n2.el = n1.el;
+			// ? 不太明了
 			instance.vnode = n2;
 		}
 	}
@@ -377,6 +378,7 @@ export function createRenderer(options) {
 		});
 	}
 
+	// 更新组件的props
 	function updateComponentPreRender(instance, nextVNode) {
 		instance.vnode = nextVNode;
 		instance.next = null;
