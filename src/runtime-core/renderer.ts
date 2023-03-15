@@ -5,6 +5,7 @@ import { createAppAPI } from './createApp';
 import { effect } from '../reactivity/effect';
 import { EMPTY_OBJ } from '../shared';
 import { shouldUpdateComponent } from './componentUpdateUtils';
+import { queueJobs } from './scheduler';
 
 export function createRenderer(options) {
 	const {
@@ -84,6 +85,8 @@ export function createRenderer(options) {
 	}
 
 	function patchElement(n1, n2, container, parentComponent, anchor) {
+		console.log('patchElement');
+		console.log(n1, n2);
 		const oldProps = n1.props || EMPTY_OBJ;
 		const newProps = n2.props || EMPTY_OBJ;
 
@@ -348,7 +351,7 @@ export function createRenderer(options) {
 			if (!instance.isMounted) {
 				console.log('init');
 				const { proxy } = instance;
-				const subTree = (instance.subtree = instance.render.call(proxy));
+				const subTree = (instance.subTree = instance.render.call(proxy));
 
 				patch(null, subTree, container, instance, anchor);
 
@@ -369,11 +372,15 @@ export function createRenderer(options) {
 				// 生成新的subTree
 				const subTree = instance.render.call(proxy);
 				// 拿到之前的subTree
-				const prevSubTree = instance.subtree;
+				const prevSubTree = instance.subTree;
 				// 重新保存新的subTree
-				instance.subtree = subTree;
+				instance.subTree = subTree;
 
 				patch(prevSubTree, subTree, container, instance, anchor);
+			}
+		}, {
+			scheduler() {
+				queueJobs(instance.update);
 			}
 		});
 	}

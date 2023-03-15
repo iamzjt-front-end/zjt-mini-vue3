@@ -1,7 +1,7 @@
 import { ref, h } from '../../lib/zjt-mini-vue.esm.js';
 import Child from './Child.js';
 
-export const App = {
+export default {
 	name: 'App',
 	setup() {
 		const msg = ref('123');
