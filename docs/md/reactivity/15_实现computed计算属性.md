@@ -3,7 +3,7 @@
 ### （一）单元测试
 
 ```ts
-// src/reactivity/tests/computed.spec.ts
+// src/reactivity/__tests__/computed.spec.ts
 
 describe('computed', function () {
   it('happy path', function () {
@@ -56,7 +56,7 @@ export function computed(getter) {
 那接下来，就开始下一个单测。
 
 ```ts
-// src/reactivity/tests/computed.spec.ts
+// src/reactivity/__tests__/computed.spec.ts
 
 it('should compute lazily', () => {
   const value = reactive({

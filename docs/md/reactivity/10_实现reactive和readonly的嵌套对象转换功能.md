@@ -5,7 +5,7 @@
 1. reactive
 
    ```ts
-   // src/reactivity/tests/reactive.spec.ts
+   // src/reactivity/__tests__/reactive.spec.ts
    
    it('nested reactive', () => {
      const original = {

@@ -3,7 +3,7 @@
 ### （一）单元测试
 
 ```ts
-// src/reactivity/tests/ref.spec.ts
+// src/reactivity/__tests__/ref.spec.ts
 
 it('proxyRefs', () => {
   const user = {

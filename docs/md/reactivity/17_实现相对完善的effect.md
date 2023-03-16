@@ -387,7 +387,7 @@ export class ReactiveEffect {
 为了验证是不是这个问题，我们需要调整一下测试用例`nums.num3 = 7;`后面代码的执行顺序。
 
 ```ts
-// src/reactivity/tests/effect.spec.ts
+// src/reactivity/__tests__/effect.spec.ts
 
 nums.num3 = 7;
 expect(childSpy).toHaveBeenCalledTimes(5);

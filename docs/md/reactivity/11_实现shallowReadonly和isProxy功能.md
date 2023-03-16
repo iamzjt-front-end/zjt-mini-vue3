@@ -5,7 +5,7 @@
 #### （一）单元测试
 
 ```ts
-// src/reactivity/tests/shallowReadonly.spec.ts
+// src/reactivity/__tests__/shallowReadonly.spec.ts
 
 import { isReadonly, shallowReadonly } from '../reactive';
 
@@ -116,7 +116,7 @@ it('should NOT make nested properties readonly', () => {
 我们只需要在之前的用例中补充断言即可。
 
 ```ts
-// src/reactivity/tests/reactive.spec.ts
+// src/reactivity/__tests__/reactive.spec.ts
 
 import { reactive, isReactive, isProxy } from '../reactive';
 
@@ -126,7 +126,7 @@ expect(isProxy(observed)).toBe(true);
 ```
 
 ```ts
-// src/reactivity/tests/readonly.spec.ts
+// src/reactivity/__tests__/readonly.spec.ts
 
 import { readonly, isReadonly, isProxy } from '../reactive';
 

@@ -7,7 +7,7 @@
 #### 1. 单元测试
 
 ```ts
-// src/reactivity/tests/reactive.spec.ts
+// src/reactivity/__tests__/reactive.spec.ts
 
 import { reactive, isReactive } from '../reactive';
 
@@ -103,7 +103,7 @@ yarn test reactive
 #### 1. 单元测试
 
 ```ts
-// src/reactivity/tests/readonly.spec.ts
+// src/reactivity/__tests__/readonly.spec.ts
 
 it('happy path', () => {
   const original = { foo: 1, bar: { baz: 2 } };

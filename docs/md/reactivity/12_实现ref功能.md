@@ -5,7 +5,7 @@
 首先建立`ref.spec.ts`，然后来看一下`ref`的`happy path`。
 
 ```ts
-// src/reactivity/tests/ref.spec.ts
+// src/reactivity/__tests__/ref.spec.ts
 
 describe('ref', function () {
   it('happy path', () => {
@@ -62,7 +62,7 @@ export function ref(value) {
 首先来看第一个单测的逻辑。
 
 ```ts
-// src/reactivity/tests/ref.spec.ts
+// src/reactivity/__tests__/ref.spec.ts
 
 it('should be reactive', () => {
   const a = ref(1);
@@ -222,7 +222,7 @@ if (hasChanged(newVal, this._value)) {
 ### 四、完善逻辑 v3.0
 
 ```ts
-// src/reactivity/tests/ref.spec.ts
+// src/reactivity/__tests__/ref.spec.ts
 
 it('should make nested properties reactive', () => {
   // + 可以接收一个对象，并且也具备响应式
