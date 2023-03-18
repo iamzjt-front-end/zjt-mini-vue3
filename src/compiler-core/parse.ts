@@ -27,7 +27,7 @@ function parseInterpolation(context) {
 		type: 'interpolation',
 		content: {
 			type: 'simple_expression',
-			content: 'message'
+			content
 		}
 	};
 }
