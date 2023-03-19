@@ -1,4 +1,5 @@
 import { baseParse } from '../parse';
+import { NodeTypes } from '../ast';
 
 describe('Parse', () => {
 	// * 插值
@@ -8,9 +9,9 @@ describe('Parse', () => {
 
 			// root
 			expect(ast.children[0]).toStrictEqual({
-				type: 'interpolation',
+				type: NodeTypes.INTERPOLATION,
 				content: {
-					type: 'simple_expression',
+					type: NodeTypes.SIMPLE_EXPRESSION,
 					content: 'message'
 				}
 			});
