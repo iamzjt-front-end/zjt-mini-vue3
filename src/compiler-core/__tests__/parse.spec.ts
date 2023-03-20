@@ -7,7 +7,6 @@ describe('Parse', () => {
 		it('simple interpolation', () => {
 			const ast = baseParse('{{ message }}');
 
-			// root
 			expect(ast.children[0]).toStrictEqual({
 				type: NodeTypes.INTERPOLATION,
 				content: {
