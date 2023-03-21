@@ -8,7 +8,7 @@ const enum TagType {
 export function baseParse(content: string) {
 	const context = createParseContext(content);
 
-	return createRoot(parseChildren(context));
+	return createRoot(parseChildren(context, ''));
 }
 
 function createParseContext(content: string) {
@@ -23,25 +23,37 @@ function createRoot(children) {
 	};
 }
 
-function parseChildren(context) {
+function parseChildren(context, parentTag) {
 	const nodes: any[] = [];
 
-	let node;
-	const s = context.source;
-	if (s.startsWith('{{')) {
-		node = parseInterpolation(context);
-	} else if (s[0] === '<') {
-		if (/[a-z]/i.test(s[1])) {
-			node = parseElement(context);
+	while (!isEnd(context, parentTag)) {
+		let node;
+		const s = context.source;
+		if (s.startsWith('{{')) {
+			node = parseInterpolation(context);
+		} else if (s[0] === '<') {
+			if (/[a-z]/i.test(s[1])) {
+				node = parseElement(context);
+			}
 		}
-	}
 
-	if (!node) {
-		node = parseText(context);
-	}
+		if (!node) {
+			node = parseText(context);
+		}
 
-	nodes.push(node);
+		nodes.push(node);
+	}
 	return nodes;
+}
+
+function isEnd(context, parentTag) {
+	// 2. 当遇到结束标签的时候
+	if (parentTag && context.source.startsWith(`</${ parentTag }>`)) {
+		return true;
+	}
+
+	// 1. source有值的时候
+	return !context.source;
 }
 
 // 插值
@@ -81,7 +93,9 @@ function advanceBy(context: any, length: number) {
 
 // element
 function parseElement(context) {
-	const element = parseTag(context, TagType.start);
+	const element: any = parseTag(context, TagType.start);
+	element.children = parseChildren(context, element.tag);
+
 	parseTag(context, TagType.end);
 
 	return element;
@@ -105,12 +119,20 @@ function parseTag(context, type: TagType) {
 
 // 文本
 function parseText(context) {
-	const content = parseTextData(context, context.source.length);
+	let endIndex = context.source.length;
+	let endToken = '{{';
+
+	const index = context.source.indexOf(endToken);
+	if (index !== -1) {
+		endIndex = index;
+	}
+
+	const content = parseTextData(context, endIndex);
 
 	return {
 		type: NodeTypes.TEXT,
 		content
-	}
+	};
 }
 
 function parseTextData(context, length) {

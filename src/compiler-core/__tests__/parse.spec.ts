@@ -1,6 +1,5 @@
 import { baseParse } from '../parse';
 import { NodeTypes } from '../ast';
-import child from '../../../examples/componentUpdate/Child';
 
 describe('Parse', () => {
 	// * 插值
