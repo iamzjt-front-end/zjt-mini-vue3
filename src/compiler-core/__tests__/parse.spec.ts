@@ -1,5 +1,6 @@
 import { baseParse } from '../parse';
 import { NodeTypes } from '../ast';
+import child from '../../../examples/componentUpdate/Child';
 
 describe('Parse', () => {
 	// * 插值
@@ -37,5 +38,29 @@ describe('Parse', () => {
 				content: 'some text'
 			});
 		});
+	});
+
+	it('hello world', () => {
+		const ast = baseParse('<div>hi, {{ message }}</div>');
+
+		// * root -> element -> text
+		// *                 -> 插值
+		expect(ast.children[0]).toStrictEqual({
+			type: NodeTypes.ELEMENT,
+			tag: 'div',
+			children: [
+				{
+					type: NodeTypes.TEXT,
+					content: 'hi, '
+				},
+				{
+					type: NodeTypes.INTERPOLATION,
+					content: {
+						type: NodeTypes.SIMPLE_EXPRESSION,
+						content: 'message'
+					}
+				}
+			]
+		})
 	});
 });
