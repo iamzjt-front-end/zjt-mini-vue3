@@ -119,12 +119,14 @@ function parseTag(context, type: TagType) {
 
 // 文本
 function parseText(context) {
-	let endIndex = context.source.length;
-	let endToken = '{{';
+	const endTokens = ['{{', '<'];
 
-	const index = context.source.indexOf(endToken);
-	if (index !== -1) {
-		endIndex = index;
+	let endIndex = context.source.length;
+	for (let i = 0; i < endTokens.length; i++) {
+		const index = context.source.indexOf(endTokens[i], 1);
+		if (index !== -1 && endIndex > index) {
+			endIndex = index;
+		}
 	}
 
 	const content = parseTextData(context, endIndex);
