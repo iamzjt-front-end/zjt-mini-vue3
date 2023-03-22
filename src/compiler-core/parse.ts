@@ -8,7 +8,7 @@ const enum TagType {
 export function baseParse(content: string) {
 	const context = createParseContext(content);
 
-	return createRoot(parseChildren(context, ''));
+	return createRoot(parseChildren(context, []));
 }
 
 function createParseContext(content: string) {
@@ -23,17 +23,17 @@ function createRoot(children) {
 	};
 }
 
-function parseChildren(context, parentTag) {
+function parseChildren(context, ancestors: string[]) {
 	const nodes: any[] = [];
 
-	while (!isEnd(context, parentTag)) {
+	while (!isEnd(context, ancestors)) {
 		let node;
 		const s = context.source;
 		if (s.startsWith('{{')) {
 			node = parseInterpolation(context);
 		} else if (s[0] === '<') {
 			if (/[a-z]/i.test(s[1])) {
-				node = parseElement(context);
+				node = parseElement(context, ancestors);
 			}
 		}
 
@@ -46,14 +46,21 @@ function parseChildren(context, parentTag) {
 	return nodes;
 }
 
-function isEnd(context, parentTag) {
+function isEnd(context, ancestors) {
 	// 2. 当遇到结束标签的时候
-	if (parentTag && context.source.startsWith(`</${ parentTag }>`)) {
-		return true;
+	const s = context.source;
+
+	if (s.startsWith('</')) {
+		for (let i = 0; i < ancestors.length; i++) {
+			const tag = ancestors[i].tag;
+			if (startsWidthEndTagOpen(s, tag)) {
+				return true;
+			}
+		}
 	}
 
 	// 1. source有值的时候
-	return !context.source;
+	return !s;
 }
 
 // 插值
@@ -92,13 +99,25 @@ function advanceBy(context: any, length: number) {
 }
 
 // element
-function parseElement(context) {
+function parseElement(context, ancestors) {
 	const element: any = parseTag(context, TagType.start);
-	element.children = parseChildren(context, element.tag);
+	ancestors.push(element);
+	element.children = parseChildren(context, ancestors);
+	ancestors.pop();
 
-	parseTag(context, TagType.end);
+	// console.log('--------', element.tag, context.source);
+	if (startsWidthEndTagOpen(context.source, element.tag)) {
+		throw new Error(`Element is missing end tag: ${ element.tag } }`);
+	} else {
+		parseTag(context, TagType.end);
+	}
 
 	return element;
+}
+
+// 判断是否是结束标签
+function startsWidthEndTagOpen(source, tag) {
+  return source.slice(2, tag.length + 2).toLowerCase() === tag.toLowerCase();
 }
 
 function parseTag(context, type: TagType) {
@@ -120,8 +139,8 @@ function parseTag(context, type: TagType) {
 // 文本
 function parseText(context) {
 	const endTokens = ['{{', '<'];
-
 	let endIndex = context.source.length;
+
 	for (let i = 0; i < endTokens.length; i++) {
 		const index = context.source.indexOf(endTokens[i], 1);
 		if (index !== -1 && endIndex > index) {

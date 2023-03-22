@@ -144,5 +144,12 @@ describe('Parse', () => {
 				]
 			});
 		});
+
+		it('should throw error when lack end tag', () => {
+			// * 缺少结束标签 </div>
+			expect(() => {
+				baseParse('<div><p>hi</p>{{ message }}');
+			}).toThrow('Element is missing end tag: div');
+		});
 	});
 });
