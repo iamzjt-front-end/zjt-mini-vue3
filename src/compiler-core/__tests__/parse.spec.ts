@@ -138,7 +138,7 @@ describe('Parse', () => {
 						type: NodeTypes.INTERPOLATION,
 						content: {
 							type: NodeTypes.SIMPLE_EXPRESSION,
-							content: 'name'
+							content: 'message'
 						}
 					}
 				]
