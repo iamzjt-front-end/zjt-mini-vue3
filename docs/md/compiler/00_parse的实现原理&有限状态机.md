@@ -9,3 +9,8 @@
 ## 2. parse的实现原理与有限状态机
 
 [//]: # (TODO: 画图表示parse的实现过程 并解释)
+
+## 3. 正则表达式的实现原理与有限状态机
+
+[//]: # (/examples/regex/index.js)
+[//]: # (/examples/regex/regex.spec.js)
