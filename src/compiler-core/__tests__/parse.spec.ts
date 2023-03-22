@@ -53,9 +53,24 @@ describe('Parse', () => {
 				content: 'some text'
 			});
 		});
+
+		it('text with interpolation', () => {
+			const ast = baseParse('some {{ foo + bar }} text');
+			const text1 = ast.children[0];
+			const text2 = ast.children[2];
+
+			expect(text1).toStrictEqual({
+				type: NodeTypes.TEXT,
+				content: 'some '
+			});
+			expect(text2).toStrictEqual({
+				type: NodeTypes.TEXT,
+				content: ' text'
+			});
+		});
 	});
 
-	describe('joint', () => {
+	describe('integratedCase', () => {
 		it('hello world', () => {
 			const ast = baseParse('<div>hi, {{ message }}</div>');
 
@@ -80,7 +95,7 @@ describe('Parse', () => {
 			});
 		});
 
-		it('p', () => {
+		it('text in tag end', () => {
 			const ast = baseParse('<p>{{ name }}, haha!</p>');
 
 			expect(ast.children[0]).toStrictEqual({
@@ -97,7 +112,7 @@ describe('Parse', () => {
 					{
 						type: NodeTypes.TEXT,
 						content: ', haha!'
-					},
+					}
 				]
 			});
 		});
