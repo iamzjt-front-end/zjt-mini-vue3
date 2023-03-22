@@ -106,7 +106,7 @@ function parseElement(context, ancestors) {
 	ancestors.pop();
 
 	// console.log('--------', element.tag, context.source);
-	if (startsWidthEndTagOpen(context.source, element.tag)) {
+	if (!startsWidthEndTagOpen(context.source, element.tag)) {
 		throw new Error(`Element is missing end tag: ${ element.tag } }`);
 	} else {
 		parseTag(context, TagType.end);
