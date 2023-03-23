@@ -22,6 +22,10 @@ function traverseNode(node: any, context: any) {
 		nodeTransform(node, context);
 	}
 
+	traverseChildren(node, context);
+}
+
+function traverseChildren(node: any, context: any) {
 	const children = node.children;
 	if (children) {
 		for (let i = 0; i < children.length; i++) {
