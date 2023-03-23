@@ -4,6 +4,7 @@ export function test(string) {
 	let i;
 	let startIndex;
 	let endIndex;
+	let result = [];
 
 	function waitForA(char) {
 		if (char === 'a') {
@@ -40,7 +41,12 @@ export function test(string) {
 		currentState = currentState(string[i]);
 
 		if (currentState === end) {
-			return `Found abc at string: [${ startIndex }, ${ endIndex }]`;
+			result.push([startIndex, endIndex]);
+			currentState = waitForA;
+		}
+
+		if (i === string.length - 1 && result.length) {
+			return `Found abc at string: ${ JSON.stringify(result.length === 1 ? result[0] : result) }`;
 		}
 	}
 
