@@ -1,6 +1,7 @@
 import { baseParse } from '../parse';
 import { generate } from '../codegen';
 import { transform } from '../transform';
+import { transformsExpression } from '../transforms/transformsExpression';
 
 describe('codegen', () => {
 	it('string', () => {
@@ -12,8 +13,13 @@ describe('codegen', () => {
 
 	it('interpolation', () => {
 		const ast = baseParse('{{ message }}');
-		transform(ast);
+		transform(ast, {
+			nodeTransforms: [transformsExpression]
+		});
 		const { code } = generate(ast);
-		expect(code).toMatchInlineSnapshot(`"const { toDisplayString: _toDisplayString } = Vuereturn function render (_ctx, _cache) {return '[object Object]'}"`);
+		expect(code).toMatchInlineSnapshot(`
+"const { toDisplayString: _toDisplayString } = Vue
+return function render (_ctx, _cache) {return _toDisplayString(_ctx.message)}"
+`);
 	});
 });
