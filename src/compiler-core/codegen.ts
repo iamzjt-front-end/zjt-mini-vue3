@@ -13,6 +13,11 @@ export function generate(ast) {
 	const context = createCodegenContext();
 	const { push } = context;
 
+	const VueBinding = 'Vue';
+	const helpers = ['toDisplayString'];
+	const aliasHelper = (s) => `${ s }: _${ s }`;
+	push(`const { ${ helpers.map(aliasHelper) } } = ${ VueBinding }`);
+
 	push('return ');
 
 	const functionName = 'render';
