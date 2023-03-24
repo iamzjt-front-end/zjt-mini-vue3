@@ -1,10 +1,14 @@
 import { NodeTypes } from './ast';
+import { helperNameMap, TO_DISPLAY_STRING } from './runtimeHelpers';
 
 function createCodegenContext() {
 	const context = {
 		code: '',
 		push(source) {
 			context.code += source;
+		},
+		helper(key) {
+			return `_${ helperNameMap[key] }`;
 		}
 	};
 
@@ -32,7 +36,7 @@ export function generate(ast) {
 
 function getFunctionPreamble(push: (source) => void, ast) {
 	const VueBinding = 'Vue';
-	const aliasHelper = (s) => `${ s }: _${ s }`;
+	const aliasHelper = (s) => `${ helperNameMap[s] }: _${ helperNameMap[s] }`;
 	if (ast.helpers.length > 0) {
 		push(`const { ${ ast.helpers.map(aliasHelper).join(', ') } } = ${ VueBinding }`);
 		push('\n');
@@ -62,8 +66,8 @@ function genText(node, context) {
 }
 
 function genInterpolation(node, context) {
-	const { push } = context;
-	push(`_toDisplayString(`);
+	const { push, helper } = context;
+	push(`${ helper(TO_DISPLAY_STRING) }(`);
 	genNode(node.content, context);
 	push(')');
 }
