@@ -1,5 +1,5 @@
 import { NodeTypes } from './ast';
-import { helperNameMap, TO_DISPLAY_STRING } from './runtimeHelpers';
+import { helperNameMap, TO_DISPLAY_STRING, CREATE_ELEMENT_VNODE } from './runtimeHelpers';
 
 function createCodegenContext() {
 	const context = {
@@ -55,6 +55,9 @@ function genNode(node, context) {
 		case NodeTypes.SIMPLE_EXPRESSION:
 			genExpression(node, context);
 			break;
+		case NodeTypes.ELEMENT:
+			genElement(node, context);
+			break;
 		default:
 			break;
 	}
@@ -75,4 +78,10 @@ function genInterpolation(node, context) {
 function genExpression(node, context) {
 	const { push } = context;
 	push(`${ node.content }`);
+}
+
+function genElement(node, context) {
+	const { push, helper } = context;
+	const { tag } = node;
+	push(`(${ helper(CREATE_ELEMENT_VNODE) })('${ tag }')`);
 }
