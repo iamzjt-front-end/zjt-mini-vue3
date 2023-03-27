@@ -2,7 +2,9 @@ import { NodeTypes } from '../ast';
 
 export function transformsExpression(node) {
 	if(node.type === NodeTypes.INTERPOLATION) {
-		node.content = processExpression(node.content);
+		return () => {
+			node.content = processExpression(node.content);
+		}
 	}
 }
 

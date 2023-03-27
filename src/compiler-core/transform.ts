@@ -8,7 +8,7 @@ export function transform(root, options = {}) {
 	traverseNode(root, context);
 
 	// root.codegenNode
-	createRootCodegen(root, context);
+	createRootCodegen(root);
 
 	root.helpers = [...context.helpers.keys()];
 }
@@ -29,9 +29,12 @@ function createTransformContext(root, options) {
 function traverseNode(node: any, context: any) {
 	// * 2. 修改 text content
 	const { nodeTransforms } = context;
+	const exitFns: any = [];
+
 	for (let i = 0; i < nodeTransforms.length; i++) {
-		const nodeTransform = nodeTransforms[i];
-		nodeTransform(node, context);
+		const transform = nodeTransforms[i];
+		const onExit = transform(node, context);
+		if (onExit) exitFns.push(onExit);
 	}
 
 	switch (node.type) {
@@ -45,6 +48,11 @@ function traverseNode(node: any, context: any) {
 		default:
 			break;
 	}
+
+	let i = exitFns.length;
+	while (i--) {
+		exitFns[i]();
+	}
 }
 
 function traverseChildren(node: any, context: any) {
@@ -55,6 +63,11 @@ function traverseChildren(node: any, context: any) {
 	}
 }
 
-function createRootCodegen(root, context) {
-	root.codegenNode = root.children[0];
+function createRootCodegen(root) {
+	const child = root.children[0];
+	if (child.type === NodeTypes.ELEMENT) {
+		root.codegenNode = child.codegenNode;
+	} else {
+		root.codegenNode = root.children[0];
+	}
 }

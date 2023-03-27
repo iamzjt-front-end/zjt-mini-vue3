@@ -70,7 +70,7 @@ describe('Parse', () => {
 		});
 	});
 
-	describe('integratedCase', () => {
+	describe('integrated case', () => {
 		it('hello world', () => {
 			const ast = baseParse('<div>hi, {{ message }}</div>');
 
