@@ -351,7 +351,7 @@ export function createRenderer(options) {
 			if (!instance.isMounted) {
 				console.log('init');
 				const { proxy } = instance;
-				const subTree = (instance.subTree = instance.render.call(proxy));
+				const subTree = (instance.subTree = instance.render.call(proxy, proxy));
 
 				patch(null, subTree, container, instance, anchor);
 
@@ -370,7 +370,7 @@ export function createRenderer(options) {
 
 				const { proxy } = instance;
 				// 生成新的subTree
-				const subTree = instance.render.call(proxy);
+				const subTree = instance.render.call(proxy, proxy);
 				// 拿到之前的subTree
 				const prevSubTree = instance.subTree;
 				// 重新保存新的subTree
