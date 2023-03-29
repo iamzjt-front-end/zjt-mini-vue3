@@ -1,0 +1,17 @@
+{
+  "name": "zjt-mini-vue3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@zjt-mini-vue3/compiler-core": "workspace:^1.0.0",
+    "@zjt-mini-vue3/runtime-core": "workspace:^1.0.0",
+    "@zjt-mini-vue3/runtime-dom": "workspace:^1.0.0"
+  }
+}
